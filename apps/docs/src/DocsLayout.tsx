@@ -1,0 +1,98 @@
+import type { CSSProperties, ReactNode } from 'react'
+import { PACKAGES, packageBySlug } from './content'
+import { ArrowIcon } from './icons'
+
+export interface DocSection {
+  id: string
+  label: string
+}
+
+export function DocsLayout({
+  slug,
+  sections,
+  children,
+}: {
+  slug: string
+  sections: DocSection[]
+  children: ReactNode
+}) {
+  const active = packageBySlug(slug)
+  const index = PACKAGES.findIndex((p) => p.slug === slug)
+  const prev = index > 0 ? PACKAGES[index - 1] : undefined
+  const next = index < PACKAGES.length - 1 ? PACKAGES[index + 1] : undefined
+
+  return (
+    <div className="wrap">
+      <div className="docs">
+        <aside className="sidebar">
+          <p className="group">Packages</p>
+          <ul>
+            {PACKAGES.map((p) => (
+              <li key={p.slug}>
+                <a
+                  href={`#/docs/${p.slug}`}
+                  className={p.slug === slug ? 'active' : ''}
+                  style={{ '--accent': p.accent } as CSSProperties}
+                >
+                  <span className="swatch" style={{ background: p.accent }} />
+                  {p.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p className="group">On this page</p>
+          <ul className="sub">
+            {sections.map((s) => (
+              <li key={s.id}>
+                <a href={`#${s.id}`}>{s.label}</a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+
+        <article className="doc" style={{ '--accent': active?.accent } as CSSProperties}>
+          {children}
+
+          <nav className="page-nav">
+            {prev ? (
+              <a className="prev" href={`#/docs/${prev.slug}`}>
+                <span className="dir">← Previous</span>
+                <span className="ttl">{prev.name}</span>
+              </a>
+            ) : (
+              <a className="prev" href="#/">
+                <span className="dir">← Back</span>
+                <span className="ttl">Home</span>
+              </a>
+            )}
+            {next && (
+              <a className="next" href={`#/docs/${next.slug}`}>
+                <span className="dir">
+                  Next <ArrowIcon />
+                </span>
+                <span className="ttl">{next.name}</span>
+              </a>
+            )}
+          </nav>
+        </article>
+      </div>
+    </div>
+  )
+}
+
+/** Shared header for a package doc page. */
+export function DocHero({ slug }: { slug: string }) {
+  const pkg = packageBySlug(slug)
+  if (!pkg) return null
+  return (
+    <>
+      <div className="doc-hero">
+        <div className="pkg-icon" style={{ background: pkg.accent }}>
+          {pkg.icon}
+        </div>
+        <h1>{pkg.name}</h1>
+      </div>
+      <p className="doc-lead">{pkg.blurb}</p>
+    </>
+  )
+}

@@ -1,4 +1,7 @@
+import { Continent, LocaleProvider, resolveLocale, SystemLocale, useLocale } from '@luwio/locale'
+import { useState } from 'react'
 import { DocHero, type DocSection, DocsLayout } from './DocsLayout'
+import { LiveExample } from './LiveExample'
 import { ApiTable, Callout, CodeBlock, InstallBar } from './ui'
 
 const SECTIONS: DocSection[] = [
@@ -67,12 +70,20 @@ createLocale({
   policy: { default: MatchingPolicy.STRICT, locales: { 'en-*': MatchingPolicy.LOOSE } },
 })`
 
-const EX_SWITCHER = `import { useState } from 'react'
-import { LocaleProvider, useLocale } from '@luwio/locale'
+// Live snippets run in noInline mode: each ends with render(<…/>). They avoid
+// template literals so they can live inside these template-string constants.
 
-const SUPPORTED = ['en-US', 'nl-BE', 'fr-FR', 'de-DE']
+const EX_SWITCHER = `const SUPPORTED = ['en-US', 'nl-BE', 'fr-FR', 'de-DE', 'ja-JP']
 
-function App() {
+function Info() {
+  // useLocale() has no setter — switching is driven by the parent's state.
+  const { country, language } = useLocale()
+  return (
+    <p>{language.name} · {country.name} · dial {country.direct_dialing_code}</p>
+  )
+}
+
+function Switcher() {
   const [locale, setLocale] = useState('nl-BE')
   return (
     <LocaleProvider locale={locale}>
@@ -81,59 +92,60 @@ function App() {
           <option key={code} value={code}>{code}</option>
         ))}
       </select>
-      <ActiveLocale />
+      <Info />
     </LocaleProvider>
   )
 }
 
-function ActiveLocale() {
-  // useLocale() has no setter — switching is driven by the parent's state.
-  const { language, country } = useLocale()
-  return <p>{language.name} · {country.name}</p>
-}`
+render(<Switcher />)`
 
-const EX_PHONE = `import { Continent } from '@luwio/locale'
-
-// Options for a phone-number country <select>, sorted by name.
-const dialCodeOptions = Continent.europe()
+const EX_PHONE = `// Real European countries, each labelled with its dialing code.
+const options = Continent.europe()
   .countries()
   .toArray()
-  .map((c) => ({
-    value: c.alpha2,
-    label: \`\${c.name} (\${c.direct_dialing_code})\`, // 'Belgium (+32)'
-  }))
-  .sort((a, b) => a.label.localeCompare(b.label))`
+  .map((c) => ({ value: c.alpha2, label: c.name + ' (' + c.direct_dialing_code + ')' }))
+  .sort((a, b) => a.label.localeCompare(b.label))
 
-const EX_RESOLVE = `import type { ReactNode } from 'react'
-import { LocaleProvider, resolveLocale, SystemLocale } from '@luwio/locale'
+render(
+  <select size={6} style={{ minWidth: 260, padding: 4 }}>
+    {options.map((o) => (
+      <option key={o.value} value={o.value}>{o.label}</option>
+    ))}
+  </select>,
+)`
 
-// Pick the best supported locale for the visitor, once, at boot.
+const EX_RESOLVE = `// Collapse the runtime's locale onto the ones this app supports.
 const active = resolveLocale({
   detected: SystemLocale,
   supported: ['en-US', 'nl-BE', 'fr-FR'],
   overrides: { 'nl-*': 'nl-BE', '*': 'en-US' },
 })
 
-export function AppRoot({ children }: { children: ReactNode }) {
-  return <LocaleProvider locale={active.locale}>{children}</LocaleProvider>
-}`
+render(
+  <p>
+    Detected <code>{SystemLocale.locale}</code> → resolved <strong>{active.locale}</strong>
+  </p>,
+)`
 
-const EX_COUNTRY = `import { useLocale } from '@luwio/locale'
+const EX_COUNTRY = `const flag = (a) =>
+  a.replace(/./g, (ch) => String.fromCodePoint(127397 + ch.charCodeAt(0)))
 
-// Regional-indicator flag emoji from an ISO alpha-2 code.
-const flag = (alpha2: string) =>
-  alpha2.replace(/./g, (ch) => String.fromCodePoint(127397 + ch.charCodeAt(0)))
-
-function CountryBadge() {
+function Badge() {
   const { country } = useLocale()
   const spoken = country.languages().toArray().map((l) => l.name)
   return (
     <div>
       <strong>{flag(country.alpha2)} {country.name}</strong>
-      <small>Spoken: {spoken.join(', ')}</small>
+      <div>Spoken: {spoken.join(', ')}</div>
     </div>
   )
-}`
+}
+
+render(
+  <LocaleProvider locale="nl-BE">
+    <Badge />
+  </LocaleProvider>,
+)`
 
 export function LocalePage() {
   return (
@@ -189,28 +201,31 @@ export function LocalePage() {
       <CodeBlock code={POLICY_CODE} />
 
       <h2 id="examples">Examples</h2>
-      <p>Practical recipes built from the exports above.</p>
+      <p>
+        Live and editable — each snippet runs against the real package. Change the code and the
+        result updates instantly.
+      </p>
 
       <h3>Language switcher</h3>
       <p>
         <code>useLocale</code> is read-only, so hold the locale string in parent state and feed it
-        to <code>LocaleProvider</code>. Everything below re-resolves on change.
+        to <code>LocaleProvider</code>. Pick a locale and watch it re-resolve.
       </p>
-      <CodeBlock code={EX_SWITCHER} />
+      <LiveExample code={EX_SWITCHER} scope={{ useState, LocaleProvider, useLocale }} />
 
       <h3>Phone-number country picker</h3>
       <p>
         Turn a continent's countries into sorted <code>&lt;select&gt;</code> options, each labelled
         with its international dialing code.
       </p>
-      <CodeBlock code={EX_PHONE} />
+      <LiveExample code={EX_PHONE} scope={{ Continent }} />
 
       <h3>Resolve the visitor's locale on boot</h3>
       <p>
         Detect the runtime locale with <code>SystemLocale</code> and collapse it onto the locales
-        your app actually ships, once, at the root.
+        your app actually ships. The result below is resolved from <em>your</em> browser.
       </p>
-      <CodeBlock code={EX_RESOLVE} />
+      <LiveExample code={EX_RESOLVE} scope={{ resolveLocale, SystemLocale }} />
       <Callout>
         <code>resolveLocale</code> returns a full <code>ILocale</code> — pass its{' '}
         <code>.locale</code> string to the provider.
@@ -221,7 +236,7 @@ export function LocalePage() {
         Derive a flag emoji from the country's alpha-2 code and list the languages spoken there
         straight from the dataset.
       </p>
-      <CodeBlock code={EX_COUNTRY} />
+      <LiveExample code={EX_COUNTRY} scope={{ LocaleProvider, useLocale }} />
 
       <h2 id="api">API reference</h2>
       <ApiTable

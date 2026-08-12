@@ -516,6 +516,103 @@ select.sel {
   font-style: italic;
 }
 
+/* ---------- Live (editable) examples ---------- */
+.live {
+  margin: 20px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.live-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 760px) {
+  .live-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.live-pane {
+  position: relative;
+  min-width: 0;
+}
+.live-tag {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  z-index: 2;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+  pointer-events: none;
+}
+.live-pane--editor {
+  background: #011627; /* matches the nightOwl editor theme */
+}
+.live-pane--editor .live-tag {
+  color: #7fdbca;
+  background: rgba(127, 219, 202, 0.12);
+}
+/* react-live renders a <pre> with an overlaid <textarea>; make it fill the pane. */
+.live-editor {
+  min-height: 100%;
+  overflow: auto;
+  font-size: 13px;
+}
+.live-editor textarea {
+  outline: none;
+}
+.live-pane--preview {
+  border-left: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+}
+@media (max-width: 760px) {
+  .live-pane--preview {
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+}
+.live-pane--preview .live-tag {
+  color: var(--text-faint);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+.live-preview {
+  flex: 1;
+  padding: 22px 20px;
+  font-size: 15px;
+}
+.live-preview p {
+  margin: 0 0 8px;
+}
+.live-preview select {
+  font: inherit;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg);
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.live-error {
+  margin: 0;
+  padding: 12px 16px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  color: #fca5a5;
+  background: #2a0e0e;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 /* ---------- Features ---------- */
 .feat-grid {
   display: grid;

@@ -13,8 +13,10 @@
     "@luwio/config": "workspace:*",
     "@luwio/locale": "workspace:*",
     "@luwio/storage": "workspace:*",
+    "prism-react-renderer": "^2.4.1",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "react-live": "^4.1.8"
   },
   "devDependencies": {
     "@types/react": "catalog:",

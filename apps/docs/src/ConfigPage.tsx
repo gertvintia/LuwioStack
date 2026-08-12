@@ -1,4 +1,7 @@
+import { createConfig } from '@luwio/config'
+import { useState } from 'react'
 import { DocHero, type DocSection, DocsLayout } from './DocsLayout'
+import { LiveExample } from './LiveExample'
 import { ApiTable, Callout, CodeBlock, InstallBar } from './ui'
 
 const SECTIONS: DocSection[] = [
@@ -30,11 +33,39 @@ function Dashboard() {
   // ...
 }`
 
-const OVERRIDE_CODE = `// Overrides are shallow-merged over the defaults, so a provider
-// only specifies what changes for its environment.
-<ConfigProvider value={{ apiUrl: 'https://staging.example.com' }}>
-  <App />
-</ConfigProvider>`
+const OVERRIDE_CODE = `const { ConfigProvider, useConfig } = createConfig({
+  apiUrl: 'https://api.example.com',
+  debug: false,
+})
+
+function Panel() {
+  const { apiUrl, debug } = useConfig()
+  return (
+    <div>
+      <div>apiUrl: <code>{apiUrl}</code></div>
+      <div>debug: <strong>{String(debug)}</strong></div>
+    </div>
+  )
+}
+
+function Demo() {
+  // Overrides are shallow-merged over the defaults — a provider only
+  // specifies what changes for its environment.
+  const [env, setEnv] = useState('production')
+  const overrides =
+    env === 'staging' ? { apiUrl: 'https://staging.example.com', debug: true } : {}
+  return (
+    <ConfigProvider value={overrides}>
+      <select value={env} onChange={(e) => setEnv(e.target.value)}>
+        <option value="production">production</option>
+        <option value="staging">staging</option>
+      </select>
+      <Panel />
+    </ConfigProvider>
+  )
+}
+
+render(<Demo />)`
 
 export function ConfigPage() {
   return (
@@ -66,8 +97,9 @@ export function ConfigPage() {
       <p>
         Values passed to <code>{'<ConfigProvider value={…}>'}</code> are shallow-merged over the
         defaults. A provider only needs to specify what differs — ideal for per-environment values.
+        Switch environments below and watch the config update.
       </p>
-      <CodeBlock code={OVERRIDE_CODE} />
+      <LiveExample code={OVERRIDE_CODE} scope={{ useState, createConfig }} />
 
       <h2 id="api">API reference</h2>
       <ApiTable

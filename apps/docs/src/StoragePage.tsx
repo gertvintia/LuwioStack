@@ -1,4 +1,6 @@
+import { useLocalStorage } from '@luwio/storage'
 import { DocHero, type DocSection, DocsLayout } from './DocsLayout'
+import { LiveExample } from './LiveExample'
 import { ApiTable, Callout, CodeBlock, InstallBar } from './ui'
 
 const SECTIONS: DocSection[] = [
@@ -8,18 +10,24 @@ const SECTIONS: DocSection[] = [
   { id: 'api', label: 'API reference' },
 ]
 
-const USAGE_CODE = `import { useLocalStorage } from '@luwio/storage'
-
-function Counter() {
-  const [count, setCount, reset] = useLocalStorage('count', 0)
-
+const USAGE_CODE = `function Counter({ label }) {
+  // Both counters share one key, so they stay in sync with each other —
+  // and the value survives a page reload.
+  const [count, setCount, reset] = useLocalStorage('luwio-docs:demo', 0)
   return (
-    <div>
-      <button onClick={() => setCount((n) => n + 1)}>{count}</button>
+    <span style={{ display: 'inline-flex', gap: 6, marginRight: 12 }}>
+      <button onClick={() => setCount((n) => n + 1)}>{label}: {count}</button>
       <button onClick={reset}>reset</button>
-    </div>
+    </span>
   )
-}`
+}
+
+render(
+  <div>
+    <Counter label="A" />
+    <Counter label="B" />
+  </div>,
+)`
 
 const SERIALIZE_CODE = `// Values are JSON-serialized by default. Provide a custom serializer
 // for anything JSON can't round-trip, like Date.
@@ -50,8 +58,10 @@ export function StoragePage() {
         The hook returns a <code>[value, setValue, remove]</code> tuple. <code>setValue</code>{' '}
         accepts a value or an updater function, just like <code>useState</code>.{' '}
         <code>useSessionStorage</code> has the same signature but is scoped to the current tab.
+        Click a counter below — both share one key, so they move together, and the value survives a
+        reload.
       </p>
-      <CodeBlock code={USAGE_CODE} />
+      <LiveExample code={USAGE_CODE} scope={{ useLocalStorage }} />
       <Callout>
         SSR-safe: with no <code>window</code>, hooks return the initial value and writes are no-ops,
         so components render on the server without guards.

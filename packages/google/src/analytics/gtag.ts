@@ -108,19 +108,14 @@ export function subscribeAnalytics(id: string, listener: () => void): () => void
   }
 }
 
-/** Send a GA4 event. Queued on `dataLayer` until gtag.js is ready. */
-export function sendEvent(event: string, params?: Record<string, unknown>): void {
+/**
+ * Forward a raw `gtag(...)` call — the single low-level primitive every tracking action is built
+ * on. Queued on `dataLayer` until gtag.js is ready. Consent gating lives in the hook, not here:
+ * this only runs when a caller decides it should.
+ */
+export function callGtag(...args: unknown[]): void {
   if (typeof window === 'undefined') return
-  ensureGtag()('event', event, params ?? {})
-}
-
-/** Send a `page_view` event for `path` (defaults to the current location), scoped to `id`. */
-export function sendPageview(id: string, path?: string): void {
-  if (typeof window === 'undefined') return
-  ensureGtag()('event', 'page_view', {
-    page_path: path ?? window.location.pathname,
-    send_to: id,
-  })
+  ensureGtag()(...args)
 }
 
 /**

@@ -83,12 +83,21 @@ const { libraries } = useSuspenseGoogleMaps(['places'])
 Google Analytics 4 (gtag.js) loading for React. Loads the script once per Measurement ID and
 queues events fired before it's ready.
 
+### Consent-gated tracking
+
+The provider's `enabled` flag is a **consent gate you control** (managing consent itself is out of
+scope — wire `enabled` to your own cookie banner / CMP). When it's `false`, gtag.js is never loaded
+and every tracking call is a plain void no-op; flip it to `true` and the same calls start sending.
+
 ```tsx
+import { useState } from 'react'
 import { GoogleAnalyticsProvider, useAnalytics } from '@luwio/google/analytics'
 
 function App() {
+  const [consent, setConsent] = useState(false) // ← from your consent banner
   return (
-    <GoogleAnalyticsProvider measurementId="G-XXXXXXXXXX">
+    <GoogleAnalyticsProvider measurementId="G-XXXXXXXXXX" enabled={consent}>
+      <button onClick={() => setConsent(true)}>Accept analytics</button>
       <SignUpButton />
     </GoogleAnalyticsProvider>
   )
@@ -96,14 +105,24 @@ function App() {
 
 function SignUpButton() {
   const { track } = useAnalytics()
+  // No-op until consent is granted; starts sending the moment it is.
   return <button onClick={() => track('sign_up', { method: 'google' })}>Sign up</button>
 }
 ```
 
-Pass `enabled={false}` to skip loading and make every tracking call a no-op (e.g. in dev or until
-consent). `useAnalytics()` returns `{ status, isSuccess, isError, isDisabled, error, track, pageview, retry }`.
+`useAnalytics()` returns the load state plus a consent-gated action set — all no-ops when disabled:
+
+```tsx
+const { enabled, track, pageview, set, gtag } = useAnalytics()
+
+track('purchase', { value: 42, currency: 'EUR' }) // gtag('event', 'purchase', …)
+pageview('/pricing')                               // gtag('event', 'page_view', …)
+set({ user_id: 'u_123' })                          // gtag('set', …)
+gtag('event', 'custom', { any: 'thing' })          // raw escape hatch
+```
 
 ### API surface (`/analytics`)
 
 - `GoogleAnalyticsProvider` — loads gtag.js + provides config (`measurementId`, `enabled`, `config`, `nonce`).
-- `useAnalytics()` → load state plus `track(event, params)` and `pageview(path?)`.
+- `useAnalytics()` → `{ status, isSuccess, isError, isDisabled, error, enabled, track, pageview, set, gtag, retry }`.
+  Every action is a void no-op while `enabled` is `false`.

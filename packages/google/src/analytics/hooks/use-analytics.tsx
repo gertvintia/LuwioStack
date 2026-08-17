@@ -1,11 +1,10 @@
 import { useCallback, useSyncExternalStore } from 'react'
 import {
+  callGtag,
   DISABLED_ENTRY,
   ensureAnalytics,
   getAnalyticsServerSnapshot,
   retryAnalytics,
-  sendEvent,
-  sendPageview,
   subscribeAnalytics,
 } from '../gtag'
 import type { GoogleAnalyticsApi } from '../types'
@@ -34,18 +33,40 @@ export function useAnalytics(): GoogleAnalyticsApi {
     getAnalyticsServerSnapshot,
   )
 
+  // Every action is gated on `enabled` (the provider's consent flag). When consent is off each is
+  // a plain void no-op — nothing reaches gtag/dataLayer, so no events fire and no hits are sent.
   const track = useCallback(
     (event: string, params?: Record<string, unknown>) => {
-      if (enabled) sendEvent(event, params)
+      if (!enabled) return
+      callGtag('event', event, params ?? {})
     },
     [enabled],
   )
 
   const pageview = useCallback(
-    (path?: string) => {
-      if (enabled) sendPageview(id, path)
+    (path?: string, params?: Record<string, unknown>) => {
+      if (!enabled) return
+      const page_path =
+        path ?? (typeof window !== 'undefined' ? window.location.pathname : undefined)
+      callGtag('event', 'page_view', { page_path, send_to: id, ...params })
     },
-    [id, enabled],
+    [enabled, id],
+  )
+
+  const set = useCallback(
+    (params: Record<string, unknown>) => {
+      if (!enabled) return
+      callGtag('set', params)
+    },
+    [enabled],
+  )
+
+  const gtag = useCallback(
+    (...args: unknown[]) => {
+      if (!enabled) return
+      callGtag(...args)
+    },
+    [enabled],
   )
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: options captured via id/enabled
@@ -61,8 +82,11 @@ export function useAnalytics(): GoogleAnalyticsApi {
     isError: status === 'error',
     isDisabled: status === 'disabled',
     error: entry.error,
+    enabled,
     track,
     pageview,
+    set,
+    gtag,
     retry,
   }
 }

@@ -57,13 +57,16 @@ const { api, libraries } = useGoogleMaps(['geocoding'])
 // …or, inside a <Suspense> boundary, the suspense variant
 const { libraries } = useSuspenseGoogleMaps(['geocoding'])`
 
-const ANALYTICS_CODE = `import { GoogleAnalyticsProvider, useAnalytics } from '@luwio/google/analytics'
+const ANALYTICS_CODE = `import { useState } from 'react'
+import { GoogleAnalyticsProvider, useAnalytics } from '@luwio/google/analytics'
 
 function App() {
-  // A separate Google product → its own provider. Nest it alongside
-  // <GoogleMapsProvider> when an app uses both.
+  // \`enabled\` is your consent flag — wire it to your cookie banner / CMP
+  // (managing consent itself is out of scope for the package).
+  const [consent, setConsent] = useState(false)
   return (
-    <GoogleAnalyticsProvider measurementId="G-XXXXXXXXXX">
+    <GoogleAnalyticsProvider measurementId="G-XXXXXXXXXX" enabled={consent}>
+      <button onClick={() => setConsent(true)}>Accept analytics</button>
       <SignUpButton />
     </GoogleAnalyticsProvider>
   )
@@ -71,6 +74,8 @@ function App() {
 
 function SignUpButton() {
   const { track } = useAnalytics()
+  // No-op until consent is granted — gtag.js isn't even loaded yet. Flip
+  // \`enabled\` to true and the same call starts sending events.
   return <button onClick={() => track('sign_up', { method: 'google' })}>Sign up</button>
 }`
 
@@ -130,6 +135,13 @@ export function GooglePage() {
         own <code>GoogleAnalyticsProvider</code> and <code>useAnalytics</code> hook. Events fired
         before the script finishes loading are queued and flushed once it's ready.
       </p>
+      <p>
+        Tracking is <strong>consent-gated</strong> by the provider's <code>enabled</code> flag —
+        wire it to your own consent banner (consent management is out of scope). When it's{' '}
+        <code>false</code>, gtag.js is never loaded and <code>track</code>, <code>pageview</code>,{' '}
+        <code>set</code> and the raw <code>gtag</code> passthrough are all void no-ops. Flip it to{' '}
+        <code>true</code> and the same calls start sending — no other code changes.
+      </p>
       <CodeBlock code={ANALYTICS_CODE} />
       <Callout>
         There's no shared "Google" provider: each namespace configures a different product, so you
@@ -162,7 +174,7 @@ export function GooglePage() {
           },
           {
             sig: 'useAnalytics()',
-            desc: 'Load state plus track(event, params) and pageview(path?). No-ops when disabled.',
+            desc: 'Load state + enabled flag + track / pageview / set / gtag. Every action no-ops when consent is off.',
           },
         ]}
       />

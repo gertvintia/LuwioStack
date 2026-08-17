@@ -40,12 +40,21 @@ export interface GoogleAnalyticsApi {
   /** The load failure once `status` is `"error"`, else `undefined`. */
   error: Error | undefined
   /**
+   * Whether tracking is currently on — i.e. the provider's `enabled` (consent) flag. When `false`,
+   * `track`, `pageview`, `set` and `gtag` are all void no-ops. Read this to reflect consent in the UI.
+   */
+  enabled: boolean
+  /**
    * Send a GA4 event — `gtag('event', name, params)`. Events fired before the script finishes
-   * loading are queued on `dataLayer` and flushed once it's ready. No-op when disabled.
+   * loading are queued on `dataLayer` and flushed once it's ready. **No-op when disabled.**
    */
   track: (event: string, params?: Record<string, unknown>) => void
   /** Send a `page_view` event for `path` (defaults to the current location). No-op when disabled. */
-  pageview: (path?: string) => void
+  pageview: (path?: string, params?: Record<string, unknown>) => void
+  /** Set global/user params — `gtag('set', params)`. No-op when disabled. */
+  set: (params: Record<string, unknown>) => void
+  /** Raw gated passthrough to `gtag(...args)` for anything without a dedicated helper. No-op when disabled. */
+  gtag: (...args: unknown[]) => void
   /** Discard a failed load and inject the script again. No-op unless `status` is `"error"`. */
   retry: () => void
 }

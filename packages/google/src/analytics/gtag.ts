@@ -1,9 +1,6 @@
-import type {
-  ConsentDefaults,
-  ConsentSettings,
-  GoogleAnalyticsOptions,
-  GoogleAnalyticsStatus,
-} from './types'
+import type { ConsentOptions, GoogleAnalyticsOptions, GoogleAnalyticsStatus } from './types'
+
+type ConsentValue = 'granted' | 'denied'
 
 // A module-level (not React-context) store for the gtag.js script, mirroring the /map cache:
 // gtag.js is a page-wide singleton keyed by Measurement ID, so every useAnalytics() for the
@@ -51,8 +48,11 @@ function ensureGtag(): Gtag {
 function injectScript(options: GoogleAnalyticsOptions): void {
   const id = options.measurementId
   const gtag = ensureGtag()
-  // Consent Mode defaults MUST be set before any config command — do it first.
-  if (options.consent) gtag('consent', 'default', options.consent)
+  // Consent Mode defaults MUST be set before any config command — do it first. Only granular
+  // (object) consent produces signals; a boolean gate loads/doesn't-load without Consent Mode.
+  if (options.consent && typeof options.consent === 'object') {
+    gtag('consent', 'default', toConsentDefault(options.consent))
+  }
   // Bootstrap config immediately — safe to call before the script exists (it queues).
   gtag('js', new Date())
   gtag('config', id, options.config ?? {})
@@ -135,20 +135,31 @@ const CONSENT_SIGNAL_KEYS = [
   'security_storage',
 ] as const
 
-/** Keep only the consent-signal keys, dropping `wait_for_update`/`region` (invalid on `update`). */
-export function consentSignals(consent: ConsentDefaults): ConsentSettings {
-  const out: ConsentSettings = {}
+function toSignal(value: boolean | undefined): ConsentValue | undefined {
+  return value === undefined ? undefined : value ? 'granted' : 'denied'
+}
+
+/** Map boolean consent options to a gtag `consent` 'default' payload (signals + wait_for_update/region). */
+export function toConsentDefault(consent: ConsentOptions): Record<string, unknown> {
+  const out: Record<string, unknown> = {}
   for (const key of CONSENT_SIGNAL_KEYS) {
-    const value = consent[key]
-    if (value !== undefined) out[key] = value
+    const signal = toSignal(consent[key])
+    if (signal !== undefined) out[key] = signal
   }
+  if (consent.wait_for_update !== undefined) out.wait_for_update = consent.wait_for_update
+  if (consent.region !== undefined) out.region = consent.region
   return out
 }
 
-/** Push a Consent Mode v2 update — `gtag('consent', 'update', settings)`. */
-export function updateConsent(settings: ConsentSettings): void {
+/** Push a Consent Mode v2 update from booleans — `gtag('consent', 'update', signals)`. */
+export function updateConsent(consent: ConsentOptions): void {
   if (typeof window === 'undefined') return
-  ensureGtag()('consent', 'update', settings)
+  const signals: Record<string, ConsentValue> = {}
+  for (const key of CONSENT_SIGNAL_KEYS) {
+    const signal = toSignal(consent[key])
+    if (signal !== undefined) signals[key] = signal
+  }
+  ensureGtag()('consent', 'update', signals)
 }
 
 /**

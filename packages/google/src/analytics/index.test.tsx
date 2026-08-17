@@ -7,9 +7,9 @@ import { GoogleAnalytics, useAnalytics } from './index'
 afterEach(() => __resetAnalyticsForTests())
 
 const wrapper =
-  (measurementId: string, enabled = true) =>
+  (measurementId: string, consent: boolean = true) =>
   ({ children }: { children: ReactNode }) => (
-    <GoogleAnalytics measurementId={measurementId} enabled={enabled}>
+    <GoogleAnalytics measurementId={measurementId} consent={consent}>
       {children}
     </GoogleAnalytics>
   )
@@ -41,13 +41,14 @@ describe('@luwio/google/analytics', () => {
     expect(queued).toBe(true)
   })
 
-  it('is a no-op when disabled (track / set / gtag / pageview)', () => {
+  it('is a no-op when consent is false (every action)', () => {
     const { result } = renderHook(() => useAnalytics(), { wrapper: wrapper('G-OFF', false) })
-    expect(result.current.isDisabled).toBe(true)
+    expect(result.current.status).toBe('disabled')
     expect(result.current.enabled).toBe(false)
     act(() => {
       result.current.track('should_not_fire')
-      result.current.set({ user_id: 'nope' })
+      result.current.identify('nope')
+      result.current.setUserProperties({ plan: 'pro' })
       result.current.gtag('event', 'raw_should_not_fire')
       result.current.pageview('/secret')
     })
@@ -55,22 +56,34 @@ describe('@luwio/google/analytics', () => {
     expect(dataLayer()).toHaveLength(0)
   })
 
-  it('set() and raw gtag() forward when enabled', () => {
+  it('identify / setUserProperties / raw gtag forward when enabled', () => {
     const { result } = renderHook(() => useAnalytics(), { wrapper: wrapper('G-ON') })
     act(() => {
-      result.current.set({ currency: 'EUR' })
+      result.current.identify('user_123')
+      result.current.setUserProperties({ plan: 'pro' })
       result.current.gtag('event', 'raw_event', { ok: true })
     })
     const dl = dataLayer()
-    expect(dl.some((e) => Array.isArray(e) && e[0] === 'set')).toBe(true)
+    expect(
+      dl.some(
+        (e) =>
+          Array.isArray(e) &&
+          e[0] === 'set' &&
+          typeof e[1] === 'object' &&
+          (e[1] as { user_id?: string }).user_id === 'user_123',
+      ),
+    ).toBe(true)
+    expect(dl.some((e) => Array.isArray(e) && e[0] === 'set' && e[1] === 'user_properties')).toBe(
+      true,
+    )
     expect(dl.some((e) => Array.isArray(e) && e[0] === 'event' && e[1] === 'raw_event')).toBe(true)
   })
 
-  it('applies Consent Mode defaults before the config command', () => {
+  it('maps boolean consent to granted/denied defaults, before config', () => {
     render(
       <GoogleAnalytics
         measurementId="G-CM"
-        consent={{ analytics_storage: 'denied', ad_storage: 'denied' }}
+        consent={{ analytics_storage: false, ad_storage: false }}
       >
         <span>x</span>
       </GoogleAnalytics>,
@@ -82,25 +95,25 @@ describe('@luwio/google/analytics', () => {
     const configIdx = dl.findIndex((e) => Array.isArray(e) && e[0] === 'config')
     expect(consentIdx).toBeGreaterThanOrEqual(0)
     expect(consentIdx).toBeLessThan(configIdx)
+    const payload = (dl[consentIdx] as unknown[])[2] as Record<string, unknown>
+    expect(payload.analytics_storage).toBe('denied')
   })
 
-  it('updateConsent() pushes a consent update', () => {
+  it('updateConsent() maps booleans and pushes a consent update', () => {
     const { result } = renderHook(() => useAnalytics(), { wrapper: wrapper('G-UPD') })
-    act(() => result.current.updateConsent({ analytics_storage: 'granted' }))
-    const updated = dataLayer().some(
+    act(() => result.current.updateConsent({ analytics_storage: true }))
+    const update = dataLayer().find(
       (e) => Array.isArray(e) && e[0] === 'consent' && e[1] === 'update',
     )
-    expect(updated).toBe(true)
+    expect(update).toBeTruthy()
+    expect(((update as unknown[])[2] as Record<string, unknown>).analytics_storage).toBe('granted')
   })
 
   it('issues a consent update when the consent prop changes', () => {
     function App() {
       const [granted, setGranted] = useState(false)
       return (
-        <GoogleAnalytics
-          measurementId="G-PROP"
-          consent={{ analytics_storage: granted ? 'granted' : 'denied' }}
-        >
+        <GoogleAnalytics measurementId="G-PROP" consent={{ analytics_storage: granted }}>
           <button type="button" onClick={() => setGranted(true)}>
             accept
           </button>
@@ -127,7 +140,7 @@ describe('@luwio/google/analytics', () => {
     function App() {
       const [consent, setConsent] = useState(false)
       return (
-        <GoogleAnalytics measurementId="G-FLIP" enabled={consent}>
+        <GoogleAnalytics measurementId="G-FLIP" consent={consent}>
           <TrackButton />
           <button type="button" onClick={() => setConsent(true)}>
             grant

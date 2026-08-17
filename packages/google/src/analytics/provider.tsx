@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { GoogleAnalyticsContext } from './context'
-import { consentSignals, ensureAnalytics, updateConsent } from './gtag'
+import { ensureAnalytics, updateConsent } from './gtag'
 import type { GoogleAnalyticsProps } from './types'
 
 /**
@@ -16,10 +16,11 @@ import type { GoogleAnalyticsProps } from './types'
  * </GoogleAnalytics>
  */
 export function GoogleAnalytics({ children, ...options }: GoogleAnalyticsProps) {
-  const enabled = options.enabled !== false
+  const { consent } = options
+  const enabled = consent !== false
   const key = options.measurementId
-  // Serialize the consent prop so an inline object literal doesn't fire an update every render.
-  const consentKey = options.consent ? JSON.stringify(options.consent) : ''
+  // Serialize granular (object) consent so an inline literal doesn't fire an update every render.
+  const consentKey = consent && typeof consent === 'object' ? JSON.stringify(consent) : ''
 
   // Start loading gtag.js the moment the provider mounts (unless disabled). The initial Consent
   // Mode `default` is applied inside ensureAnalytics, before the config command.
@@ -29,13 +30,13 @@ export function GoogleAnalytics({ children, ...options }: GoogleAnalyticsProps) 
   }, [key, enabled])
   if (enabled) ensureAnalytics(options)
 
-  // Push a Consent Mode `update` whenever the consent prop changes after the initial default.
+  // Push a Consent Mode `update` whenever granular consent changes after the initial default.
   const lastConsentKey = useRef(consentKey)
-  // biome-ignore lint/correctness/useExhaustiveDependencies: options.consent captured via consentKey
+  // biome-ignore lint/correctness/useExhaustiveDependencies: consent captured via consentKey
   useEffect(() => {
     if (!enabled || consentKey === lastConsentKey.current) return
     lastConsentKey.current = consentKey
-    if (options.consent) updateConsent(consentSignals(options.consent))
+    if (consent && typeof consent === 'object') updateConsent(consent)
   }, [enabled, consentKey])
 
   return (

@@ -8,20 +8,21 @@ import {
   retryAnalytics,
   subscribeAnalytics,
 } from '../gtag'
-import type { ConsentSettings, GoogleAnalyticsApi } from '../types'
+import type { ConsentOptions, GoogleAnalyticsApi } from '../types'
 import { useGoogleAnalyticsContext } from './use-google-analytics-context'
 
 /**
- * Reports the gtag.js load state (TanStack-Query-style) and returns tracking actions. Must be
- * rendered inside `<GoogleAnalytics>` — the Measurement ID is read from context.
+ * Reports the gtag.js load state and returns tracking actions. Must be rendered inside
+ * `<GoogleAnalytics>` — the Measurement ID is read from context. Every action is a void no-op
+ * while `enabled` is `false`.
  *
  * @example
- * const { track, pageview, isSuccess } = useAnalytics()
+ * const { track, isReady } = useAnalytics()
  * <button onClick={() => track('sign_up', { method: 'google' })}>Sign up</button>
  */
 export function useAnalytics(): GoogleAnalyticsApi {
   const options = useGoogleAnalyticsContext()
-  const enabled = options.enabled !== false
+  const enabled = options.consent !== false
   const id = options.measurementId
 
   const subscribe = useCallback(
@@ -54,10 +55,26 @@ export function useAnalytics(): GoogleAnalyticsApi {
     [enabled, id],
   )
 
-  const set = useCallback(
-    (params: Record<string, unknown>) => {
+  const identify = useCallback(
+    (userId: string | null) => {
       if (!enabled) return
-      callGtag('set', params)
+      callGtag('set', { user_id: userId })
+    },
+    [enabled],
+  )
+
+  const setUserProperties = useCallback(
+    (properties: Record<string, unknown>) => {
+      if (!enabled) return
+      callGtag('set', 'user_properties', properties)
+    },
+    [enabled],
+  )
+
+  const updateConsent = useCallback(
+    (consent: ConsentOptions) => {
+      if (!enabled) return
+      pushConsentUpdate(consent)
     },
     [enabled],
   )
@@ -70,14 +87,6 @@ export function useAnalytics(): GoogleAnalyticsApi {
     [enabled],
   )
 
-  const updateConsent = useCallback(
-    (settings: ConsentSettings) => {
-      if (!enabled) return
-      pushConsentUpdate(settings)
-    },
-    [enabled],
-  )
-
   // biome-ignore lint/correctness/useExhaustiveDependencies: options captured via id/enabled
   const retry = useCallback(() => {
     if (enabled) retryAnalytics(options)
@@ -86,17 +95,15 @@ export function useAnalytics(): GoogleAnalyticsApi {
   const status = entry.status
   return {
     status,
-    isPending: status === 'pending',
-    isSuccess: status === 'success',
-    isError: status === 'error',
-    isDisabled: status === 'disabled',
+    isReady: status === 'success',
     error: entry.error,
     enabled,
     track,
     pageview,
-    set,
-    gtag,
+    identify,
+    setUserProperties,
     updateConsent,
+    gtag,
     retry,
   }
 }

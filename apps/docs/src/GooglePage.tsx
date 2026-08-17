@@ -61,11 +61,11 @@ const ANALYTICS_CODE = `import { useState } from 'react'
 import { GoogleAnalytics, useAnalytics } from '@luwio/google/analytics'
 
 function App() {
-  // \`enabled\` is your consent flag — wire it to your cookie banner / CMP
-  // (managing consent itself is out of scope for the package).
+  // \`consent\` is a single prop: pass a boolean (on/off) or an object of
+  // per-category booleans. Wire it to your cookie banner / CMP.
   const [consent, setConsent] = useState(false)
   return (
-    <GoogleAnalytics measurementId="G-XXXXXXXXXX" enabled={consent}>
+    <GoogleAnalytics measurementId="G-XXXXXXXXXX" consent={consent}>
       <button onClick={() => setConsent(true)}>Accept analytics</button>
       <SignUpButton />
     </GoogleAnalytics>
@@ -74,25 +74,26 @@ function App() {
 
 function SignUpButton() {
   const { track } = useAnalytics()
-  // No-op until consent is granted — gtag.js isn't even loaded yet. Flip
-  // \`enabled\` to true and the same call starts sending events.
+  // No-op until consent is true — gtag.js isn't even loaded yet. Flip
+  // \`consent\` to true and the same call starts sending events.
   return <button onClick={() => track('sign_up', { method: 'google' })}>Sign up</button>
 }`
 
 const CONSENT_MODE_CODE = `import { GoogleAnalytics, useAnalytics } from '@luwio/google/analytics'
 
-// Consent Mode v2: load gtag.js but start every signal denied, then update
-// when the user chooses. Google sends cookieless pings while denied and models
-// the rest — required for EEA traffic with Google Ads.
+// Granular consent: pass an object of per-category booleans instead of a bool.
+// gtag.js still loads, but storage is gated per Google Consent Mode v2 (booleans
+// map to granted/denied). Google sends cookieless pings while denied and models
+// the rest — recommended for EEA traffic with Google Ads.
 function Root({ consent, children }) {
   return (
     <GoogleAnalytics
       measurementId="G-XXXXXXXXXX"
       consent={{
-        ad_storage: consent.ads ? 'granted' : 'denied',
-        ad_user_data: consent.ads ? 'granted' : 'denied',
-        ad_personalization: consent.ads ? 'granted' : 'denied',
-        analytics_storage: consent.analytics ? 'granted' : 'denied',
+        ad_storage: consent.ads,
+        ad_user_data: consent.ads,
+        ad_personalization: consent.ads,
+        analytics_storage: consent.analytics,
         wait_for_update: 500,
       }}
     >
@@ -103,7 +104,7 @@ function Root({ consent, children }) {
 
 // Or update imperatively from the hook (e.g. in your banner's onAccept):
 const { updateConsent } = useAnalytics()
-updateConsent({ analytics_storage: 'granted', ad_storage: 'granted' })`
+updateConsent({ analytics_storage: true, ad_storage: true })`
 
 export function GooglePage() {
   return (
@@ -162,11 +163,12 @@ export function GooglePage() {
         script finishes loading are queued and flushed once it's ready.
       </p>
       <p>
-        Tracking is <strong>consent-gated</strong> by the provider's <code>enabled</code> flag —
-        wire it to your own consent banner (consent management is out of scope). When it's{' '}
-        <code>false</code>, gtag.js is never loaded and <code>track</code>, <code>pageview</code>,{' '}
-        <code>set</code> and the raw <code>gtag</code> passthrough are all void no-ops. Flip it to{' '}
-        <code>true</code> and the same calls start sending — no other code changes.
+        Tracking is <strong>consent-gated</strong> by a single <code>consent</code> prop — wire it
+        to your own consent banner (consent management is out of scope). Pass <code>false</code> and
+        gtag.js is never loaded; <code>track</code>, <code>pageview</code>, <code>identify</code>,{' '}
+        <code>setUserProperties</code> and the raw <code>gtag</code> passthrough are all void
+        no-ops. Flip it to <code>true</code> and the same calls start sending — no other code
+        changes.
       </p>
       <CodeBlock code={ANALYTICS_CODE} />
       <Callout>
@@ -177,19 +179,20 @@ export function GooglePage() {
 
       <h3>Consent Mode v2 (granular)</h3>
       <p>
-        The on/off gate is enough for analytics-only apps. When you need per-category consent —
-        Google Ads, or EEA traffic where Google requires it — pass the <code>consent</code> prop
-        instead: the full Consent Mode v2 signal set (<code>analytics_storage</code>,{' '}
-        <code>ad_storage</code>, <code>ad_user_data</code>, <code>ad_personalization</code>, and the
-        storage types). It's applied as <code>gtag('consent', 'default', …)</code> before config and
-        re-sent as an <code>update</code> whenever it changes; or call <code>updateConsent()</code>{' '}
-        from the hook.
+        A boolean <code>consent</code> is enough for analytics-only apps. When you need per-category
+        consent — Google Ads, or EEA traffic where Google requires it — pass an{' '}
+        <strong>object of per-category booleans</strong> instead: <code>analytics_storage</code>,{' '}
+        <code>ad_storage</code>, <code>ad_user_data</code>, <code>ad_personalization</code> and the
+        storage types. Booleans map to Consent Mode v2 signals, applied as{' '}
+        <code>gtag('consent', 'default', …)</code> before config and re-sent as an{' '}
+        <code>update</code> whenever they change; or call <code>updateConsent()</code> from the
+        hook.
       </p>
       <CodeBlock code={CONSENT_MODE_CODE} />
       <Callout>
-        On/off vs. Consent Mode: <code>enabled</code> is a hard gate (script loads or it doesn't);{' '}
-        <code>consent</code> keeps gtag.js loaded but tells Google what's allowed, so denied traffic
-        still yields cookieless pings and modeling. Use whichever your compliance needs — or both.
+        Boolean vs. object: <code>consent={'{false}'}</code> is a hard gate (gtag.js never loads);
+        an object keeps it loaded but tells Google what's allowed, so denied traffic still yields
+        cookieless pings and modeling. One prop covers both.
       </Callout>
 
       <h2 id="api">API reference</h2>
@@ -213,11 +216,11 @@ export function GooglePage() {
           },
           {
             sig: 'GoogleAnalytics',
-            desc: 'Loads gtag.js + provides config (measurementId, enabled, config, nonce).',
+            desc: 'Loads gtag.js + provides config (measurementId, consent, config, nonce).',
           },
           {
             sig: 'useAnalytics()',
-            desc: 'Load state + enabled flag + track / pageview / set / gtag. Every action no-ops when consent is off.',
+            desc: 'status / isReady / enabled + track, pageview, identify, setUserProperties, updateConsent, gtag. All no-op when consent is off.',
           },
         ]}
       />

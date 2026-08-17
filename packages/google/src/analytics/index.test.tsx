@@ -66,6 +66,55 @@ describe('@luwio/google/analytics', () => {
     expect(dl.some((e) => Array.isArray(e) && e[0] === 'event' && e[1] === 'raw_event')).toBe(true)
   })
 
+  it('applies Consent Mode defaults before the config command', () => {
+    render(
+      <GoogleAnalyticsProvider
+        measurementId="G-CM"
+        consent={{ analytics_storage: 'denied', ad_storage: 'denied' }}
+      >
+        <span>x</span>
+      </GoogleAnalyticsProvider>,
+    )
+    const dl = dataLayer()
+    const consentIdx = dl.findIndex(
+      (e) => Array.isArray(e) && e[0] === 'consent' && e[1] === 'default',
+    )
+    const configIdx = dl.findIndex((e) => Array.isArray(e) && e[0] === 'config')
+    expect(consentIdx).toBeGreaterThanOrEqual(0)
+    expect(consentIdx).toBeLessThan(configIdx)
+  })
+
+  it('updateConsent() pushes a consent update', () => {
+    const { result } = renderHook(() => useAnalytics(), { wrapper: wrapper('G-UPD') })
+    act(() => result.current.updateConsent({ analytics_storage: 'granted' }))
+    const updated = dataLayer().some(
+      (e) => Array.isArray(e) && e[0] === 'consent' && e[1] === 'update',
+    )
+    expect(updated).toBe(true)
+  })
+
+  it('issues a consent update when the consent prop changes', () => {
+    function App() {
+      const [granted, setGranted] = useState(false)
+      return (
+        <GoogleAnalyticsProvider
+          measurementId="G-PROP"
+          consent={{ analytics_storage: granted ? 'granted' : 'denied' }}
+        >
+          <button type="button" onClick={() => setGranted(true)}>
+            accept
+          </button>
+        </GoogleAnalyticsProvider>
+      )
+    }
+    const updates = () =>
+      dataLayer().filter((e) => Array.isArray(e) && e[0] === 'consent' && e[1] === 'update')
+    const { getByText } = render(<App />)
+    expect(updates()).toHaveLength(0) // only the default so far
+    fireEvent.click(getByText('accept'))
+    expect(updates().length).toBeGreaterThanOrEqual(1)
+  })
+
   it('reacts to consent granted at runtime', () => {
     function TrackButton() {
       const { track, enabled } = useAnalytics()

@@ -4,10 +4,11 @@ import {
   DISABLED_ENTRY,
   ensureAnalytics,
   getAnalyticsServerSnapshot,
+  updateConsent as pushConsentUpdate,
   retryAnalytics,
   subscribeAnalytics,
 } from '../gtag'
-import type { GoogleAnalyticsApi } from '../types'
+import type { ConsentSettings, GoogleAnalyticsApi } from '../types'
 import { useGoogleAnalyticsContext } from './use-google-analytics-context'
 
 /**
@@ -69,6 +70,14 @@ export function useAnalytics(): GoogleAnalyticsApi {
     [enabled],
   )
 
+  const updateConsent = useCallback(
+    (settings: ConsentSettings) => {
+      if (!enabled) return
+      pushConsentUpdate(settings)
+    },
+    [enabled],
+  )
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: options captured via id/enabled
   const retry = useCallback(() => {
     if (enabled) retryAnalytics(options)
@@ -87,6 +96,7 @@ export function useAnalytics(): GoogleAnalyticsApi {
     pageview,
     set,
     gtag,
+    updateConsent,
     retry,
   }
 }

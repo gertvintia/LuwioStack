@@ -121,8 +121,38 @@ set({ user_id: 'u_123' })                          // gtag('set', …)
 gtag('event', 'custom', { any: 'thing' })          // raw escape hatch
 ```
 
+### Consent Mode v2 (granular)
+
+On/off (`enabled`) is enough for analytics-only apps. For per-category consent — Google Ads, or
+EEA traffic where Google requires it — pass the `consent` prop: the full Consent Mode v2 signal
+set. It's applied as `gtag('consent', 'default', …)` before config and re-sent as an `update`
+whenever it changes (or call `updateConsent()` from the hook).
+
+```tsx
+<GoogleAnalyticsProvider
+  measurementId="G-XXXXXXXXXX"
+  consent={{
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500,
+  }}
+>
+  <App />
+</GoogleAnalyticsProvider>
+
+// later, from your consent banner:
+const { updateConsent } = useAnalytics()
+updateConsent({ analytics_storage: 'granted', ad_storage: 'granted' })
+```
+
+`enabled` vs `consent`: `enabled` is a hard gate (gtag.js loads or it doesn't); `consent` keeps it
+loaded but tells Google what's allowed, so denied traffic still yields cookieless pings and
+modeling. Use whichever your compliance needs — or both.
+
 ### API surface (`/analytics`)
 
-- `GoogleAnalyticsProvider` — loads gtag.js + provides config (`measurementId`, `enabled`, `config`, `nonce`).
-- `useAnalytics()` → `{ status, isSuccess, isError, isDisabled, error, enabled, track, pageview, set, gtag, retry }`.
+- `GoogleAnalyticsProvider` — loads gtag.js + provides config (`measurementId`, `enabled`, `consent`, `config`, `nonce`).
+- `useAnalytics()` → `{ status, isSuccess, isError, isDisabled, error, enabled, track, pageview, set, gtag, updateConsent, retry }`.
   Every action is a void no-op while `enabled` is `false`.

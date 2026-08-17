@@ -79,6 +79,32 @@ function SignUpButton() {
   return <button onClick={() => track('sign_up', { method: 'google' })}>Sign up</button>
 }`
 
+const CONSENT_MODE_CODE = `import { GoogleAnalyticsProvider, useAnalytics } from '@luwio/google/analytics'
+
+// Consent Mode v2: load gtag.js but start every signal denied, then update
+// when the user chooses. Google sends cookieless pings while denied and models
+// the rest — required for EEA traffic with Google Ads.
+function Root({ consent, children }) {
+  return (
+    <GoogleAnalyticsProvider
+      measurementId="G-XXXXXXXXXX"
+      consent={{
+        ad_storage: consent.ads ? 'granted' : 'denied',
+        ad_user_data: consent.ads ? 'granted' : 'denied',
+        ad_personalization: consent.ads ? 'granted' : 'denied',
+        analytics_storage: consent.analytics ? 'granted' : 'denied',
+        wait_for_update: 500,
+      }}
+    >
+      {children}
+    </GoogleAnalyticsProvider>
+  )
+}
+
+// Or update imperatively from the hook (e.g. in your banner's onAccept):
+const { updateConsent } = useAnalytics()
+updateConsent({ analytics_storage: 'granted', ad_storage: 'granted' })`
+
 export function GooglePage() {
   return (
     <DocsLayout slug="google" sections={SECTIONS}>
@@ -147,6 +173,23 @@ export function GooglePage() {
         There's no shared "Google" provider: each namespace configures a different product, so you
         nest exactly the providers you use. That independence is the point of the per-namespace
         split.
+      </Callout>
+
+      <h3>Consent Mode v2 (granular)</h3>
+      <p>
+        The on/off gate is enough for analytics-only apps. When you need per-category consent —
+        Google Ads, or EEA traffic where Google requires it — pass the <code>consent</code> prop
+        instead: the full Consent Mode v2 signal set (<code>analytics_storage</code>,{' '}
+        <code>ad_storage</code>, <code>ad_user_data</code>, <code>ad_personalization</code>, and the
+        storage types). It's applied as <code>gtag('consent', 'default', …)</code> before config and
+        re-sent as an <code>update</code> whenever it changes; or call <code>updateConsent()</code>{' '}
+        from the hook.
+      </p>
+      <CodeBlock code={CONSENT_MODE_CODE} />
+      <Callout>
+        On/off vs. Consent Mode: <code>enabled</code> is a hard gate (script loads or it doesn't);{' '}
+        <code>consent</code> keeps gtag.js loaded but tells Google what's allowed, so denied traffic
+        still yields cookieless pings and modeling. Use whichever your compliance needs — or both.
       </Callout>
 
       <h2 id="api">API reference</h2>

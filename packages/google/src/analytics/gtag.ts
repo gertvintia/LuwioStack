@@ -1,4 +1,9 @@
-import type { GoogleAnalyticsOptions, GoogleAnalyticsStatus } from './types'
+import type {
+  ConsentDefaults,
+  ConsentSettings,
+  GoogleAnalyticsOptions,
+  GoogleAnalyticsStatus,
+} from './types'
 
 // A module-level (not React-context) store for the gtag.js script, mirroring the /map cache:
 // gtag.js is a page-wide singleton keyed by Measurement ID, so every useAnalytics() for the
@@ -46,6 +51,8 @@ function ensureGtag(): Gtag {
 function injectScript(options: GoogleAnalyticsOptions): void {
   const id = options.measurementId
   const gtag = ensureGtag()
+  // Consent Mode defaults MUST be set before any config command — do it first.
+  if (options.consent) gtag('consent', 'default', options.consent)
   // Bootstrap config immediately — safe to call before the script exists (it queues).
   gtag('js', new Date())
   gtag('config', id, options.config ?? {})
@@ -116,6 +123,32 @@ export function subscribeAnalytics(id: string, listener: () => void): () => void
 export function callGtag(...args: unknown[]): void {
   if (typeof window === 'undefined') return
   ensureGtag()(...args)
+}
+
+const CONSENT_SIGNAL_KEYS = [
+  'ad_storage',
+  'ad_user_data',
+  'ad_personalization',
+  'analytics_storage',
+  'functionality_storage',
+  'personalization_storage',
+  'security_storage',
+] as const
+
+/** Keep only the consent-signal keys, dropping `wait_for_update`/`region` (invalid on `update`). */
+export function consentSignals(consent: ConsentDefaults): ConsentSettings {
+  const out: ConsentSettings = {}
+  for (const key of CONSENT_SIGNAL_KEYS) {
+    const value = consent[key]
+    if (value !== undefined) out[key] = value
+  }
+  return out
+}
+
+/** Push a Consent Mode v2 update — `gtag('consent', 'update', settings)`. */
+export function updateConsent(settings: ConsentSettings): void {
+  if (typeof window === 'undefined') return
+  ensureGtag()('consent', 'update', settings)
 }
 
 /**

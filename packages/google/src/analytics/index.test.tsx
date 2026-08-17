@@ -1,8 +1,8 @@
-import { act, fireEvent, render, renderHook } from '@testing-library/react'
-import { type ReactNode, useState } from 'react'
+import { act, fireEvent, render, renderHook, screen } from '@testing-library/react'
+import { type ReactNode, Suspense, useState } from 'react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { __resetAnalyticsForTests } from './gtag'
-import { GoogleAnalytics, useAnalytics } from './index'
+import { GoogleAnalytics, useAnalytics, useSuspenseAnalytics } from './index'
 
 afterEach(() => __resetAnalyticsForTests())
 
@@ -43,8 +43,9 @@ describe('@luwio/google/analytics', () => {
 
   it('is a no-op when consent is false (every action)', () => {
     const { result } = renderHook(() => useAnalytics(), { wrapper: wrapper('G-OFF', false) })
-    expect(result.current.status).toBe('disabled')
-    expect(result.current.enabled).toBe(false)
+    expect(result.current.api.status).toBe('disabled')
+    expect(result.current.api.isDisabled).toBe(true)
+    expect(result.current.api.enabled).toBe(false)
     act(() => {
       result.current.track('should_not_fire')
       result.current.identify('nope')
@@ -130,10 +131,10 @@ describe('@luwio/google/analytics', () => {
 
   it('reacts to consent granted at runtime', () => {
     function TrackButton() {
-      const { track, enabled } = useAnalytics()
+      const { track, api } = useAnalytics()
       return (
         <button type="button" onClick={() => track('cta_click')}>
-          {enabled ? 'on' : 'off'}
+          {api.enabled ? 'on' : 'off'}
         </button>
       )
     }
@@ -159,5 +160,48 @@ describe('@luwio/google/analytics', () => {
     fireEvent.click(getByText('grant'))
     fireEvent.click(getByText('on'))
     expect(fired()).toBe(true)
+  })
+
+  it('useSuspenseAnalytics does not suspend when consent is false', () => {
+    function Inner() {
+      const { track } = useSuspenseAnalytics()
+      track('should_not_fire')
+      return <span>ready</span>
+    }
+    render(
+      <Suspense fallback={<span>loading</span>}>
+        <GoogleAnalytics measurementId="G-SUS-OFF" consent={false}>
+          <Inner />
+        </GoogleAnalytics>
+      </Suspense>,
+    )
+    expect(screen.getByText('ready')).toBeTruthy()
+    expect(dataLayer()).toHaveLength(0)
+  })
+
+  it('useSuspenseAnalytics suspends until gtag.js loads', async () => {
+    function Inner() {
+      const { track } = useSuspenseAnalytics()
+      track('ready_event')
+      return <span>ready</span>
+    }
+    render(
+      <Suspense fallback={<span>loading</span>}>
+        <GoogleAnalytics measurementId="G-SUS">
+          <Inner />
+        </GoogleAnalytics>
+      </Suspense>,
+    )
+    // Suspended: the fallback shows, Inner hasn't rendered.
+    expect(screen.getByText('loading')).toBeTruthy()
+
+    // Simulate the injected gtag.js finishing loading.
+    const script = document.getElementById('luwio-ga-G-SUS') as HTMLScriptElement
+    act(() => {
+      script.onload?.(new Event('load'))
+    })
+
+    expect(await screen.findByText('ready')).toBeTruthy()
+    expect(dataLayer().some((e) => Array.isArray(e) && e[1] === 'ready_event')).toBe(true)
   })
 })

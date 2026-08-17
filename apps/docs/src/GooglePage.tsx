@@ -58,7 +58,7 @@ const { api, libraries } = useGoogleMaps(['geocoding'])
 const { libraries } = useSuspenseGoogleMaps(['geocoding'])`
 
 const ANALYTICS_CODE = `import { useState } from 'react'
-import { GoogleAnalytics, useAnalytics } from '@luwio/google/analytics'
+import { GoogleAnalytics, useAnalytics, useSuspenseAnalytics } from '@luwio/google/analytics'
 
 function App() {
   // \`consent\` is a single prop: pass a boolean (on/off) or an object of
@@ -73,10 +73,17 @@ function App() {
 }
 
 function SignUpButton() {
-  const { track } = useAnalytics()
-  // No-op until consent is true — gtag.js isn't even loaded yet. Flip
-  // \`consent\` to true and the same call starts sending events.
+  // Load state lives under \`api\` (mirrors useGoogleMaps); the actions sit alongside it.
+  const { api, track } = useAnalytics()
+  if (api.isError) return <button onClick={api.retry}>Retry</button>
+  // No-op until consent is true — gtag.js isn't even loaded yet.
   return <button onClick={() => track('sign_up', { method: 'google' })}>Sign up</button>
+}
+
+// Suspense variant — suspends until gtag.js is ready, no api to check:
+function SignUpSuspense() {
+  const { track } = useSuspenseAnalytics()
+  return <button onClick={() => track('sign_up')}>Sign up</button>
 }`
 
 const CONSENT_MODE_CODE = `import { GoogleAnalytics, useAnalytics } from '@luwio/google/analytics'
@@ -163,6 +170,13 @@ export function GooglePage() {
         script finishes loading are queued and flushed once it's ready.
       </p>
       <p>
+        Like <code>useGoogleMaps</code>, the load state lives under an <code>api</code> object (
+        <code>status</code>, <code>isPending</code>, <code>isSuccess</code>, <code>isError</code>,{' '}
+        <code>error</code>, <code>retry</code>) with the tracking actions alongside it. There's a{' '}
+        <code>useSuspenseAnalytics</code> variant too — it suspends until gtag.js is ready and
+        returns just the actions.
+      </p>
+      <p>
         Tracking is <strong>consent-gated</strong> by a single <code>consent</code> prop — wire it
         to your own consent banner (consent management is out of scope). Pass <code>false</code> and
         gtag.js is never loaded; <code>track</code>, <code>pageview</code>, <code>identify</code>,{' '}
@@ -220,7 +234,11 @@ export function GooglePage() {
           },
           {
             sig: 'useAnalytics()',
-            desc: 'status / isReady / enabled + track, pageview, identify, setUserProperties, updateConsent, gtag. All no-op when consent is off.',
+            desc: 'Returns { api, ...actions } — api holds load state; track/pageview/identify/setUserProperties/updateConsent/gtag no-op when consent is off.',
+          },
+          {
+            sig: 'useSuspenseAnalytics()',
+            desc: 'Suspense variant → just the actions. Suspends until gtag.js is ready, throws on failure.',
           },
         ]}
       />

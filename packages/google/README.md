@@ -113,16 +113,26 @@ function SignUpButton() {
 }
 ```
 
-`useAnalytics()` returns the load state plus a consent-gated action set — all no-ops when off:
+`useAnalytics()` returns the load state under `api` (mirroring `useGoogleMaps`) plus a
+consent-gated action set — all no-ops when off:
 
 ```tsx
-const { track, pageview, identify, setUserProperties, gtag } = useAnalytics()
+const { api, track, pageview, identify, setUserProperties, gtag } = useAnalytics()
+
+api.status // 'pending' | 'success' | 'error' | 'disabled'
+api.isSuccess, api.isError, api.error, api.retry
 
 track('purchase', { value: 42, currency: 'EUR' }) // gtag('event', 'purchase', …)
 pageview('/pricing')                               // gtag('event', 'page_view', …)
 identify('u_123')                                  // GA4 user_id (null to clear)
 setUserProperties({ plan: 'pro' })                 // gtag('set', 'user_properties', …)
 gtag('event', 'custom', { any: 'thing' })          // raw escape hatch
+```
+
+There's a Suspense variant too — it suspends until gtag.js is ready and returns just the actions:
+
+```tsx
+const { track } = useSuspenseAnalytics()
 ```
 
 ### Consent Mode v2 (granular)
@@ -157,5 +167,7 @@ what's allowed, so denied traffic still yields cookieless pings and modeling. On
 ### API surface (`/analytics`)
 
 - `GoogleAnalytics` — loads gtag.js + provides config (`measurementId`, `consent`, `config`, `nonce`).
-- `useAnalytics()` → `{ status, isReady, error, enabled, track, pageview, identify, setUserProperties, updateConsent, gtag, retry }`.
+- `useAnalytics()` → `{ api, track, pageview, identify, setUserProperties, updateConsent, gtag }`, where
+  `api` = `{ status, isPending, isLoading, isSuccess, isError, isDisabled, enabled, error, retry }`.
+- `useSuspenseAnalytics()` → the actions only; suspends until ready, throws on failure.
   Every action is a void no-op while `enabled` is `false`.

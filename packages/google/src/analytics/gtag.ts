@@ -10,6 +10,11 @@ type ConsentValue = 'granted' | 'denied'
 export interface AnalyticsEntry {
   status: GoogleAnalyticsStatus
   error: Error | undefined
+  /**
+   * Settles once the load finishes, success or failure — never rejects. `useSuspenseAnalytics`
+   * throws this while pending so Suspense has a promise to await.
+   */
+  suspender: Promise<void>
 }
 
 type Gtag = (...args: unknown[]) => void
@@ -18,8 +23,16 @@ const cache = new Map<string, AnalyticsEntry>()
 const listenersById = new Map<string, Set<() => void>>()
 
 /** Stable snapshots for `useSyncExternalStore`. */
-const SERVER_ENTRY: AnalyticsEntry = { status: 'pending', error: undefined }
-export const DISABLED_ENTRY: AnalyticsEntry = { status: 'disabled', error: undefined }
+const SERVER_ENTRY: AnalyticsEntry = {
+  status: 'pending',
+  error: undefined,
+  suspender: new Promise(() => {}),
+}
+export const DISABLED_ENTRY: AnalyticsEntry = {
+  status: 'disabled',
+  error: undefined,
+  suspender: Promise.resolve(),
+}
 
 const SCRIPT_DOM_ID_PREFIX = 'luwio-ga-'
 
@@ -45,8 +58,13 @@ function ensureGtag(): Gtag {
   return w.gtag
 }
 
-function injectScript(options: GoogleAnalyticsOptions): void {
+function startLoad(options: GoogleAnalyticsOptions): AnalyticsEntry {
   const id = options.measurementId
+  let settle: () => void = () => {}
+  const suspender = new Promise<void>((resolve) => {
+    settle = resolve
+  })
+
   const gtag = ensureGtag()
   // Consent Mode defaults MUST be set before any config command — do it first. Only granular
   // (object) consent produces signals; a boolean gate loads/doesn't-load without Consent Mode.
@@ -57,38 +75,41 @@ function injectScript(options: GoogleAnalyticsOptions): void {
   gtag('js', new Date())
   gtag('config', id, options.config ?? {})
 
+  // Replaces the pending entry wholesale on settle so useSyncExternalStore re-renders, and
+  // resolves the suspender so any Suspense boundary retries.
+  const finish = (status: 'success' | 'error', error?: Error) => {
+    cache.set(id, { status, error, suspender })
+    settle()
+    notify(id)
+  }
+
   const domId = SCRIPT_DOM_ID_PREFIX + id
-  if (document.getElementById(domId)) return // already injected for this id
+  if (document.getElementById(domId)) {
+    // Already injected (by us, or a hand-placed tag) — adopt it as ready rather than hang.
+    cache.set(id, { status: 'pending', error: undefined, suspender })
+    finish('success')
+    return cache.get(id) as AnalyticsEntry
+  }
 
   const script = document.createElement('script')
   script.id = domId
   script.async = true
   script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`
   if (options.nonce) script.nonce = options.nonce
-  script.onload = () => {
-    cache.set(id, { status: 'success', error: undefined })
-    notify(id)
-  }
-  script.onerror = () => {
-    cache.set(id, {
-      status: 'error',
-      error: new Error(`Failed to load the Google Analytics (gtag.js) script for ${id}.`),
-    })
-    notify(id)
-  }
+  script.onload = () => finish('success')
+  script.onerror = () =>
+    finish('error', new Error(`Failed to load the Google Analytics (gtag.js) script for ${id}.`))
   document.head.appendChild(script)
+
+  const entry: AnalyticsEntry = { status: 'pending', error: undefined, suspender }
+  cache.set(id, entry)
+  return entry
 }
 
 /** Returns the shared entry for `id`, injecting gtag.js if this is the first request for it. */
 export function ensureAnalytics(options: GoogleAnalyticsOptions): AnalyticsEntry {
   if (typeof document === 'undefined') return SERVER_ENTRY
-  const id = options.measurementId
-  const existing = cache.get(id)
-  if (existing) return existing
-  const entry: AnalyticsEntry = { status: 'pending', error: undefined }
-  cache.set(id, entry)
-  injectScript(options)
-  return entry
+  return cache.get(options.measurementId) ?? startLoad(options)
 }
 
 /** A stable reference for `useSyncExternalStore`'s `getServerSnapshot`. */

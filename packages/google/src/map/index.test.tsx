@@ -1,7 +1,7 @@
 import { render, renderHook } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { __resetGoogleQueryCacheForTests } from './cache'
-import { GOOGLE_MAPS_LIBRARY_NAMES, GoogleMapsProvider, useGoogleMaps } from './index'
+import { GOOGLE_MAPS_LIBRARY_NAMES, GoogleMaps, useGoogleMaps } from './index'
 
 // Stub the Google global so the base script "loads" instantly (no network, no 15s timer)
 // and importLibrary resolves with an empty namespace per library.
@@ -20,14 +20,14 @@ describe('@luwio/google/map', () => {
 
   it('renders the provider with its children', () => {
     const { getByText } = render(
-      <GoogleMapsProvider apiKey="test-key">
+      <GoogleMaps apiKey="test-key">
         <span>child</span>
-      </GoogleMapsProvider>,
+      </GoogleMaps>,
     )
     expect(getByText('child')).toBeTruthy()
   })
 
   it('throws when a hook is used outside the provider', () => {
-    expect(() => renderHook(() => useGoogleMaps(['maps']))).toThrow(/GoogleMapsProvider/)
+    expect(() => renderHook(() => useGoogleMaps(['maps']))).toThrow(/GoogleMaps/)
   })
 })

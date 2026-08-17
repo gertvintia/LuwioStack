@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 // ── Script-level options (shared by provider, context, and cache) ─────────────
 
-export interface UseGoogleMapsProviderOptions {
+export interface GoogleMapsOptions {
   /** Google Maps Platform API key. */
   apiKey: string
   /** Version channel or pinned version, passed as the script's `v` param. @default "weekly" */
@@ -15,15 +15,15 @@ export interface UseGoogleMapsProviderOptions {
 
 // ── Context value (what the provider puts in context for child hooks) ─────────
 
-export type GoogleMapsProviderContextValue = UseGoogleMapsProviderOptions
+export type GoogleMapsContextValue = GoogleMapsOptions
 
-// ── <GoogleMapsProvider> props ────────────────────────────────────────────────
+// ── <GoogleMaps> props ────────────────────────────────────────────────
 
-export interface GoogleMapsProviderProps extends UseGoogleMapsProviderOptions {
+export interface GoogleMapsProps extends GoogleMapsOptions {
   /**
-   * `<GoogleMapsProvider>` only sets up the script + config context — it loads **no** libraries
-   * itself. Load libraries close to where they're used with `<GoogleMapsProvider.Import>` /
-   * `<GoogleMapsProvider.ImportSuspense>` (or the `useGoogleMaps` / `useSuspenseGoogleMaps` hooks).
+   * `<GoogleMaps>` only sets up the script + config context — it loads **no** libraries
+   * itself. Load libraries close to where they're used with `<GoogleMaps.import>` /
+   * `<GoogleMaps.importSuspense>` (or the `useGoogleMaps` / `useSuspenseGoogleMaps` hooks).
    */
   children: ReactNode
 }
@@ -100,10 +100,10 @@ export interface GoogleMapsGoogleMaps {
   drawing: unknown
 }
 
-// ── <GoogleMapsProvider.Import> (library loader — TanStack-Query-style states) ──
+// ── <GoogleMaps.import> (library loader — TanStack-Query-style states) ──
 
 /**
- * The load state (`api`) for a `<GoogleMapsProvider.Import>` / `useGoogleMaps`, in the shape of a
+ * The load state (`api`) for a `<GoogleMaps.import>` / `useGoogleMaps`, in the shape of a
  * TanStack Query result — purely status + actions, no data. `status` is `"pending"` until every
  * requested library has loaded, `"error"` if any failed, else `"success"`.
  */
@@ -138,21 +138,21 @@ export interface GoogleMapsImportResult<T extends readonly GoogleMapsLibraryName
   libraries: GoogleMapsLibraries<T>
 }
 
-export interface GoogleMapsProviderImportProps<T extends readonly GoogleMapsLibraryName[]> {
+export interface GoogleMapsImportProps<T extends readonly GoogleMapsLibraryName[]> {
   /** Libraries to load, via `google.maps.importLibrary`, each independently. */
   libraries: T
   /** Render prop: `(api, libraries)` — status/actions first, the loaded namespaces second. */
   children: (api: GoogleMapsImportApi, libraries: GoogleMapsLibraries<T>) => ReactNode
 }
 
-// ── <GoogleMapsProvider.ImportSuspense> (Suspense variant) ─────────────────────
+// ── <GoogleMaps.importSuspense> (Suspense variant) ─────────────────────
 
 /** What `useSuspenseGoogleMaps` returns once everything is ready: just the loaded `libraries`. */
 export interface GoogleMapsSuspenseResult<T extends readonly GoogleMapsLibraryName[]> {
   libraries: GoogleMapsLibraries<T>
 }
 
-export interface GoogleMapsProviderImportSuspenseProps<T extends readonly GoogleMapsLibraryName[]> {
+export interface GoogleMapsImportSuspenseProps<T extends readonly GoogleMapsLibraryName[]> {
   libraries: T
   /**
    * Render prop: `(libraries)`. Only ever called once every requested library is ready — it

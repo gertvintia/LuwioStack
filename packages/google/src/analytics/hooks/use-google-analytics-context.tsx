@@ -4,6 +4,6 @@ import type { GoogleAnalyticsContextValue } from '../types'
 
 export function useGoogleAnalyticsContext(): GoogleAnalyticsContextValue {
   const ctx = useContext(GoogleAnalyticsContext)
-  if (!ctx) throw new Error('<GoogleAnalyticsProvider> is required above this component.')
+  if (!ctx) throw new Error('<GoogleAnalytics> is required above this component.')
   return ctx
 }

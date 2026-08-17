@@ -6,8 +6,8 @@ what you use.
 Part of [LuwioStack](https://github.com/) — standalone, but pairs well with the other `@luwio/*` packages.
 
 ```ts
-import { GoogleMapsProvider, useGoogleMaps } from '@luwio/google/map'
-import { GoogleAnalyticsProvider, useAnalytics } from '@luwio/google/analytics'
+import { GoogleMaps, useGoogleMaps } from '@luwio/google/map'
+import { GoogleAnalytics, useAnalytics } from '@luwio/google/analytics'
 ```
 
 Each namespace is a **separate Google product** — its own script, credential and provider — so
@@ -33,19 +33,19 @@ page-wide (a shared cache dedups across every consumer). Libraries load lazily v
 `google.maps.importLibrary`, each tracked independently with TanStack-Query-style states.
 
 ```tsx
-import { GoogleMapsProvider } from '@luwio/google/map'
+import { GoogleMaps } from '@luwio/google/map'
 
 function App() {
   return (
-    <GoogleMapsProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_KEY}>
+    <GoogleMaps apiKey={import.meta.env.VITE_GOOGLE_MAPS_KEY}>
       <MapSection />
-    </GoogleMapsProvider>
+    </GoogleMaps>
   )
 }
 
 function MapSection() {
   return (
-    <GoogleMapsProvider.Import libraries={['maps', 'marker']}>
+    <GoogleMaps.import libraries={['maps', 'marker']}>
       {(api, libraries) => {
         if (api.isError) return <button onClick={api.retry}>Retry</button>
         if (api.isPending) return <p>Loading map…</p>
@@ -53,14 +53,14 @@ function MapSection() {
         // …instantiate your map with the loaded namespace
         return <div id="map" />
       }}
-    </GoogleMapsProvider.Import>
+    </GoogleMaps.import>
   )
 }
 ```
 
 ### Hooks
 
-Both `<GoogleMapsProvider.Import>` and `<GoogleMapsProvider.ImportSuspense>` are thin wrappers over
+Both `<GoogleMaps.import>` and `<GoogleMaps.importSuspense>` are thin wrappers over
 hooks you can use directly:
 
 ```tsx
@@ -73,7 +73,7 @@ const { libraries } = useSuspenseGoogleMaps(['places'])
 
 ### API surface (`/map`)
 
-- `GoogleMapsProvider` — loads the base script + provides config. Statics: `.Import`, `.ImportSuspense`.
+- `GoogleMaps` — loads the base script + provides config. Statics: `.import`, `.importSuspense`.
 - `useGoogleMaps(libraries)` → `{ api, libraries }` (status + loaded namespaces).
 - `useSuspenseGoogleMaps(libraries)` → `{ libraries }` (suspends until ready).
 - `GOOGLE_MAPS_LIBRARY_NAMES` — every known library name.
@@ -91,15 +91,15 @@ and every tracking call is a plain void no-op; flip it to `true` and the same ca
 
 ```tsx
 import { useState } from 'react'
-import { GoogleAnalyticsProvider, useAnalytics } from '@luwio/google/analytics'
+import { GoogleAnalytics, useAnalytics } from '@luwio/google/analytics'
 
 function App() {
   const [consent, setConsent] = useState(false) // ← from your consent banner
   return (
-    <GoogleAnalyticsProvider measurementId="G-XXXXXXXXXX" enabled={consent}>
+    <GoogleAnalytics measurementId="G-XXXXXXXXXX" enabled={consent}>
       <button onClick={() => setConsent(true)}>Accept analytics</button>
       <SignUpButton />
-    </GoogleAnalyticsProvider>
+    </GoogleAnalytics>
   )
 }
 
@@ -129,7 +129,7 @@ set. It's applied as `gtag('consent', 'default', …)` before config and re-sent
 whenever it changes (or call `updateConsent()` from the hook).
 
 ```tsx
-<GoogleAnalyticsProvider
+<GoogleAnalytics
   measurementId="G-XXXXXXXXXX"
   consent={{
     ad_storage: 'denied',
@@ -140,7 +140,7 @@ whenever it changes (or call `updateConsent()` from the hook).
   }}
 >
   <App />
-</GoogleAnalyticsProvider>
+</GoogleAnalytics>
 
 // later, from your consent banner:
 const { updateConsent } = useAnalytics()
@@ -153,6 +153,6 @@ modeling. Use whichever your compliance needs — or both.
 
 ### API surface (`/analytics`)
 
-- `GoogleAnalyticsProvider` — loads gtag.js + provides config (`measurementId`, `enabled`, `consent`, `config`, `nonce`).
+- `GoogleAnalytics` — loads gtag.js + provides config (`measurementId`, `enabled`, `consent`, `config`, `nonce`).
 - `useAnalytics()` → `{ status, isSuccess, isError, isDisabled, error, enabled, track, pageview, set, gtag, updateConsent, retry }`.
   Every action is a void no-op while `enabled` is `false`.

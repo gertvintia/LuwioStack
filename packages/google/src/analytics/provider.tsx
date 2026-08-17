@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { GoogleAnalyticsContext } from './context'
 import { consentSignals, ensureAnalytics, updateConsent } from './gtag'
-import type { GoogleAnalyticsProviderProps } from './types'
+import type { GoogleAnalyticsProps } from './types'
 
 /**
  * Loads Google Analytics (gtag.js) once for its Measurement ID and provides the config to
@@ -11,11 +11,11 @@ import type { GoogleAnalyticsProviderProps } from './types'
  * provider. Nest both when an app uses maps and analytics together.
  *
  * @example
- * <GoogleAnalyticsProvider measurementId="G-XXXXXXXXXX">
+ * <GoogleAnalytics measurementId="G-XXXXXXXXXX">
  *   <App />
- * </GoogleAnalyticsProvider>
+ * </GoogleAnalytics>
  */
-export function GoogleAnalyticsProvider({ children, ...options }: GoogleAnalyticsProviderProps) {
+export function GoogleAnalytics({ children, ...options }: GoogleAnalyticsProps) {
   const enabled = options.enabled !== false
   const key = options.measurementId
   // Serialize the consent prop so an inline object literal doesn't fire an update every render.
@@ -42,4 +42,4 @@ export function GoogleAnalyticsProvider({ children, ...options }: GoogleAnalytic
     <GoogleAnalyticsContext.Provider value={options}>{children}</GoogleAnalyticsContext.Provider>
   )
 }
-GoogleAnalyticsProvider.displayName = 'GoogleAnalyticsProvider'
+GoogleAnalytics.displayName = 'GoogleAnalytics'

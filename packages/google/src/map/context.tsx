@@ -1,4 +1,4 @@
 import { createContext } from 'react'
-import type { GoogleMapsProviderContextValue } from './types'
+import type { GoogleMapsContextValue } from './types'
 
-export const GoogleMapsContext = createContext<GoogleMapsProviderContextValue | null>(null)
+export const GoogleMapsContext = createContext<GoogleMapsContextValue | null>(null)

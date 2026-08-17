@@ -1,4 +1,4 @@
-import type { GoogleMapsStatus, UseGoogleMapsProviderOptions } from './types'
+import type { GoogleMapsOptions, GoogleMapsStatus } from './types'
 
 // A module-level (not React-context) cache: the Google Maps JS API script is a single
 // page-wide singleton, so every useGoogleMaps() / useSuspenseGoogleMaps() call for the same
@@ -37,7 +37,7 @@ const SERVER_ENTRY: GoogleQueryEntry = {
  * deliberately excluded — the base script no longer differs by which libraries were requested
  * (see loadGoogleScript below), only the `apiKey`/`version`/`language`/`region` combo does.
  */
-export function getGoogleQueryKey(options: UseGoogleMapsProviderOptions): string {
+export function getGoogleQueryKey(options: GoogleMapsOptions): string {
   return [
     options.apiKey,
     options.version ?? 'weekly',
@@ -72,7 +72,7 @@ function withTimeout(promise: Promise<unknown>, ms: number, message: string): Pr
   })
 }
 
-function loadGoogleScript(options: UseGoogleMapsProviderOptions): Promise<unknown> {
+function loadGoogleScript(options: GoogleMapsOptions): Promise<unknown> {
   const w = window as unknown as Record<string, unknown> & { google?: unknown }
   // Someone else (a hand-placed <script>, or a previous successful load in this session)
   // already loaded it — adopt it instead of injecting a second script tag.
@@ -169,7 +169,7 @@ function installAuthFailureHandler() {
  */
 const LATCHED_RETRY_DELAY_MS = 400
 
-function startLoad(key: string, options: UseGoogleMapsProviderOptions): GoogleQueryEntry {
+function startLoad(key: string, options: GoogleMapsOptions): GoogleQueryEntry {
   installAuthFailureHandler()
   lastStartedKey = key
 
@@ -223,10 +223,7 @@ function startLoad(key: string, options: UseGoogleMapsProviderOptions): GoogleQu
 }
 
 /** Returns the shared entry for `key`, starting a load if this is the first request for it. */
-export function ensureGoogleQuery(
-  key: string,
-  options: UseGoogleMapsProviderOptions,
-): GoogleQueryEntry {
+export function ensureGoogleQuery(key: string, options: GoogleMapsOptions): GoogleQueryEntry {
   // No DOM to inject a <script> into (SSR) — a stable, permanently-pending snapshot.
   if (typeof document === 'undefined') return SERVER_ENTRY
   return cache.get(key) ?? startLoad(key, options)
@@ -238,7 +235,7 @@ export function getGoogleServerQuery(): GoogleQueryEntry {
 }
 
 /** Discards any cached entry (successful or failed) for `key` and starts a fresh load. */
-export function retryGoogleQuery(key: string, options: UseGoogleMapsProviderOptions): void {
+export function retryGoogleQuery(key: string, options: GoogleMapsOptions): void {
   cache.delete(key)
   startLoad(key, options)
   notify(key)

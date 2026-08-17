@@ -58,7 +58,7 @@ export interface GoogleAnalyticsOptions {
 
 export type GoogleAnalyticsContextValue = GoogleAnalyticsOptions
 
-export interface GoogleAnalyticsProviderProps extends GoogleAnalyticsOptions {
+export interface GoogleAnalyticsProps extends GoogleAnalyticsOptions {
   children: ReactNode
 }
 

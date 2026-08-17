@@ -13,7 +13,7 @@ import { useGoogleAnalyticsContext } from './use-google-analytics-context'
 
 /**
  * Reports the gtag.js load state (TanStack-Query-style) and returns tracking actions. Must be
- * rendered inside `<GoogleAnalyticsProvider>` — the Measurement ID is read from context.
+ * rendered inside `<GoogleAnalytics>` — the Measurement ID is read from context.
  *
  * @example
  * const { track, pageview, isSuccess } = useAnalytics()

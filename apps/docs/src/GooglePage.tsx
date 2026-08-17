@@ -11,42 +11,42 @@ const SECTIONS: DocSection[] = [
   { id: 'api', label: 'API reference' },
 ]
 
-const SETUP_CODE = `import { GoogleMapsProvider } from '@luwio/google/map'
+const SETUP_CODE = `import { GoogleMaps } from '@luwio/google/map'
 
 function App() {
   return (
-    <GoogleMapsProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_KEY}>
+    <GoogleMaps apiKey={import.meta.env.VITE_GOOGLE_MAPS_KEY}>
       <MapSection />
-    </GoogleMapsProvider>
+    </GoogleMaps>
   )
 }`
 
-const IMPORT_CODE = `import { GoogleMapsProvider } from '@luwio/google/map'
+const IMPORT_CODE = `import { GoogleMaps } from '@luwio/google/map'
 
 function MapSection() {
   // Load libraries close to where they're used. The cache dedups, so a library
   // requested in several places still loads once.
   return (
-    <GoogleMapsProvider.Import libraries={['maps', 'marker']}>
+    <GoogleMaps.import libraries={['maps', 'marker']}>
       {(api, libraries) => {
         if (api.isError) return <button onClick={api.retry}>Retry</button>
         if (api.isPending) return <p>Loading map…</p>
         const { Map } = libraries.maps as google.maps.MapsLibrary
         return <MapCanvas Map={Map} />
       }}
-    </GoogleMapsProvider.Import>
+    </GoogleMaps.import>
   )
 }`
 
 const SUSPENSE_CODE = `import { Suspense } from 'react'
-import { GoogleMapsProvider } from '@luwio/google/map'
+import { GoogleMaps } from '@luwio/google/map'
 
 // Suspends until ready; throws to the nearest error boundary on failure —
 // so the render prop only ever runs with everything loaded.
 <Suspense fallback={<Spinner />}>
-  <GoogleMapsProvider.ImportSuspense libraries={['places']}>
+  <GoogleMaps.importSuspense libraries={['places']}>
     {(libraries) => <PlacesSearch places={libraries.places} />}
-  </GoogleMapsProvider.ImportSuspense>
+  </GoogleMaps.importSuspense>
 </Suspense>`
 
 const HOOKS_CODE = `import { useGoogleMaps, useSuspenseGoogleMaps } from '@luwio/google/map'
@@ -58,17 +58,17 @@ const { api, libraries } = useGoogleMaps(['geocoding'])
 const { libraries } = useSuspenseGoogleMaps(['geocoding'])`
 
 const ANALYTICS_CODE = `import { useState } from 'react'
-import { GoogleAnalyticsProvider, useAnalytics } from '@luwio/google/analytics'
+import { GoogleAnalytics, useAnalytics } from '@luwio/google/analytics'
 
 function App() {
   // \`enabled\` is your consent flag — wire it to your cookie banner / CMP
   // (managing consent itself is out of scope for the package).
   const [consent, setConsent] = useState(false)
   return (
-    <GoogleAnalyticsProvider measurementId="G-XXXXXXXXXX" enabled={consent}>
+    <GoogleAnalytics measurementId="G-XXXXXXXXXX" enabled={consent}>
       <button onClick={() => setConsent(true)}>Accept analytics</button>
       <SignUpButton />
-    </GoogleAnalyticsProvider>
+    </GoogleAnalytics>
   )
 }
 
@@ -79,14 +79,14 @@ function SignUpButton() {
   return <button onClick={() => track('sign_up', { method: 'google' })}>Sign up</button>
 }`
 
-const CONSENT_MODE_CODE = `import { GoogleAnalyticsProvider, useAnalytics } from '@luwio/google/analytics'
+const CONSENT_MODE_CODE = `import { GoogleAnalytics, useAnalytics } from '@luwio/google/analytics'
 
 // Consent Mode v2: load gtag.js but start every signal denied, then update
 // when the user chooses. Google sends cookieless pings while denied and models
 // the rest — required for EEA traffic with Google Ads.
 function Root({ consent, children }) {
   return (
-    <GoogleAnalyticsProvider
+    <GoogleAnalytics
       measurementId="G-XXXXXXXXXX"
       consent={{
         ad_storage: consent.ads ? 'granted' : 'denied',
@@ -97,7 +97,7 @@ function Root({ consent, children }) {
       }}
     >
       {children}
-    </GoogleAnalyticsProvider>
+    </GoogleAnalytics>
   )
 }
 
@@ -127,7 +127,7 @@ export function GooglePage() {
         The package root ships no library code — always import from a namespace. Everything for maps
         lives under <code>/map</code>:
       </p>
-      <CodeBlock code={"import { GoogleMapsProvider, useGoogleMaps } from '@luwio/google/map'"} />
+      <CodeBlock code={"import { GoogleMaps, useGoogleMaps } from '@luwio/google/map'"} />
       <Callout>
         Future Google libraries follow the same pattern — <code>@luwio/google/places</code>,{' '}
         <code>@luwio/google/analytics</code>, and so on — each tree-shakeable on its own.
@@ -135,18 +135,18 @@ export function GooglePage() {
 
       <h2 id="usage">Loading a map</h2>
       <p>
-        Wrap your app in <code>GoogleMapsProvider</code> once (it loads the base script and provides
-        the API key), then load libraries where you need them with{' '}
-        <code>{'<GoogleMapsProvider.Import>'}</code>. Its render prop receives a
-        TanStack-Query-style <code>api</code> and the loaded <code>libraries</code>, keyed by name.
+        Wrap your app in <code>GoogleMaps</code> once (it loads the base script and provides the API
+        key), then load libraries where you need them with <code>{'<GoogleMaps.import>'}</code>. Its
+        render prop receives a TanStack-Query-style <code>api</code> and the loaded{' '}
+        <code>libraries</code>, keyed by name.
       </p>
       <CodeBlock code={SETUP_CODE} />
       <CodeBlock code={IMPORT_CODE} />
 
       <h2 id="suspense">Suspense</h2>
       <p>
-        Prefer Suspense? <code>{'<GoogleMapsProvider.ImportSuspense>'}</code> suspends until every
-        requested library is ready and throws to an error boundary on failure.
+        Prefer Suspense? <code>{'<GoogleMaps.importSuspense>'}</code> suspends until every requested
+        library is ready and throws to an error boundary on failure.
       </p>
       <CodeBlock code={SUSPENSE_CODE} />
 
@@ -158,8 +158,8 @@ export function GooglePage() {
       <p>
         <code>@luwio/google/analytics</code> loads Google Analytics 4 (gtag.js). It's a{' '}
         <strong>separate Google product</strong> — a different script and credential — so it has its
-        own <code>GoogleAnalyticsProvider</code> and <code>useAnalytics</code> hook. Events fired
-        before the script finishes loading are queued and flushed once it's ready.
+        own <code>GoogleAnalytics</code> and <code>useAnalytics</code> hook. Events fired before the
+        script finishes loading are queued and flushed once it's ready.
       </p>
       <p>
         Tracking is <strong>consent-gated</strong> by the provider's <code>enabled</code> flag —
@@ -196,8 +196,8 @@ export function GooglePage() {
       <ApiTable
         rows={[
           {
-            sig: 'GoogleMapsProvider',
-            desc: 'Loads the base script + provides config. Statics: .Import, .ImportSuspense.',
+            sig: 'GoogleMaps',
+            desc: 'Loads the base script + provides config. Statics: .import, .importSuspense.',
           },
           {
             sig: 'useGoogleMaps(libraries)',
@@ -212,7 +212,7 @@ export function GooglePage() {
             desc: 'Every known Google Maps library name.',
           },
           {
-            sig: 'GoogleAnalyticsProvider',
+            sig: 'GoogleAnalytics',
             desc: 'Loads gtag.js + provides config (measurementId, enabled, config, nonce).',
           },
           {

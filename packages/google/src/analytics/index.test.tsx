@@ -2,16 +2,16 @@ import { act, fireEvent, render, renderHook } from '@testing-library/react'
 import { type ReactNode, useState } from 'react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { __resetAnalyticsForTests } from './gtag'
-import { GoogleAnalyticsProvider, useAnalytics } from './index'
+import { GoogleAnalytics, useAnalytics } from './index'
 
 afterEach(() => __resetAnalyticsForTests())
 
 const wrapper =
   (measurementId: string, enabled = true) =>
   ({ children }: { children: ReactNode }) => (
-    <GoogleAnalyticsProvider measurementId={measurementId} enabled={enabled}>
+    <GoogleAnalytics measurementId={measurementId} enabled={enabled}>
       {children}
-    </GoogleAnalyticsProvider>
+    </GoogleAnalytics>
   )
 
 function dataLayer(): unknown[] {
@@ -21,15 +21,15 @@ function dataLayer(): unknown[] {
 describe('@luwio/google/analytics', () => {
   it('renders the provider with its children', () => {
     const { getByText } = render(
-      <GoogleAnalyticsProvider measurementId="G-TEST">
+      <GoogleAnalytics measurementId="G-TEST">
         <span>child</span>
-      </GoogleAnalyticsProvider>,
+      </GoogleAnalytics>,
     )
     expect(getByText('child')).toBeTruthy()
   })
 
   it('throws when the hook is used outside the provider', () => {
-    expect(() => renderHook(() => useAnalytics())).toThrow(/GoogleAnalyticsProvider/)
+    expect(() => renderHook(() => useAnalytics())).toThrow(/GoogleAnalytics/)
   })
 
   it('queues events on dataLayer', () => {
@@ -68,12 +68,12 @@ describe('@luwio/google/analytics', () => {
 
   it('applies Consent Mode defaults before the config command', () => {
     render(
-      <GoogleAnalyticsProvider
+      <GoogleAnalytics
         measurementId="G-CM"
         consent={{ analytics_storage: 'denied', ad_storage: 'denied' }}
       >
         <span>x</span>
-      </GoogleAnalyticsProvider>,
+      </GoogleAnalytics>,
     )
     const dl = dataLayer()
     const consentIdx = dl.findIndex(
@@ -97,14 +97,14 @@ describe('@luwio/google/analytics', () => {
     function App() {
       const [granted, setGranted] = useState(false)
       return (
-        <GoogleAnalyticsProvider
+        <GoogleAnalytics
           measurementId="G-PROP"
           consent={{ analytics_storage: granted ? 'granted' : 'denied' }}
         >
           <button type="button" onClick={() => setGranted(true)}>
             accept
           </button>
-        </GoogleAnalyticsProvider>
+        </GoogleAnalytics>
       )
     }
     const updates = () =>
@@ -127,12 +127,12 @@ describe('@luwio/google/analytics', () => {
     function App() {
       const [consent, setConsent] = useState(false)
       return (
-        <GoogleAnalyticsProvider measurementId="G-FLIP" enabled={consent}>
+        <GoogleAnalytics measurementId="G-FLIP" enabled={consent}>
           <TrackButton />
           <button type="button" onClick={() => setConsent(true)}>
             grant
           </button>
-        </GoogleAnalyticsProvider>
+        </GoogleAnalytics>
       )
     }
     const { getByText } = render(<App />)

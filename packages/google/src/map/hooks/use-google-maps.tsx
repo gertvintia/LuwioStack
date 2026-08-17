@@ -17,16 +17,16 @@ import { useGoogleMapsContext } from './use-google-maps-context'
 
 /**
  * Loads the requested Google Maps libraries and reports load state in the shape of a TanStack
- * Query result — the very same `api` object `<GoogleMapsProvider.Import>` hands its render prop:
+ * Query result — the very same `api` object `<GoogleMaps.import>` hands its render prop:
  * `status` / `isPending` / `isLoading` / `isSuccess` / `isError` / `error` / `retry`, plus the
  * loaded namespaces in `libraries`, keyed by the requested names (`libraries.maps`).
- * `<GoogleMapsProvider.Import>` is a thin wrapper over this hook.
+ * `<GoogleMaps.import>` is a thin wrapper over this hook.
  *
  * Each requested library loads independently via `google.maps.importLibrary`, so one failing
  * name never blocks the others; `retry()` re-attempts every failed library. When the base
  * script itself fails, the whole result is `isError`.
  *
- * Must be rendered inside `<GoogleMapsProvider>` — the API key is read from context.
+ * Must be rendered inside `<GoogleMaps>` — the API key is read from context.
  *
  * @example
  * const { api, libraries } = useGoogleMaps(['maps'])

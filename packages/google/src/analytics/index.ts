@@ -1,6 +1,6 @@
 export { useAnalytics } from './hooks/use-analytics'
 export { useGoogleAnalyticsContext } from './hooks/use-google-analytics-context'
-export { GoogleAnalyticsProvider } from './provider'
+export { GoogleAnalytics } from './provider'
 
 export type {
   ConsentDefaults,
@@ -9,6 +9,6 @@ export type {
   GoogleAnalyticsApi,
   GoogleAnalyticsContextValue,
   GoogleAnalyticsOptions,
-  GoogleAnalyticsProviderProps,
+  GoogleAnalyticsProps,
   GoogleAnalyticsStatus,
 } from './types'

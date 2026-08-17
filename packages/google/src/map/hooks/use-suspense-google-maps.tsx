@@ -11,12 +11,12 @@ import { useGoogleMapsContext } from './use-google-maps-context'
 
 /**
  * Suspense-compatible variant of `useGoogleMaps`, returning the same `{ libraries }` shape
- * `<GoogleMapsProvider.ImportSuspense>` hands its render prop (which is a thin wrapper over this
+ * `<GoogleMaps.importSuspense>` hands its render prop (which is a thin wrapper over this
  * hook). Suspends the nearest `<Suspense>` boundary while the base script and every requested
  * library are loading, throws to the nearest error boundary on failure, and returns the ready
  * namespaces in `libraries`, keyed by the requested names, once everything is ready.
  *
- * Must be rendered inside `<GoogleMapsProvider>` — the API key is read from context.
+ * Must be rendered inside `<GoogleMaps>` — the API key is read from context.
  *
  * Stays subscribed after resolving — so a later `gm_authFailure` re-throws to the
  * error boundary instead of silently leaving a stale "success" render in place.

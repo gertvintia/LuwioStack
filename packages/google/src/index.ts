@@ -1,35 +1,11 @@
-// @luwio/google — helpers for loading and using Google web SDKs.
-// Skeleton: starts with script loading; Maps/OAuth/Analytics wrappers to follow.
+// @luwio/google — a home for Google web-platform integrations, one namespace per library.
+//
+// Each Google library lives under its own subpath import so you only pull in what you use:
+//
+//   import { GoogleMapsProvider, useGoogleMaps } from '@luwio/google/map'
+//
+// Future libraries follow the same pattern (e.g. '@luwio/google/places',
+// '@luwio/google/analytics'). This root entry intentionally exports no library code —
+// import from the namespace you need.
 
-const cache = new Map<string, Promise<void>>()
-
-/**
- * Load a Google SDK `<script>` once and resolve when it is ready. Repeated calls
- * with the same `src` return the same promise, so the script is only injected once.
- */
-export function loadGoogleScript(src: string): Promise<void> {
-  if (typeof document === 'undefined') {
-    return Promise.reject(
-      new Error('@luwio/google: loadGoogleScript requires a browser environment'),
-    )
-  }
-
-  const existing = cache.get(src)
-  if (existing) return existing
-
-  const promise = new Promise<void>((resolve, reject) => {
-    const script = document.createElement('script')
-    script.src = src
-    script.async = true
-    script.defer = true
-    script.addEventListener('load', () => resolve())
-    script.addEventListener('error', () => {
-      cache.delete(src)
-      reject(new Error(`@luwio/google: failed to load ${src}`))
-    })
-    document.head.appendChild(script)
-  })
-
-  cache.set(src, promise)
-  return promise
-}
+export const version = '0.0.0'

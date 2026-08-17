@@ -7,6 +7,7 @@ const SECTIONS: DocSection[] = [
   { id: 'usage', label: 'Loading a map' },
   { id: 'suspense', label: 'Suspense' },
   { id: 'hooks', label: 'Hooks' },
+  { id: 'analytics', label: 'Analytics' },
   { id: 'api', label: 'API reference' },
 ]
 
@@ -56,6 +57,23 @@ const { api, libraries } = useGoogleMaps(['geocoding'])
 // …or, inside a <Suspense> boundary, the suspense variant
 const { libraries } = useSuspenseGoogleMaps(['geocoding'])`
 
+const ANALYTICS_CODE = `import { GoogleAnalyticsProvider, useAnalytics } from '@luwio/google/analytics'
+
+function App() {
+  // A separate Google product → its own provider. Nest it alongside
+  // <GoogleMapsProvider> when an app uses both.
+  return (
+    <GoogleAnalyticsProvider measurementId="G-XXXXXXXXXX">
+      <SignUpButton />
+    </GoogleAnalyticsProvider>
+  )
+}
+
+function SignUpButton() {
+  const { track } = useAnalytics()
+  return <button onClick={() => track('sign_up', { method: 'google' })}>Sign up</button>
+}`
+
 export function GooglePage() {
   return (
     <DocsLayout slug="google" sections={SECTIONS}>
@@ -63,9 +81,10 @@ export function GooglePage() {
 
       <p>
         <code>@luwio/google</code> collects Google web-platform integrations, with{' '}
-        <strong>one namespace per library</strong> so you import only what you use. The first
-        namespace, <code>@luwio/google/map</code>, is reliable Google Maps loading for React: the
-        base script and each library load exactly once page-wide through a shared cache.
+        <strong>one namespace per library</strong> so you import only what you use. Today it ships
+        two: <code>@luwio/google/map</code> (reliable Google Maps loading) and{' '}
+        <code>@luwio/google/analytics</code> (Google Analytics 4). Each is a separate Google product
+        with its own provider — nest the ones you need.
       </p>
 
       <h2 id="installation">Installation</h2>
@@ -104,6 +123,20 @@ export function GooglePage() {
       <p>Both components are thin wrappers over hooks you can call directly for full control.</p>
       <CodeBlock code={HOOKS_CODE} />
 
+      <h2 id="analytics">Analytics — a second namespace</h2>
+      <p>
+        <code>@luwio/google/analytics</code> loads Google Analytics 4 (gtag.js). It's a{' '}
+        <strong>separate Google product</strong> — a different script and credential — so it has its
+        own <code>GoogleAnalyticsProvider</code> and <code>useAnalytics</code> hook. Events fired
+        before the script finishes loading are queued and flushed once it's ready.
+      </p>
+      <CodeBlock code={ANALYTICS_CODE} />
+      <Callout>
+        There's no shared "Google" provider: each namespace configures a different product, so you
+        nest exactly the providers you use. That independence is the point of the per-namespace
+        split.
+      </Callout>
+
       <h2 id="api">API reference</h2>
       <ApiTable
         rows={[
@@ -122,6 +155,14 @@ export function GooglePage() {
           {
             sig: 'GOOGLE_MAPS_LIBRARY_NAMES',
             desc: 'Every known Google Maps library name.',
+          },
+          {
+            sig: 'GoogleAnalyticsProvider',
+            desc: 'Loads gtag.js + provides config (measurementId, enabled, config, nonce).',
+          },
+          {
+            sig: 'useAnalytics()',
+            desc: 'Load state plus track(event, params) and pageview(path?). No-ops when disabled.',
           },
         ]}
       />

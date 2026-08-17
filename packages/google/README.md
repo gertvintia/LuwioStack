@@ -7,10 +7,13 @@ Part of [LuwioStack](https://github.com/) — standalone, but pairs well with th
 
 ```ts
 import { GoogleMapsProvider, useGoogleMaps } from '@luwio/google/map'
+import { GoogleAnalyticsProvider, useAnalytics } from '@luwio/google/analytics'
 ```
 
-Future Google libraries follow the same pattern (`@luwio/google/places`,
-`@luwio/google/analytics`, …). The package root exports no library code — always import from a
+Each namespace is a **separate Google product** — its own script, credential and provider — so
+each ships its own `<…Provider>`. Nest the ones you use; there is no shared root provider because
+there is nothing shared to configure. Future libraries follow the same pattern
+(`@luwio/google/places`, …). The package root exports no library code — always import from a
 namespace.
 
 > Maps loading ported and restructured from [`@tacky-org/googlemaps`](https://github.com/tacky-org/GoogleMaps).
@@ -68,9 +71,39 @@ const { api, libraries } = useGoogleMaps(['places'])
 const { libraries } = useSuspenseGoogleMaps(['places'])
 ```
 
-## API surface (`/map`)
+### API surface (`/map`)
 
 - `GoogleMapsProvider` — loads the base script + provides config. Statics: `.Import`, `.ImportSuspense`.
 - `useGoogleMaps(libraries)` → `{ api, libraries }` (status + loaded namespaces).
 - `useSuspenseGoogleMaps(libraries)` → `{ libraries }` (suspends until ready).
 - `GOOGLE_MAPS_LIBRARY_NAMES` — every known library name.
+
+## `@luwio/google/analytics`
+
+Google Analytics 4 (gtag.js) loading for React. Loads the script once per Measurement ID and
+queues events fired before it's ready.
+
+```tsx
+import { GoogleAnalyticsProvider, useAnalytics } from '@luwio/google/analytics'
+
+function App() {
+  return (
+    <GoogleAnalyticsProvider measurementId="G-XXXXXXXXXX">
+      <SignUpButton />
+    </GoogleAnalyticsProvider>
+  )
+}
+
+function SignUpButton() {
+  const { track } = useAnalytics()
+  return <button onClick={() => track('sign_up', { method: 'google' })}>Sign up</button>
+}
+```
+
+Pass `enabled={false}` to skip loading and make every tracking call a no-op (e.g. in dev or until
+consent). `useAnalytics()` returns `{ status, isSuccess, isError, isDisabled, error, track, pageview, retry }`.
+
+### API surface (`/analytics`)
+
+- `GoogleAnalyticsProvider` — loads gtag.js + provides config (`measurementId`, `enabled`, `config`, `nonce`).
+- `useAnalytics()` → load state plus `track(event, params)` and `pageview(path?)`.

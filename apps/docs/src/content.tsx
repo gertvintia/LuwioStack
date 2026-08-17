@@ -116,7 +116,7 @@ export const PACKAGES: PackageMeta[] = [
     icon: <GoogleGIcon />,
     tagline: 'Google SDKs',
     blurb:
-      'Google web SDKs, one namespace per library. @luwio/google/map is reliable, deduped Google Maps loading for React.',
+      'Google web SDKs, one namespace per library — /map for reliable Google Maps loading, /analytics for GA4.',
     gzip: '6 kB',
     install: 'npm i @luwio/google',
     status: 'ready',

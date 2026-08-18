@@ -20,10 +20,8 @@ const REACT_CODE = `import { Locale, MatchingPolicy, useLocale } from '@luwio/lo
 function App() {
   return (
     <Locale
-      locale="nl-BE"                          // required — the 'language-country' string
-      policy={MatchingPolicy.STRICT}          // optional — match strictness (default: STRICT)
-      supported={['nl-BE', 'fr-FR', 'en-US']} // optional — resolve \`locale\` against these…
-      overrides={{ '*': 'en-US' }}            // …falling back via '*' (resolveLocale-style)
+      locale="nl-BE"                 // required — the 'language-country' string
+      policy={MatchingPolicy.STRICT} // optional — same LocalePolicy resolveLocale takes
     >
       <Info />
     </Locale>
@@ -153,26 +151,23 @@ render(
   </Locale>,
 )`
 
-const ROUTER_CODE = `import { Locale } from '@luwio/locale'
+const ROUTER_CODE = `import { Locale, resolveLocale } from '@luwio/locale'
 import { useRouteLocale } from '@luwio/router'
 
 const SUPPORTED = ['nl-BE', 'fr-FR', 'en-US']
+const OVERRIDES = { 'en-*': 'en-US', '*': 'nl-BE' } // '*' catch-all is required
 
 function App() {
-  // The router reads the locale from the URL. It may be a string ('/pt-PT' → 'pt-PT')
-  // or null/undefined when the route has no locale segment ('/about').
+  // From the URL: a string ('/pt-PT' → 'pt-PT'), or null when the route has no
+  // locale segment ('/about').
   const { locale } = useRouteLocale()
 
-  // Because \`locale\` can be missing or unsupported, \`overrides\` is required — its
-  // '*' catch-all is where both cases land. 'pt-PT' (unsupported) and no locale
-  // (null) both render the site in nl-BE. No redirect, no crash. overrides stays
-  // flexible: same-language and per-pattern rules still apply before the catch-all.
+  // Resolve the untrusted value onto what you support before handing it to <Locale>.
+  // Unsupported ('pt-PT') and missing (null) both land on the '*' catch-all → nl-BE.
+  const active = resolveLocale({ detected: locale, supported: SUPPORTED, overrides: OVERRIDES })
+
   return (
-    <Locale
-      locale={locale}
-      supported={SUPPORTED}
-      overrides={{ 'en-*': 'en-US', '*': 'nl-BE' }}
-    >
+    <Locale locale={active.locale}>
       <Site />
     </Locale>
   )
@@ -206,15 +201,10 @@ export function LocalePage() {
         <code>useLocale</code> returns <code>{'{ current }'}</code> with{' '}
         <code>current.locale.code</code>, <code>current.language</code>, <code>current.region</code>
         , <code>current.languages</code> and <code>current.intl</code> — and throws if used outside
-        a provider.
+        a provider. <code>Locale</code> takes just <code>locale</code> + <code>policy</code>; to map
+        an untrusted value onto what you support, resolve it first with <code>resolveLocale</code>{' '}
+        (see below).
       </p>
-
-      <Callout>
-        <strong>Strict vs. resolve.</strong> With just <code>locale</code>, an unknown value throws.
-        Add <code>supported</code> + <code>overrides</code> and <code>Locale</code> resolves exactly
-        like <code>resolveLocale</code> — an unsupported or unknown <code>locale</code> falls back
-        via the required <code>*</code> catch-all instead of throwing.
-      </Callout>
 
       <h2 id="domain-model">Domain model</h2>
       <p>
@@ -284,12 +274,12 @@ export function LocalePage() {
       </Callout>
       <p>
         The router hands you the locale from the URL via <code>useRouteLocale()</code> — a string,
-        or <code>null</code> when the route has no locale segment. Since you can't trust it, this
-        mode <strong>requires</strong> <code>supported</code> + <code>overrides</code>: an
-        unsupported <code>/pt-PT</code> and a missing locale both land on the required{' '}
-        <code>*</code> catch-all. Everything else resolves through the same rules as{' '}
-        <code>resolveLocale</code> — same-language match, then per-pattern rule, then the catch-all
-        — so the site just renders in your default language. No redirect, no crash.
+        or <code>null</code> when the route has no locale segment. You can't trust it, so map it
+        onto what you support with <code>resolveLocale</code>, then pass the result to{' '}
+        <code>Locale</code>. An unsupported <code>/pt-PT</code> and a missing locale both land on
+        the required <code>*</code> catch-all; everything else resolves through the usual rules —
+        same-language match, then per-pattern rule, then the catch-all. The site renders in your
+        default language; no redirect, no crash.
       </p>
       <CodeBlock code={ROUTER_CODE} />
 

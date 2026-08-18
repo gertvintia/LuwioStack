@@ -24,10 +24,8 @@ import { Locale, MatchingPolicy, useLocale } from '@luwio/locale'
 function App() {
   return (
     <Locale
-      locale="nl-BE"                          // required — the 'language-country' string
-      policy={MatchingPolicy.STRICT}          // optional — match strictness (default: STRICT)
-      supported={['nl-BE', 'fr-FR', 'en-US']} // optional — resolve `locale` against these…
-      overrides={{ '*': 'en-US' }}            // …falling back via '*' (resolveLocale-style)
+      locale="nl-BE"                 // required — the 'language-country' string
+      policy={MatchingPolicy.STRICT} // optional — same LocalePolicy resolveLocale takes
     >
       <Info />
     </Locale>
@@ -84,31 +82,31 @@ resolveLocale({
 
 ## Locale routing
 
-With [`@luwio/router`](../router) (planned), take the locale straight from the URL and hand it to
-`<Locale>`. It may be a string or `null` (a route with no locale segment), and it's not guaranteed
-to be supported — so this mode **requires** `supported` + `overrides`, whose `*` catch-all is where
-both cases land:
+With [`@luwio/router`](../router) (planned), take the locale from the URL — a string, or `null`
+when the route has no locale segment — map it onto what you support with `resolveLocale`, then hand
+the result to `<Locale>`:
 
 ```tsx
-import { Locale } from '@luwio/locale'
+import { Locale, resolveLocale } from '@luwio/locale'
 import { useRouteLocale } from '@luwio/router'
 
 const SUPPORTED = ['nl-BE', 'fr-FR', 'en-US']
+const OVERRIDES = { 'en-*': 'en-US', '*': 'nl-BE' } // '*' catch-all is required
 
 function App() {
-  const { locale } = useRouteLocale()          // '/pt-PT' → 'pt-PT', or null for '/about'
+  const { locale } = useRouteLocale()   // '/pt-PT' → 'pt-PT', or null for '/about'
+  const active = resolveLocale({ detected: locale, supported: SUPPORTED, overrides: OVERRIDES })
   return (
-    <Locale locale={locale} supported={SUPPORTED} overrides={{ 'en-*': 'en-US', '*': 'nl-BE' }}>
+    <Locale locale={active.locale}>
       <Site />
     </Locale>
   )
 }
 ```
 
-An unsupported `/pt-PT` and a missing (`null`) locale both land on the `*` catch-all; anything
-else resolves through the same rules as `resolveLocale` (same-language → per-pattern → catch-all).
-The site renders in the default language — no redirect, no crash. (A known-good literal like
-`<Locale locale="nl-BE">` still works strictly, without `supported`/`overrides`.)
+An unsupported `/pt-PT` and a missing (`null`) locale both land on the `*` catch-all; anything else
+resolves through the usual rules (same-language → per-pattern → catch-all). The site renders in the
+default language — no redirect, no crash.
 
 ## Structure
 

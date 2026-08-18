@@ -159,6 +159,15 @@ describe('resolveLocale (string detected)', () => {
     expect(r.locale).toBe('en-US')
   })
 
+  it('resolves null/undefined (no locale in the route) via the * catch-all', () => {
+    const r = resolveLocale({
+      detected: null,
+      supported: ['en-US', 'nl-BE'],
+      overrides: { '*': 'nl-BE' },
+    })
+    expect(r.locale).toBe('nl-BE')
+  })
+
   it('returns a supported string as-is', () => {
     const r = resolveLocale({
       detected: 'nl-BE',

@@ -29,37 +29,6 @@ describe('useLocale', () => {
     expect(result.current.current).toBe(first)
   })
 
-  it('resolves gracefully when supported + overrides are given', () => {
-    const wrapper = ({ children }: { children: ReactNode }) => (
-      <Locale locale="zz-ZZ" supported={['en-US', 'nl-BE']} overrides={{ '*': 'en-US' }}>
-        {children}
-      </Locale>
-    )
-    const { result } = renderHook(() => useLocale(), { wrapper })
-    // Unknown 'zz-ZZ' falls back to the '*' catch-all rather than throwing.
-    expect(result.current.current.locale.code).toBe('en-US')
-  })
-
-  it('keeps a supported locale as-is in resolve mode', () => {
-    const wrapper = ({ children }: { children: ReactNode }) => (
-      <Locale locale="nl-BE" supported={['en-US', 'nl-BE']} overrides={{ '*': 'en-US' }}>
-        {children}
-      </Locale>
-    )
-    const { result } = renderHook(() => useLocale(), { wrapper })
-    expect(result.current.current.locale.code).toBe('nl-BE')
-  })
-
-  it('falls back to the * catch-all when the route has no locale (null)', () => {
-    const wrapper = ({ children }: { children: ReactNode }) => (
-      <Locale locale={null} supported={['en-US', 'nl-BE']} overrides={{ '*': 'nl-BE' }}>
-        {children}
-      </Locale>
-    )
-    const { result } = renderHook(() => useLocale(), { wrapper })
-    expect(result.current.current.locale.code).toBe('nl-BE')
-  })
-
   it('throws when used outside a provider', () => {
     expect(() => renderHook(() => useLocale())).toThrow(/<Locale>/)
   })

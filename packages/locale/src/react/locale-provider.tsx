@@ -1,53 +1,25 @@
 import { type PropsWithChildren, useMemo } from 'react'
 import { Locale as LocaleClass } from '../domain/locale'
-import type { LocaleOverrides, LocalePolicy } from '../types'
-import { resolveLocale } from '../utils/resolve-locale'
+import type { LocalePolicy } from '../types'
 import { LocaleContext } from './locale-context'
 
-type LocaleCommon = PropsWithChildren & {
-  /** Optional matching policy applied when resolving the locale. */
+export interface LocaleProps extends PropsWithChildren {
+  /** A `language-country` string, e.g. `"en-US"`. */
+  locale: string
+  /**
+   * Matching policy applied when resolving the locale — the same `LocalePolicy` that
+   * `resolveLocale` accepts (a uniform `MatchingPolicy`, or a per-pattern rule map).
+   */
   policy?: LocalePolicy
 }
 
 /**
- * Props for `<Locale>`. Two shapes:
+ * Resolves `locale` and provides it to descendants. Read it with {@link useLocale}.
  *
- * - **Strict** — a known-good `locale` string, used as-is (throws if unknown).
- * - **Resolve** — a `locale` that may be `null`/`undefined` (e.g. straight from the router, where a
- *   route can have no locale segment). Requires `supported` + `overrides` so it can resolve exactly
- *   like `resolveLocale`; a missing or unsupported `locale` lands on the required `'*'` catch-all.
+ * `<Locale>` expects a locale it can resolve; to map an untrusted/optional value (e.g. from the
+ * router) onto what you support first, run it through `resolveLocale` and pass the result here.
  */
-export type LocaleProps =
-  | (LocaleCommon & { locale: string; supported?: never; overrides?: never })
-  | (LocaleCommon & {
-      locale: string | null | undefined
-      supported: string[]
-      overrides: LocaleOverrides
-    })
-
-/** Resolves `locale` and provides it to descendants. Read it with {@link useLocale}. */
-export function Locale(props: LocaleProps) {
-  const { locale, policy, children } = props
-  const supportedKey = props.supported?.join('|')
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: `supported` is tracked via supportedKey
-  const value = useMemo(() => {
-    // Strict: no overrides means `locale` is a known-good string (enforced by the type).
-    if (props.overrides === undefined) {
-      return LocaleClass.fromLocale({ locale: props.locale, policy })
-    }
-    // Resolve: a missing (null/undefined) locale — a route with no locale segment — falls straight
-    // to the required '*' catch-all; anything else resolves through resolveLocale's rules.
-    if (!props.locale) {
-      return LocaleClass.fromLocale({ locale: props.overrides['*'], policy })
-    }
-    return resolveLocale({
-      detected: props.locale,
-      supported: props.supported,
-      overrides: props.overrides,
-      policy,
-    })
-  }, [locale, policy, supportedKey, props.overrides])
-
+export function Locale({ locale, policy, children }: LocaleProps) {
+  const value = useMemo(() => LocaleClass.fromLocale({ locale, policy }), [locale, policy])
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
 }

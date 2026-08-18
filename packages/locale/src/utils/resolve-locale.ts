@@ -17,20 +17,24 @@ function isPattern(key: string): boolean {
  * 4. First supported locale with the same language (e.g. `nl-DE` → `nl-NL`)
  * 5. Catch-all override `'*'` (required — guarantees a locale is always returned)
  *
- * `detected` may be an {@link ILocale} or a raw locale string (e.g. straight from a URL) — an
- * unknown string never throws here; it resolves via the required `'*'` catch-all.
+ * `detected` may be an {@link ILocale}, a raw locale string (e.g. straight from a URL), or
+ * `null`/`undefined` (a route with no locale segment) — a missing or unknown value never throws
+ * here; it resolves via the required `'*'` catch-all.
  */
 export function resolveLocale(value: {
-  detected: ILocale | string
+  detected: ILocale | string | null | undefined
   supported: string[]
   overrides: LocaleOverrides
   policy?: LocalePolicy
 }): ILocale {
   const { detected, supported, overrides, policy } = value
 
-  const key = typeof detected === 'string' ? normalizeLocale({ locale: detected }) : detected.locale
+  const detectedString = typeof detected === 'string' ? detected : (detected?.locale ?? '')
+  const key = detectedString === '' ? '' : normalizeLocale({ locale: detectedString })
   const languageCode =
-    typeof detected === 'string' ? (key.split('-')[0] ?? '') : detected.language_code
+    detected != null && typeof detected !== 'string'
+      ? detected.language_code
+      : (key.split('-')[0] ?? '')
   const normalizedSupported = supported.map((s) => normalizeLocale({ locale: s }))
   const normalizedOverrides = Object.fromEntries(
     Object.entries(overrides).map(([k, v]) => [
@@ -40,7 +44,9 @@ export function resolveLocale(value: {
   ) as LocaleOverrides
 
   if (normalizedSupported.includes(key)) {
-    return typeof detected === 'string' ? Locale.fromLocale({ locale: key, policy }) : detected
+    return detected != null && typeof detected !== 'string'
+      ? detected
+      : Locale.fromLocale({ locale: key, policy })
   }
 
   const overridden = normalizedOverrides[key]

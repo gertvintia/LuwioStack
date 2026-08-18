@@ -1,14 +1,12 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import {
   builtinDataSource,
-  Country,
   configureDataset,
   defineDataSource,
   getDataset,
-  type IDatasetEntry,
-  Locale,
   resetDataset,
-} from './index'
+} from './dataset'
+import { Country, type IDatasetEntry, Locale } from './index'
 
 const CUSTOM: IDatasetEntry = {
   locale: 'xx-QQ',

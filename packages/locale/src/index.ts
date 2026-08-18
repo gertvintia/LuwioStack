@@ -1,13 +1,5 @@
 // Types & enums
 
-// Dataset — bring your own data or extend the built-in
-export {
-  builtinDataSource,
-  configureDataset,
-  defineDataSource,
-  getDataset,
-  resetDataset,
-} from './dataset'
 // Domain entities
 export { CONTINENT_MAP, Continent } from './domain/continent'
 export { Countries } from './domain/countries'

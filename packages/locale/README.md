@@ -71,69 +71,12 @@ resolveLocale({
 })
 ```
 
-## Recipe: locale routing
+## Locale routing
 
-A supported locale in the URL wins; otherwise resolve the visitor's browser locale, **redirect**
-when it differs from your default, and **fall back** to the default when it isn't supported.
-
-```ts
-import { resolveLocale, SystemLocale } from '@luwio/locale'
-
-const SUPPORTED = ['en-US', 'nl-BE', 'fr-FR']
-const DEFAULT = 'en-US'
-
-export function decideLocale(urlLocale?: string) {
-  // 1. A supported locale in the URL always wins.
-  if (urlLocale && SUPPORTED.includes(urlLocale)) {
-    return { locale: urlLocale, redirect: false }
-  }
-  // 2. No (supported) locale in the URL — resolve the browser locale onto what we ship.
-  const resolved = resolveLocale({
-    detected: SystemLocale,
-    supported: SUPPORTED,
-    overrides: { '*': DEFAULT }, // '*' catch-all → the default
-  }).locale
-  // 3. Redirect only when it differs from the default; otherwise serve the default.
-  return { locale: resolved, redirect: resolved !== DEFAULT }
-}
-```
-
-Wire `redirect` to your router (`redirect('/' + locale)`) and render with the returned `locale`.
-The [docs](https://) have this as a live, interactive example.
-
-## Custom data sources
-
-The library ships a built-in ISO dataset, but you can **replace or extend** it with your own. A
-data source is just entries in the interface format (`IDatasetEntry`) — build one with
-`defineDataSource`, then activate it with `configureDataset`. All domain lookups (`Country`,
-`Language`, `Continent`, `Locale`, `resolveLocale`) read from the active dataset.
-
-```ts
-import { builtinDataSource, configureDataset, defineDataSource } from '@luwio/locale'
-
-// Extend the built-in data (include builtinDataSource; later sources win)
-configureDataset(
-  builtinDataSource,
-  defineDataSource(myRows, (row) => ({
-    locale: row.tag,             // e.g. 'xx-QQ'
-    language: { name: row.lang, name_local: row.lang, iso_639_1: row.langCode, iso_639_2: '', iso_639_3: '' },
-    country: { name: row.country, /* …ICountry fields… */ },
-  })),
-)
-
-// …or replace it entirely (omit builtinDataSource)
-configureDataset(defineDataSource(myEntries))
-
-// Restore the built-in dataset
-import { resetDataset } from '@luwio/locale'
-resetDataset()
-```
-
-Sources merge left → right at three granularities — a single country (by alpha-2) or language (by
-ISO 639-1) overrides that unit across *every* locale that references it, while `locale` decides
-which entries exist. So you can change just Belgium's dialing code without re-supplying every
-`xx-BE` entry. For async data,
-fetch first and call `configureDataset` once it resolves (the domain layer stays synchronous).
+Getting the locale from the URL (with a redirect when it's missing) will be provided as an
+integration with [`@luwio/router`](../router) — a supported locale in the URL is used as-is,
+otherwise `resolveLocale(SystemLocale, …)` picks the best supported locale and redirects. See the
+docs for the planned shape.
 
 ## Structure
 
@@ -142,7 +85,7 @@ src/
 ├── domain/   Locale, Language(s), Country(ies), Continent, SystemLocale
 ├── utils/    createLocale, resolveLocale, resolvePolicy, normalizeLocale, …
 ├── react/    LocaleContext, LocaleProvider, useLocale
-├── dataset/  registry + configureDataset / defineDataSource / builtinDataSource
+├── dataset/  built-in dataset + internal registry (module composes its data here)
 ├── data/     dataset.json (built-in ISO 639 / ISO 3166 dataset)
 └── types.ts  interfaces + enums
 ```
@@ -151,7 +94,6 @@ src/
 
 - **React:** `LocaleProvider`, `useLocale`
 - **Factory:** `createLocale`, `resolveLocale`, `SystemLocale`
-- **Data sources:** `configureDataset`, `defineDataSource`, `builtinDataSource`, `resetDataset`, `getDataset`
 - **Domain:** `Locale`, `Language`, `Languages`, `Country`, `Countries`, `Continent`
 - **Utils:** `normalizeLocale`, `matchLocalePattern`, `resolvePolicy`, `toMachineName`
 - **Types:** `ILocale`, `ICountry`, `ILanguage`, `MatchingPolicy`, `LocalePolicy`, …

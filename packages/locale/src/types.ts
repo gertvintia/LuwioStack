@@ -141,13 +141,5 @@ export interface IDatasetEntry {
   country: IDatasetCountry
 }
 
-/**
- * A source of dataset entries in the interface format. Build one with `defineDataSource`, compose
- * several with `configureDataset`. The built-in dataset is available as `builtinDataSource`.
- */
-export interface DataSource {
-  readonly entries: readonly IDatasetEntry[]
-}
-
 /** Override map for {@link resolveLocale}. The `*` catch-all key is required. */
 export type LocaleOverrides = { '*': string } & Record<string, string>

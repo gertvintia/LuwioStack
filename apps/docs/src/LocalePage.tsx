@@ -1,15 +1,4 @@
-import {
-  builtinDataSource,
-  Continent,
-  Country,
-  configureDataset,
-  createLocale,
-  defineDataSource,
-  LocaleProvider,
-  resolveLocale,
-  SystemLocale,
-  useLocale,
-} from '@luwio/locale'
+import { Continent, LocaleProvider, resolveLocale, SystemLocale, useLocale } from '@luwio/locale'
 import { useState } from 'react'
 import { DocHero, type DocSection, DocsLayout } from './DocsLayout'
 import { LiveExample } from './LiveExample'
@@ -21,8 +10,8 @@ const SECTIONS: DocSection[] = [
   { id: 'domain-model', label: 'Domain model' },
   { id: 'resolution', label: 'Locale resolution' },
   { id: 'policies', label: 'Matching policies' },
-  { id: 'data-sources', label: 'Data sources' },
   { id: 'examples', label: 'Examples' },
+  { id: 'routing', label: 'Locale routing' },
   { id: 'api', label: 'API reference' },
 ]
 
@@ -159,101 +148,29 @@ render(
   </LocaleProvider>,
 )`
 
-const DATA_SOURCE_CODE = `import { builtinDataSource, configureDataset, defineDataSource } from '@luwio/locale'
+const ROUTER_CODE = `import { defineRoutes } from '@luwio/router'
+import { resolveLocale, SystemLocale } from '@luwio/locale'
 
-// Extend the built-in dataset — include builtinDataSource; later sources win
-// per country / language / locale.
-configureDataset(
-  builtinDataSource,
-  defineDataSource(myRows, (row) => ({
-    locale: row.tag, // 'xx-QQ'
-    language: { name: row.lang, name_local: row.lang, iso_639_1: row.code, iso_639_2: '', iso_639_3: '' },
-    country: { name: row.country, iso_3166_1_alpha2: row.cc /* …rest of ICountry… */ },
-  })),
-)
-
-// …or replace it entirely (omit builtinDataSource):
-configureDataset(defineDataSource(myEntries))
-
-// Restore the built-in data:
-resetDataset()`
-
-const EX_ROUTING = `const SUPPORTED = ['en-US', 'nl-BE', 'fr-FR']
+const SUPPORTED = ['en-US', 'nl-BE', 'fr-FR']
 const DEFAULT = 'en-US'
 
-// Decide what to serve for an incoming request. In production, pass SystemLocale
-// as detected and run the returned action through your router.
-function decide(urlLocale, detected) {
-  // 1. A supported locale in the URL always wins.
-  if (urlLocale && SUPPORTED.includes(urlLocale)) {
-    return { action: 'use the URL locale → ' + urlLocale }
-  }
-  // 2. No (supported) locale in the URL — resolve the browser locale onto what we ship.
-  const resolved = resolveLocale({
-    detected: createLocale({ languageOrLocale: detected }),
-    supported: SUPPORTED,
-    overrides: { '*': DEFAULT },
-  }).locale
-  // 3. Redirect only when it differs from the default; otherwise just serve the default.
-  return resolved !== DEFAULT
-    ? { action: 'redirect → /' + resolved }
-    : { action: 'fall back to default → /' + DEFAULT }
-}
+export const routes = defineRoutes([
+  // A supported locale in the URL is used as-is.
+  { path: '/:locale/*', render: ({ locale }) => <App locale={locale} /> },
 
-function Demo() {
-  const [url, setUrl] = useState('')
-  const [sys, setSys] = useState('fr-FR')
-  const { action } = decide(url, sys)
-  return (
-    <div style={{ display: 'grid', gap: 8, maxWidth: 360 }}>
-      <label>URL locale:{' '}
-        <select value={url} onChange={(e) => setUrl(e.target.value)}>
-          <option value=''>(none)</option>
-          <option value='nl-BE'>nl-BE</option>
-          <option value='fr-FR'>fr-FR</option>
-          <option value='pt-BR'>pt-BR (unsupported)</option>
-        </select>
-      </label>
-      <label>Browser locale:{' '}
-        <select value={sys} onChange={(e) => setSys(e.target.value)}>
-          <option value='fr-FR'>fr-FR (supported)</option>
-          <option value='en-US'>en-US (= default)</option>
-          <option value='ja-JP'>ja-JP (unsupported)</option>
-        </select>
-      </label>
-      <p style={{ margin: 0 }}>→ <strong>{action}</strong></p>
-    </div>
-  )
-}
-
-render(<Demo />)`
-
-const EX_DATASOURCE = `// Extend the built-in data with a fictional country, then look it up.
-// Including builtinDataSource keeps every real country too.
-configureDataset(
-  builtinDataSource,
-  defineDataSource([
-    {
-      locale: 'tp-TP',
-      language: { name: 'Tolkienian', name_local: 'Tolkienian', iso_639_1: 'tp', iso_639_2: 'tlk', iso_639_3: 'tlk' },
-      country: {
-        name: 'Middle-earth', name_local: 'Endor',
-        iso_3166_1_alpha2: 'TP', iso_3166_1_alpha3: 'TMP', iso_3166_1_numeric: 900,
-        continent: 'Antarctica', region: 'Rhovanion', capital: 'Minas Tirith',
-        direct_dialing_code: '+900', currency_code: 'MTC', currency_symbol: '\u2609',
-        flag: '', timezones: ['UTC'], borders: [], languages: [],
-      },
+  // No locale in the URL — resolve the visitor's browser locale and redirect.
+  {
+    path: '/*',
+    redirect: () => {
+      const { locale } = resolveLocale({
+        detected: SystemLocale,
+        supported: SUPPORTED,
+        overrides: { '*': DEFAULT }, // '*' catch-all → the default
+      })
+      return '/' + locale + '/'
     },
-  ]),
-)
-
-const custom = Country.new({ code: 'TP' })
-render(
-  <p>
-    Added <strong>{custom.name}</strong> (dial {custom.direct_dialing_code}) —
-    and Belgium is still here: {Country.new({ code: 'BE' }).alpha3}.
-  </p>,
-)`
+  },
+])`
 
 export function LocalePage() {
   return (
@@ -287,7 +204,7 @@ export function LocalePage() {
 
       <h2 id="domain-model">Domain model</h2>
       <p>
-        Every entity is immutable and constructed from the dataset. Collections (
+        Every entity is immutable and constructed from the built-in dataset. Collections (
         <code>Countries</code>, <code>Languages</code>) return new instances on every change.
       </p>
       <CodeBlock code={DOMAIN_CODE} />
@@ -307,22 +224,6 @@ export function LocalePage() {
         a uniform policy, or a rule map resolved most-specific-first.
       </p>
       <CodeBlock code={POLICY_CODE} />
-
-      <h2 id="data-sources">Data sources</h2>
-      <p>
-        The library ships a built-in ISO dataset, but you can <strong>replace or extend</strong> it
-        with your own. A data source is just entries in the interface format (
-        <code>IDatasetEntry</code>) — build one with <code>defineDataSource</code> (optionally
-        mapping your own rows), then activate it with <code>configureDataset</code>. Every domain
-        lookup reads from the active dataset, so no other code changes.
-      </p>
-      <CodeBlock code={DATA_SOURCE_CODE} />
-      <Callout>
-        Include <code>builtinDataSource</code> to extend the built-in data; omit it to replace
-        entirely. Sources merge left → right at country (alpha-2), language (ISO 639-1) and locale
-        granularity — override one country and it applies to every locale that references it. For
-        async data, fetch first and call <code>configureDataset</code> once (the domain stays sync).
-      </Callout>
 
       <h2 id="examples">Examples</h2>
       <p>
@@ -355,16 +256,6 @@ export function LocalePage() {
         <code>.locale</code> string to the provider.
       </Callout>
 
-      <h3>Locale routing — URL → redirect → fallback</h3>
-      <p>
-        The most common setup: a supported locale in the URL wins; otherwise resolve the visitor's
-        browser locale against what you ship, <strong>redirect</strong> to it when it differs from
-        your default, and <strong>fall back</strong> to the default when it isn't supported. Toggle
-        the inputs to see each branch — in production, <code>detected</code> is{' '}
-        <code>SystemLocale</code> and <code>action</code> runs through your router.
-      </p>
-      <LiveExample code={EX_ROUTING} scope={{ useState, resolveLocale, createLocale }} />
-
       <h3>Country flag &amp; spoken languages</h3>
       <p>
         Derive a flag emoji from the country's alpha-2 code and list the languages spoken there
@@ -372,15 +263,18 @@ export function LocalePage() {
       </p>
       <LiveExample code={EX_COUNTRY} scope={{ LocaleProvider, useLocale }} />
 
-      <h3>Bring your own data</h3>
+      <h2 id="routing">Locale routing with @luwio/router</h2>
+      <Callout>
+        <strong>Planned.</strong> <code>@luwio/router</code> is a skeleton today — this is the
+        intended integration for the most common locale task: getting the locale from the URL, with
+        a redirect when it's missing.
+      </Callout>
       <p>
-        Extend the built-in dataset at runtime with <code>configureDataset</code> — here a made-up
-        country becomes a first-class lookup while every real country stays intact.
+        A supported locale in the URL is used as-is. When it's missing, resolve the visitor's
+        browser locale (<code>SystemLocale</code>) against what you ship and redirect to it — the{' '}
+        <code>*</code> catch-all lands unsupported visitors on your default.
       </p>
-      <LiveExample
-        code={EX_DATASOURCE}
-        scope={{ Country, configureDataset, defineDataSource, builtinDataSource }}
-      />
+      <CodeBlock code={ROUTER_CODE} />
 
       <h2 id="api">API reference</h2>
       <ApiTable
@@ -403,14 +297,6 @@ export function LocalePage() {
           { sig: 'Countries · Languages', desc: 'Immutable, de-duplicated collections.' },
           { sig: 'Continent', desc: 'Continent lookup with .countries().' },
           { sig: 'MatchingPolicy', desc: 'STRICT | LOOSE enum for resolution strictness.' },
-          {
-            sig: 'configureDataset() · defineDataSource()',
-            desc: 'Set the active dataset; build a source from entries or your own rows + a mapper.',
-          },
-          {
-            sig: 'builtinDataSource · resetDataset()',
-            desc: 'The built-in dataset as a composable source; restore it after custom config.',
-          },
         ]}
       />
     </DocsLayout>

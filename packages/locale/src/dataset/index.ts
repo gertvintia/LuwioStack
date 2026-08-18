@@ -1,6 +1,16 @@
-import type { DataSource, IDatasetCountry, IDatasetEntry, IDatasetLanguage } from '../types'
+import type { IDatasetCountry, IDatasetEntry, IDatasetLanguage } from '../types'
 import { builtinEntries } from './builtin'
 import { getDataset, resetActiveDataset, setActiveDataset } from './registry'
+
+// Internal dataset composition. The module reads its data through the registry (getDataset) and
+// composes it here: the built-in dataset is the default, and combineDataset() merges additional
+// sources at country / language / locale granularity so the module can layer in extra data.
+// Not part of the public API — @luwio/locale ships its built-in dataset and consumers use it.
+
+/** A source of dataset entries in the interface format. */
+interface DataSource {
+  readonly entries: readonly IDatasetEntry[]
+}
 
 /** The library's built-in dataset, as a composable {@link DataSource}. */
 export const builtinDataSource: DataSource = { entries: builtinEntries }

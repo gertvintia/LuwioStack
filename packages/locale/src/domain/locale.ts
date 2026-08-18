@@ -1,7 +1,6 @@
-import dataset from '../data/dataset.json'
+import { getDataset } from '../dataset/registry'
 import {
   type ICountry,
-  type IDatasetEntry,
   type ILanguage,
   type ILanguages,
   type ILocale,
@@ -12,8 +11,6 @@ import { normalizeLocale } from '../utils/normalize-locale'
 import { resolvePolicy } from '../utils/resolve-policy'
 import { Country } from './country'
 import { Language } from './language'
-
-const entries = dataset as IDatasetEntry[]
 
 export class Locale implements ILocale {
   public readonly locale: string
@@ -28,6 +25,7 @@ export class Locale implements ILocale {
     const normalized = normalizeLocale({ locale: `${language}-${region}` })
     const [lang = '', country = ''] = normalized.split('-')
     const effectivePolicy = resolvePolicy(policy, lang, country)
+    const entries = getDataset()
 
     if (effectivePolicy === MatchingPolicy.STRICT) {
       const entry = entries.find((d) => d.locale.toLowerCase() === normalized.toLowerCase())

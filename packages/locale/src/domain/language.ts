@@ -1,9 +1,7 @@
-import dataset from '../data/dataset.json'
+import { getDataset } from '../dataset/registry'
 import { type IDatasetEntry, type ILanguage, type ILocale, LanguageCodeFormat } from '../types'
 import { toMachineName } from '../utils/to-machine-name'
 import { Locale } from './locale'
-
-const entries = dataset as IDatasetEntry[]
 
 export class Language implements ILanguage {
   public readonly name: string
@@ -12,6 +10,7 @@ export class Language implements ILanguage {
   public readonly alpha3: string
 
   private constructor(value: string, format: LanguageCodeFormat) {
+    const entries = getDataset()
     let entry: IDatasetEntry | undefined
 
     if (format === LanguageCodeFormat.ALPHA2) {

@@ -71,6 +71,37 @@ resolveLocale({
 })
 ```
 
+## Custom data sources
+
+The library ships a built-in ISO dataset, but you can **replace or extend** it with your own. A
+data source is just entries in the interface format (`IDatasetEntry`) — build one with
+`defineDataSource`, then activate it with `configureDataset`. All domain lookups (`Country`,
+`Language`, `Continent`, `Locale`, `resolveLocale`) read from the active dataset.
+
+```ts
+import { builtinDataSource, configureDataset, defineDataSource } from '@luwio/locale'
+
+// Extend the built-in data (include builtinDataSource; later sources win per `locale`)
+configureDataset(
+  builtinDataSource,
+  defineDataSource(myRows, (row) => ({
+    locale: row.tag,             // e.g. 'xx-QQ'
+    language: { name: row.lang, name_local: row.lang, iso_639_1: row.langCode, iso_639_2: '', iso_639_3: '' },
+    country: { name: row.country, /* …ICountry fields… */ },
+  })),
+)
+
+// …or replace it entirely (omit builtinDataSource)
+configureDataset(defineDataSource(myEntries))
+
+// Restore the built-in dataset
+import { resetDataset } from '@luwio/locale'
+resetDataset()
+```
+
+Pass several sources to `configureDataset(...)` and they're merged left → right. For async data,
+fetch first and call `configureDataset` once it resolves (the domain layer stays synchronous).
+
 ## Structure
 
 ```
@@ -78,7 +109,8 @@ src/
 ├── domain/   Locale, Language(s), Country(ies), Continent, SystemLocale
 ├── utils/    createLocale, resolveLocale, resolvePolicy, normalizeLocale, …
 ├── react/    LocaleContext, LocaleProvider, useLocale
-├── data/     dataset.json (ISO 639 / ISO 3166 combinations)
+├── dataset/  registry + configureDataset / defineDataSource / builtinDataSource
+├── data/     dataset.json (built-in ISO 639 / ISO 3166 dataset)
 └── types.ts  interfaces + enums
 ```
 
@@ -86,6 +118,7 @@ src/
 
 - **React:** `LocaleProvider`, `useLocale`
 - **Factory:** `createLocale`, `resolveLocale`, `SystemLocale`
+- **Data sources:** `configureDataset`, `defineDataSource`, `builtinDataSource`, `resetDataset`, `getDataset`
 - **Domain:** `Locale`, `Language`, `Languages`, `Country`, `Countries`, `Continent`
 - **Utils:** `normalizeLocale`, `matchLocalePattern`, `resolvePolicy`, `toMachineName`
 - **Types:** `ILocale`, `ICountry`, `ILanguage`, `MatchingPolicy`, `LocalePolicy`, …

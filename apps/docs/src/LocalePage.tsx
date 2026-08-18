@@ -10,6 +10,7 @@ const SECTIONS: DocSection[] = [
   { id: 'domain-model', label: 'Domain model' },
   { id: 'resolution', label: 'Locale resolution' },
   { id: 'policies', label: 'Matching policies' },
+  { id: 'data-sources', label: 'Data sources' },
   { id: 'examples', label: 'Examples' },
   { id: 'api', label: 'API reference' },
 ]
@@ -147,6 +148,24 @@ render(
   </LocaleProvider>,
 )`
 
+const DATA_SOURCE_CODE = `import { builtinDataSource, configureDataset, defineDataSource } from '@luwio/locale'
+
+// Extend the built-in dataset — include builtinDataSource; later sources win per locale.
+configureDataset(
+  builtinDataSource,
+  defineDataSource(myRows, (row) => ({
+    locale: row.tag, // 'xx-QQ'
+    language: { name: row.lang, name_local: row.lang, iso_639_1: row.code, iso_639_2: '', iso_639_3: '' },
+    country: { name: row.country, iso_3166_1_alpha2: row.cc /* …rest of ICountry… */ },
+  })),
+)
+
+// …or replace it entirely (omit builtinDataSource):
+configureDataset(defineDataSource(myEntries))
+
+// Restore the built-in data:
+resetDataset()`
+
 export function LocalePage() {
   return (
     <DocsLayout slug="locale" sections={SECTIONS}>
@@ -199,6 +218,21 @@ export function LocalePage() {
         a uniform policy, or a rule map resolved most-specific-first.
       </p>
       <CodeBlock code={POLICY_CODE} />
+
+      <h2 id="data-sources">Data sources</h2>
+      <p>
+        The library ships a built-in ISO dataset, but you can <strong>replace or extend</strong> it
+        with your own. A data source is just entries in the interface format (
+        <code>IDatasetEntry</code>) — build one with <code>defineDataSource</code> (optionally
+        mapping your own rows), then activate it with <code>configureDataset</code>. Every domain
+        lookup reads from the active dataset, so no other code changes.
+      </p>
+      <CodeBlock code={DATA_SOURCE_CODE} />
+      <Callout>
+        Include <code>builtinDataSource</code> to extend the built-in data; omit it to replace
+        entirely. Multiple sources merge left → right. For async data, fetch first and call{' '}
+        <code>configureDataset</code> once — the domain layer stays synchronous.
+      </Callout>
 
       <h2 id="examples">Examples</h2>
       <p>

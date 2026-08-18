@@ -1,10 +1,9 @@
-import dataset from '../data/dataset.json'
+import { getDataset } from '../dataset/registry'
 import {
   CountryCodeFormat,
   type ICountries,
   type ICountry,
   type IDatasetCountry,
-  type IDatasetEntry,
   type ILanguages,
   type ILocale,
 } from '../types'
@@ -13,8 +12,6 @@ import { Countries } from './countries'
 import { Language } from './language'
 import { Languages } from './languages'
 import { Locale } from './locale'
-
-const entries = dataset as IDatasetEntry[]
 
 const FORMAT_TO_FIELD: Record<CountryCodeFormat, keyof IDatasetCountry> = {
   [CountryCodeFormat.ALPHA2]: 'iso_3166_1_alpha2',
@@ -32,6 +29,7 @@ export class Country implements ICountry {
 
   private constructor(value: string, format: CountryCodeFormat) {
     const field = FORMAT_TO_FIELD[format]
+    const entries = getDataset()
 
     const entry = entries.find(
       (d) => String(d.country[field]).toLowerCase() === value.toLowerCase(),
@@ -60,6 +58,7 @@ export class Country implements ICountry {
   }
 
   public languages(): ILanguages {
+    const entries = getDataset()
     const entry = entries.find(
       (d) => d.country.iso_3166_1_alpha2.toLowerCase() === this.alpha2.toLowerCase(),
     )
@@ -75,6 +74,7 @@ export class Country implements ICountry {
   }
 
   public borders(): ICountries {
+    const entries = getDataset()
     const entry = entries.find(
       (d) => d.country.iso_3166_1_alpha2.toLowerCase() === this.alpha2.toLowerCase(),
     )

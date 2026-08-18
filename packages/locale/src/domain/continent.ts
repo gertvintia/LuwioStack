@@ -1,10 +1,8 @@
-import dataset from '../data/dataset.json'
-import type { IContinent, ICountries, IDatasetEntry } from '../types'
+import { getDataset } from '../dataset/registry'
+import type { IContinent, ICountries } from '../types'
 import { toMachineName } from '../utils/to-machine-name'
 import { Countries } from './countries'
 import { Country } from './country'
-
-const entries = dataset as IDatasetEntry[]
 
 export const CONTINENT_MAP: Record<string, string> = {
   AF: 'Africa',
@@ -64,6 +62,7 @@ export class Continent implements IContinent {
   }
 
   public countries(): ICountries {
+    const entries = getDataset()
     const seen = new Set<string>()
     let result: ICountries = Countries.empty()
 

@@ -22,6 +22,7 @@ const FORMAT_TO_FIELD: Record<CountryCodeFormat, keyof IDatasetCountry> = {
 export class Country implements ICountry {
   public readonly name: string
   public readonly machine_name: string
+  public readonly code: string
   public readonly alpha2: string
   public readonly alpha3: string
   public readonly numeric: string
@@ -42,6 +43,7 @@ export class Country implements ICountry {
     this.name = c.name
     this.machine_name = toMachineName(c.name)
     this.alpha2 = c.iso_3166_1_alpha2
+    this.code = c.iso_3166_1_alpha2
     this.alpha3 = c.iso_3166_1_alpha3
     this.numeric = String(c.iso_3166_1_numeric).padStart(3, '0')
     this.direct_dialing_code = c.direct_dialing_code

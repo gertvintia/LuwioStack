@@ -59,6 +59,8 @@ export interface ICountry {
   name: string
   /** Machine-readable identifier, stable across translations. */
   machine_name: string
+  /** Primary code — ISO 3166-1 alpha-2, e.g. `"BE"`. Alias of {@link ICountry.alpha2}. */
+  code: string
   /** ISO 3166-1 alpha-2 code. */
   alpha2: string
   /** ISO 3166-1 alpha-3 code. */
@@ -96,6 +98,8 @@ export interface ILanguage {
   name: string
   /** Machine-readable identifier, stable across translations. */
   machine_name: string
+  /** Primary code — ISO 639-1 alpha-2, e.g. `"nl"`. Alias of {@link ILanguage.alpha2}. */
+  code: string
   /** ISO 639-1 code. */
   alpha2: string
   /** ISO 639-3 code (falls back to ISO 639-2). */

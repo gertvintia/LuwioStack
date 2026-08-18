@@ -11,11 +11,22 @@ describe('useLocale', () => {
     )
     const { result } = renderHook(() => useLocale(), { wrapper })
     const { current } = result.current
-    expect(current.locale).toBe('nl-BE')
-    expect(current.language_code).toBe('nl')
-    expect(current.country_code).toBe('BE')
-    expect(current.country.name).toBe('Belgium')
+    expect(current.locale.code).toBe('nl-BE')
+    expect(current.language.code).toBe('nl')
     expect(current.language.name).toBe('Dutch')
+    expect(current.region.code).toBe('BE')
+    expect(current.region.name).toBe('Belgium')
+    expect(current.intl.language).toBe('nl')
+  })
+
+  it('returns a stable `current` across renders', () => {
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <Locale locale="nl-BE">{children}</Locale>
+    )
+    const { result, rerender } = renderHook(() => useLocale(), { wrapper })
+    const first = result.current.current
+    rerender()
+    expect(result.current.current).toBe(first)
   })
 
   it('throws when used outside a provider', () => {

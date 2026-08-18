@@ -1,23 +1,19 @@
 import { useContext } from 'react'
-import type { ICountry, ILanguage, ILanguages } from '../types'
+import type { ICountry, ILanguage, ILanguages, ILocale } from '../types'
 import { LocaleContext } from './locale-context'
 
 /** The active locale and everything resolved from it. */
 export interface CurrentLocale {
-  /** The full locale string, e.g. `"nl-BE"`. */
-  locale: string
-  /** ISO 639-1 language code, e.g. `"nl"`. */
-  language_code: string
-  /** ISO 3166-1 alpha-2 country code, e.g. `"BE"`. */
-  country_code: string
-  /** The resolved language. */
+  /** The BCP-47 locale, e.g. `{ code: 'nl-BE' }`. */
+  locale: { readonly code: string }
+  /** The language — `language.code` is `'nl'`, `language.name` is `'Dutch'`. */
   language: ILanguage
-  /** The resolved country. */
-  country: ICountry
-  /** Every language spoken in the country, plus the active one. */
+  /** The region (country) — `region.code` is `'BE'`, `region.name` is `'Belgium'`. */
+  region: ICountry
+  /** Every language spoken in the region, plus the active one. */
   languages: ILanguages
   /** The native `Intl.Locale`. */
-  toIntlLocale(): Intl.Locale
+  intl: Intl.Locale
 }
 
 export interface UseLocaleResult {
@@ -25,22 +21,30 @@ export interface UseLocaleResult {
   current: CurrentLocale
 }
 
-/** Read the active locale (and its resolved language/country) from context. */
+// Resolve once per locale instance. The provider memoizes the ILocale, so its identity is stable
+// until the locale changes — keying a WeakMap on it gives `current` a stable identity and computes
+// the (dataset-backed) language/region/languages lookups only once, not on every render.
+const cache = new WeakMap<ILocale, CurrentLocale>()
+
+function toCurrent(locale: ILocale): CurrentLocale {
+  const cached = cache.get(locale)
+  if (cached) return cached
+  const current: CurrentLocale = {
+    locale: { code: locale.locale },
+    language: locale.language(),
+    region: locale.country(),
+    languages: locale.languages(),
+    intl: locale.toIntlLocale(),
+  }
+  cache.set(locale, current)
+  return current
+}
+
+/** Read the active locale (and its resolved language/region) from context. */
 export function useLocale(): UseLocaleResult {
   const context = useContext(LocaleContext)
   if (context === undefined) {
     throw new Error('useLocale must be used within a <Locale> provider')
   }
-
-  return {
-    current: {
-      locale: context.locale,
-      language_code: context.language_code,
-      country_code: context.country_code,
-      language: context.language(),
-      country: context.country(),
-      languages: context.languages(),
-      toIntlLocale: () => context.toIntlLocale(),
-    },
-  }
+  return { current: toCurrent(context) }
 }

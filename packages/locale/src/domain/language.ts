@@ -6,6 +6,7 @@ import { Locale } from './locale'
 export class Language implements ILanguage {
   public readonly name: string
   public readonly machine_name: string
+  public readonly code: string
   public readonly alpha2: string
   public readonly alpha3: string
 
@@ -30,6 +31,7 @@ export class Language implements ILanguage {
     }
 
     this.alpha2 = entry.language.iso_639_1
+    this.code = entry.language.iso_639_1
     this.alpha3 =
       entry.language.iso_639_3 !== '' ? entry.language.iso_639_3 : entry.language.iso_639_2
     this.name = entry.language.name

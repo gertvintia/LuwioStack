@@ -1,4 +1,14 @@
-import { Continent, LocaleProvider, resolveLocale, SystemLocale, useLocale } from '@luwio/locale'
+import {
+  builtinDataSource,
+  Continent,
+  Country,
+  configureDataset,
+  defineDataSource,
+  LocaleProvider,
+  resolveLocale,
+  SystemLocale,
+  useLocale,
+} from '@luwio/locale'
 import { useState } from 'react'
 import { DocHero, type DocSection, DocsLayout } from './DocsLayout'
 import { LiveExample } from './LiveExample'
@@ -150,7 +160,8 @@ render(
 
 const DATA_SOURCE_CODE = `import { builtinDataSource, configureDataset, defineDataSource } from '@luwio/locale'
 
-// Extend the built-in dataset — include builtinDataSource; later sources win per locale.
+// Extend the built-in dataset — include builtinDataSource; later sources win
+// per country / language / locale.
 configureDataset(
   builtinDataSource,
   defineDataSource(myRows, (row) => ({
@@ -165,6 +176,33 @@ configureDataset(defineDataSource(myEntries))
 
 // Restore the built-in data:
 resetDataset()`
+
+const EX_DATASOURCE = `// Extend the built-in data with a fictional country, then look it up.
+// Including builtinDataSource keeps every real country too.
+configureDataset(
+  builtinDataSource,
+  defineDataSource([
+    {
+      locale: 'tp-TP',
+      language: { name: 'Tolkienian', name_local: 'Tolkienian', iso_639_1: 'tp', iso_639_2: 'tlk', iso_639_3: 'tlk' },
+      country: {
+        name: 'Middle-earth', name_local: 'Endor',
+        iso_3166_1_alpha2: 'TP', iso_3166_1_alpha3: 'TMP', iso_3166_1_numeric: 900,
+        continent: 'Antarctica', region: 'Rhovanion', capital: 'Minas Tirith',
+        direct_dialing_code: '+900', currency_code: 'MTC', currency_symbol: '\u2609',
+        flag: '', timezones: ['UTC'], borders: [], languages: [],
+      },
+    },
+  ]),
+)
+
+const custom = Country.new({ code: 'TP' })
+render(
+  <p>
+    Added <strong>{custom.name}</strong> (dial {custom.direct_dialing_code}) —
+    and Belgium is still here: {Country.new({ code: 'BE' }).alpha3}.
+  </p>,
+)`
 
 export function LocalePage() {
   return (
@@ -273,6 +311,16 @@ export function LocalePage() {
       </p>
       <LiveExample code={EX_COUNTRY} scope={{ LocaleProvider, useLocale }} />
 
+      <h3>Bring your own data</h3>
+      <p>
+        Extend the built-in dataset at runtime with <code>configureDataset</code> — here a made-up
+        country becomes a first-class lookup while every real country stays intact.
+      </p>
+      <LiveExample
+        code={EX_DATASOURCE}
+        scope={{ Country, configureDataset, defineDataSource, builtinDataSource }}
+      />
+
       <h2 id="api">API reference</h2>
       <ApiTable
         rows={[
@@ -294,6 +342,14 @@ export function LocalePage() {
           { sig: 'Countries · Languages', desc: 'Immutable, de-duplicated collections.' },
           { sig: 'Continent', desc: 'Continent lookup with .countries().' },
           { sig: 'MatchingPolicy', desc: 'STRICT | LOOSE enum for resolution strictness.' },
+          {
+            sig: 'configureDataset() · defineDataSource()',
+            desc: 'Set the active dataset; build a source from entries or your own rows + a mapper.',
+          },
+          {
+            sig: 'builtinDataSource · resetDataset()',
+            desc: 'The built-in dataset as a composable source; restore it after custom config.',
+          },
         ]}
       />
     </DocsLayout>

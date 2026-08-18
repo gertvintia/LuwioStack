@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react'
 import {
+  BarChartIcon,
   CalendarIcon,
   CoinIcon,
   DatabaseIcon,
   GlobeIcon,
-  GoogleGIcon,
   LayoutIcon,
+  MapPinIcon,
   RouteIcon,
   SlidersIcon,
 } from './icons'
@@ -110,15 +111,27 @@ export const PACKAGES: PackageMeta[] = [
     status: 'skeleton',
   },
   {
-    slug: 'google',
-    name: '@luwio/google',
+    slug: 'google-maps',
+    name: '@luwio/google-maps',
     accent: '#ef4444',
-    icon: <GoogleGIcon />,
-    tagline: 'Google SDKs',
+    icon: <MapPinIcon />,
+    tagline: 'Google Maps',
     blurb:
-      'Google web SDKs, one namespace per library — /map for reliable Google Maps loading, /analytics for GA4.',
+      'Reliable Google Maps JS API loading for React — base script and libraries load once, tracked with query-style states.',
     gzip: '6 kB',
-    install: 'npm i @luwio/google',
+    install: 'npm i @luwio/google-maps',
+    status: 'ready',
+  },
+  {
+    slug: 'google-analytics',
+    name: '@luwio/google-analytics',
+    accent: '#e8710a',
+    icon: <BarChartIcon />,
+    tagline: 'Google Analytics',
+    blurb:
+      'Google Analytics 4 (gtag.js) for React — one consent prop gates tracking, with Consent Mode v2 support.',
+    gzip: '3 kB',
+    install: 'npm i @luwio/google-analytics',
     status: 'ready',
   },
 ]

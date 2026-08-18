@@ -1,12 +1,12 @@
 {
-  "name": "@luwio/google",
+  "name": "@luwio/google-maps",
   "version": "0.0.0",
-  "description": "Google web-platform integrations for React, one namespace per library.",
+  "description": "Reliable Google Maps JS API loading for React.",
   "keywords": [
     "google",
     "google-maps",
+    "maps",
     "react",
-    "script-loader",
     "luwio"
   ],
   "license": "MIT",
@@ -15,6 +15,9 @@
   "files": [
     "dist"
   ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
       "import": {
@@ -25,28 +28,7 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
-    },
-    "./map": {
-      "import": {
-        "types": "./dist/map/index.d.mts",
-        "default": "./dist/map/index.mjs"
-      },
-      "require": {
-        "types": "./dist/map/index.d.cts",
-        "default": "./dist/map/index.cjs"
-      }
-    },
-    "./analytics": {
-      "import": {
-        "types": "./dist/analytics/index.d.mts",
-        "default": "./dist/analytics/index.mjs"
-      },
-      "require": {
-        "types": "./dist/analytics/index.d.cts",
-        "default": "./dist/analytics/index.cjs"
-      }
-    },
-    "./package.json": "./package.json"
+    }
   },
   "publishConfig": {
     "access": "public",

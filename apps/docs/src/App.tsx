@@ -1,7 +1,8 @@
 import { PRODUCT_NAME, REPO_URL, SUITE_NAME } from './brand'
 import { ConfigPage } from './ConfigPage'
 import { PACKAGES } from './content'
-import { GooglePage } from './GooglePage'
+import { GoogleAnalyticsPage } from './GoogleAnalyticsPage'
+import { GoogleMapsPage } from './GoogleMapsPage'
 import { HomePage } from './HomePage'
 import { GitHubIcon, LuwioWordmark } from './icons'
 import { LocalePage } from './LocalePage'
@@ -69,8 +70,10 @@ function renderRoute(route: string) {
         return <ConfigPage />
       case 'storage':
         return <StoragePage />
-      case 'google':
-        return <GooglePage />
+      case 'google-maps':
+        return <GoogleMapsPage />
+      case 'google-analytics':
+        return <GoogleAnalyticsPage />
       default:
         // router, ui, datetime, money — driven by shared skeleton page.
         return <SkeletonPage slug={slug} />

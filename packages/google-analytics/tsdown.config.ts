@@ -1,11 +1,7 @@
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({
-  entry: {
-    index: 'src/index.ts',
-    'map/index': 'src/map/index.ts',
-    'analytics/index': 'src/analytics/index.ts',
-  },
+  entry: ['src/index.ts'],
   format: ['esm', 'cjs'],
   dts: true,
   clean: true,

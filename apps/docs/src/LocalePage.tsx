@@ -15,11 +15,14 @@ const SECTIONS: DocSection[] = [
   { id: 'api', label: 'API reference' },
 ]
 
-const REACT_CODE = `import { Locale, useLocale } from '@luwio/locale'
+const REACT_CODE = `import { Locale, MatchingPolicy, useLocale } from '@luwio/locale'
 
 function App() {
   return (
-    <Locale locale="nl-BE">
+    <Locale
+      locale="nl-BE"                  // required — the 'language-country' string
+      policy={MatchingPolicy.STRICT}  // optional — match strictness (default: STRICT)
+    >
       <Info />
     </Locale>
   )

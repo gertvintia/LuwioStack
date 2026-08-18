@@ -19,11 +19,14 @@ React 18+ is a peer dependency (the domain layer works without React too).
 ## React usage
 
 ```tsx
-import { Locale, useLocale } from '@luwio/locale'
+import { Locale, MatchingPolicy, useLocale } from '@luwio/locale'
 
 function App() {
   return (
-    <Locale locale="nl-BE">
+    <Locale
+      locale="nl-BE"                  // required — the 'language-country' string
+      policy={MatchingPolicy.STRICT}  // optional — match strictness (default: STRICT)
+    >
       <Info />
     </Locale>
   )

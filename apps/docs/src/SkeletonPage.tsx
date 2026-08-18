@@ -93,6 +93,54 @@ formatMoney(money(1999, 'USD'), 'en-US')    // '$19.99'`,
       { sig: 'formatMoney(value, locale?)', desc: 'Format via Intl.NumberFormat.' },
     ],
   },
+  phone: {
+    intro:
+      'Parse and format phone numbers with a small, dependency-free core. Full per-country validation and formatting (à la libphonenumber) is planned.',
+    dependency: 'No dependencies, no framework required.',
+    lang: 'ts',
+    code: `import { parsePhone, formatPhone } from '@luwio/phone'
+
+const p = parsePhone('0470 12 34 56', '+32') // default country code for local numbers
+p.e164                       // '+32470123456'
+formatPhone(p, 'national')   // '470123456'
+formatPhone(p, 'international') // '+32 470123456'`,
+    api: [
+      {
+        sig: 'parsePhone(input, defaultCountryCode?)',
+        desc: 'Parse into { countryCode, nationalNumber, e164 }.',
+      },
+      {
+        sig: "formatPhone(phone, 'e164' | 'international' | 'national')",
+        desc: 'Format a parsed number in the chosen style.',
+      },
+    ],
+  },
+  'mijn-burgerprofiel': {
+    intro:
+      'React integration for the Flemish Mijn Burgerprofiel — citizen sign-in (ACM/IDM) and profile. The provider + hook expose the auth surface today; the real OIDC flow and profile fetch are planned.',
+    dependency: 'React 18+ is a peer dependency.',
+    lang: 'tsx',
+    code: `import { MijnBurgerprofielProvider, useBurgerprofiel } from '@luwio/mijn-burgerprofiel'
+
+function Account() {
+  const { status, profile, signIn, signOut } = useBurgerprofiel()
+  if (status !== 'authenticated') return <button onClick={signIn}>Aanmelden</button>
+  return <p>Welkom {profile?.firstName} <button onClick={signOut}>Afmelden</button></p>
+}
+
+// Wrap your app:
+// <MijnBurgerprofielProvider clientId={CLIENT_ID}><Account /></MijnBurgerprofielProvider>`,
+    api: [
+      {
+        sig: '<MijnBurgerprofielProvider clientId …>',
+        desc: 'Provides the auth context (clientId, environment?, redirectUri?).',
+      },
+      {
+        sig: 'useBurgerprofiel()',
+        desc: 'Returns { status, profile, signIn, signOut }.',
+      },
+    ],
+  },
   theme: {
     intro:
       'Light / dark / system theme management for React. Today it ships a provider + hook that reflect the resolved theme on <html>; design tokens and an SSR no-flash script are planned.',

@@ -6,8 +6,10 @@ import {
   ContrastIcon,
   DatabaseIcon,
   GlobeIcon,
+  IdCardIcon,
   LayoutIcon,
   MapPinIcon,
+  PhoneIcon,
   RouteIcon,
   SlidersIcon,
 } from './icons'
@@ -109,6 +111,30 @@ export const PACKAGES: PackageMeta[] = [
       'Currency formatting and safe minor-unit math. Amounts are integer cents, so no floating-point drift.',
     gzip: '—',
     install: 'npm i @luwio/money',
+    status: 'skeleton',
+  },
+  {
+    slug: 'phone',
+    name: '@luwio/phone',
+    accent: '#0ea5e9',
+    icon: <PhoneIcon />,
+    tagline: 'Phone numbers',
+    blurb:
+      'Parse and format phone numbers — a small, dependency-free core with E.164, international and national output.',
+    gzip: '—',
+    install: 'npm i @luwio/phone',
+    status: 'skeleton',
+  },
+  {
+    slug: 'mijn-burgerprofiel',
+    name: '@luwio/mijn-burgerprofiel',
+    accent: '#ffb100',
+    icon: <IdCardIcon />,
+    tagline: 'Mijn Burgerprofiel',
+    blurb:
+      'React integration for the Flemish Mijn Burgerprofiel — citizen sign-in (ACM/IDM) and profile.',
+    gzip: '—',
+    install: 'npm i @luwio/mijn-burgerprofiel',
     status: 'skeleton',
   },
   {

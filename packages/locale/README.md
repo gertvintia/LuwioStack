@@ -24,8 +24,10 @@ import { Locale, MatchingPolicy, useLocale } from '@luwio/locale'
 function App() {
   return (
     <Locale
-      locale="nl-BE"                  // required — the 'language-country' string
-      policy={MatchingPolicy.STRICT}  // optional — match strictness (default: STRICT)
+      locale="nl-BE"                          // required — the 'language-country' string
+      policy={MatchingPolicy.STRICT}          // optional — match strictness (default: STRICT)
+      supported={['nl-BE', 'fr-FR', 'en-US']} // optional — resolve `locale` against these…
+      overrides={{ '*': 'en-US' }}            // …falling back via '*' (resolveLocale-style)
     >
       <Info />
     </Locale>
@@ -42,6 +44,11 @@ function Info() {
   )
 }
 ```
+
+
+With just `locale`, an unknown value throws. Add `supported` + `overrides` and `<Locale>` resolves
+exactly like [`resolveLocale`](#locale-resolution) — an unknown `locale` falls back via the
+required `*` catch-all instead of throwing. `resolveLocale` also accepts a raw string as `detected`.
 
 ## Domain model (no React required)
 

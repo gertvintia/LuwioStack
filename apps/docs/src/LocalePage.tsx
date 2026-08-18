@@ -20,8 +20,10 @@ const REACT_CODE = `import { Locale, MatchingPolicy, useLocale } from '@luwio/lo
 function App() {
   return (
     <Locale
-      locale="nl-BE"                  // required — the 'language-country' string
-      policy={MatchingPolicy.STRICT}  // optional — match strictness (default: STRICT)
+      locale="nl-BE"                          // required — the 'language-country' string
+      policy={MatchingPolicy.STRICT}          // optional — match strictness (default: STRICT)
+      supported={['nl-BE', 'fr-FR', 'en-US']} // optional — resolve \`locale\` against these…
+      overrides={{ '*': 'en-US' }}            // …falling back via '*' (resolveLocale-style)
     >
       <Info />
     </Locale>
@@ -206,6 +208,13 @@ export function LocalePage() {
         a provider.
       </p>
 
+      <Callout>
+        <strong>Strict vs. resolve.</strong> With just <code>locale</code>, an unknown value throws.
+        Add <code>supported</code> + <code>overrides</code> and <code>Locale</code> resolves exactly
+        like <code>resolveLocale</code> — an unsupported or unknown <code>locale</code> falls back
+        via the required <code>*</code> catch-all instead of throwing.
+      </Callout>
+
       <h2 id="domain-model">Domain model</h2>
       <p>
         Every entity is immutable and constructed from the built-in dataset. Collections (
@@ -283,7 +292,10 @@ export function LocalePage() {
       <h2 id="api">API reference</h2>
       <ApiTable
         rows={[
-          { sig: 'Locale', desc: 'Provider taking a locale string + optional policy.' },
+          {
+            sig: 'Locale',
+            desc: 'Provider. Strict by default; pass supported + overrides to resolve like resolveLocale.',
+          },
           {
             sig: 'useLocale()',
             desc: 'Hook → { current } with the active locale, language and country.',
@@ -292,7 +304,10 @@ export function LocalePage() {
             sig: 'createLocale()',
             desc: 'Build an ILocale from a code, locale string, or language + country.',
           },
-          { sig: 'resolveLocale()', desc: 'Resolve a detected locale against a supported list.' },
+          {
+            sig: 'resolveLocale()',
+            desc: 'Resolve a detected locale (ILocale or string) against a supported list.',
+          },
           {
             sig: 'SystemLocale',
             desc: "The runtime's detected locale (region inferred if absent).",

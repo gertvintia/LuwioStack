@@ -148,3 +148,23 @@ describe('resolveLocale', () => {
     expect(resolved.locale).toBe('fr-FR')
   })
 })
+
+describe('resolveLocale (string detected)', () => {
+  it('resolves an unknown string via the * catch-all instead of throwing', () => {
+    const r = resolveLocale({
+      detected: 'zz-ZZ',
+      supported: ['en-US', 'nl-BE'],
+      overrides: { '*': 'en-US' },
+    })
+    expect(r.locale).toBe('en-US')
+  })
+
+  it('returns a supported string as-is', () => {
+    const r = resolveLocale({
+      detected: 'nl-BE',
+      supported: ['en-US', 'nl-BE'],
+      overrides: { '*': 'en-US' },
+    })
+    expect(r.locale).toBe('nl-BE')
+  })
+})

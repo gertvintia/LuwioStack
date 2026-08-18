@@ -159,13 +159,14 @@ import { useRouteLocale } from '@luwio/router'
 const SUPPORTED = ['nl-BE', 'fr-FR', 'en-US']
 
 function App() {
-  // The router reads the locale from the URL — '/pt-PT' → 'pt-PT'.
+  // The router reads the locale from the URL. It may be a string ('/pt-PT' → 'pt-PT')
+  // or null/undefined when the route has no locale segment ('/about').
   const { locale } = useRouteLocale()
 
-  // Hand it straight to <Locale> with your supported list + overrides.
-  // 'pt-PT' isn't supported, so the '*' catch-all renders the site in nl-BE —
-  // no redirect, no crash. overrides stays flexible: same-language and
-  // per-pattern rules still apply before the catch-all.
+  // Because \`locale\` can be missing or unsupported, \`overrides\` is required — its
+  // '*' catch-all is where both cases land. 'pt-PT' (unsupported) and no locale
+  // (null) both render the site in nl-BE. No redirect, no crash. overrides stays
+  // flexible: same-language and per-pattern rules still apply before the catch-all.
   return (
     <Locale
       locale={locale}
@@ -282,12 +283,13 @@ export function LocalePage() {
         intended integration for the most common locale task: taking the locale from the URL.
       </Callout>
       <p>
-        The router hands you the locale from the URL via <code>useRouteLocale()</code>, which you
-        can't trust to be one you support. Pass it straight to <code>Locale</code> with your{' '}
-        <code>supported</code> list and <code>overrides</code>: an unsupported route like{' '}
-        <code>/pt-PT</code> resolves through the same rules as <code>resolveLocale</code> — a
-        same-language match, then a per-pattern rule, then the <code>*</code> catch-all — so it just
-        renders in your default language. No redirect, no crash.
+        The router hands you the locale from the URL via <code>useRouteLocale()</code> — a string,
+        or <code>null</code> when the route has no locale segment. Since you can't trust it, this
+        mode <strong>requires</strong> <code>supported</code> + <code>overrides</code>: an
+        unsupported <code>/pt-PT</code> and a missing locale both land on the required{' '}
+        <code>*</code> catch-all. Everything else resolves through the same rules as{' '}
+        <code>resolveLocale</code> — same-language match, then per-pattern rule, then the catch-all
+        — so the site just renders in your default language. No redirect, no crash.
       </p>
       <CodeBlock code={ROUTER_CODE} />
 

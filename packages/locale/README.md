@@ -85,8 +85,9 @@ resolveLocale({
 ## Locale routing
 
 With [`@luwio/router`](../router) (planned), take the locale straight from the URL and hand it to
-`<Locale>` — you can't trust it to be supported, so pass `supported` + `overrides` and let it
-resolve:
+`<Locale>`. It may be a string or `null` (a route with no locale segment), and it's not guaranteed
+to be supported — so this mode **requires** `supported` + `overrides`, whose `*` catch-all is where
+both cases land:
 
 ```tsx
 import { Locale } from '@luwio/locale'
@@ -95,7 +96,7 @@ import { useRouteLocale } from '@luwio/router'
 const SUPPORTED = ['nl-BE', 'fr-FR', 'en-US']
 
 function App() {
-  const { locale } = useRouteLocale()          // '/pt-PT' → 'pt-PT'
+  const { locale } = useRouteLocale()          // '/pt-PT' → 'pt-PT', or null for '/about'
   return (
     <Locale locale={locale} supported={SUPPORTED} overrides={{ 'en-*': 'en-US', '*': 'nl-BE' }}>
       <Site />
@@ -104,8 +105,10 @@ function App() {
 }
 ```
 
-`/pt-PT` isn't supported, so it falls through the same rules as `resolveLocale` (same-language →
-per-pattern → the `*` catch-all) and renders in the default language — no redirect, no crash.
+An unsupported `/pt-PT` and a missing (`null`) locale both land on the `*` catch-all; anything
+else resolves through the same rules as `resolveLocale` (same-language → per-pattern → catch-all).
+The site renders in the default language — no redirect, no crash. (A known-good literal like
+`<Locale locale="nl-BE">` still works strictly, without `supported`/`overrides`.)
 
 ## Structure
 

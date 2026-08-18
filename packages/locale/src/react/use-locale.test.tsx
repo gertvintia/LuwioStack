@@ -50,6 +50,16 @@ describe('useLocale', () => {
     expect(result.current.current.locale.code).toBe('nl-BE')
   })
 
+  it('falls back to the * catch-all when the route has no locale (null)', () => {
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <Locale locale={null} supported={['en-US', 'nl-BE']} overrides={{ '*': 'nl-BE' }}>
+        {children}
+      </Locale>
+    )
+    const { result } = renderHook(() => useLocale(), { wrapper })
+    expect(result.current.current.locale.code).toBe('nl-BE')
+  })
+
   it('throws when used outside a provider', () => {
     expect(() => renderHook(() => useLocale())).toThrow(/<Locale>/)
   })

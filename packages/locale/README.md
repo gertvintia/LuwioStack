@@ -84,30 +84,35 @@ resolveLocale({
 ## Locale routing
 
 With [`@luwio/router`](../router) (planned), take the locale from the URL — a string, or `null`
-when the route has no locale segment — map it onto what you support with `resolveLocale`, then hand
-the result to `<Locale>`:
+when the route has no locale segment. With a locale, resolve it onto what you support; without one,
+fall back to `SystemLocale` and redirect if it's supported:
 
 ```tsx
-import { Locale, resolveLocale } from '@luwio/locale'
-import { useRouteLocale } from '@luwio/router'
+import { Locale, resolveLocale, SystemLocale } from '@luwio/locale'
+import { redirect, useRouteLocale } from '@luwio/router'
 
 const SUPPORTED = ['nl-BE', 'fr-FR', 'en-US']
-const OVERRIDES = { 'en-*': 'en-US', '*': 'nl-BE' } // '*' catch-all is required
+const OVERRIDES = { 'en-*': 'en-US', '*': 'nl-BE' } // '*' catch-all → default
+const DEFAULT = 'nl-BE'
 
 function App() {
-  const { locale } = useRouteLocale()   // '/pt-PT' → 'pt-PT', or null for '/about'
+  const { locale } = useRouteLocale() // string, or null for '/about'
+
+  // No locale in the URL → look at the visitor's system locale.
+  if (locale == null) {
+    if (SUPPORTED.includes(SystemLocale.locale)) return redirect('/' + SystemLocale.locale)
+    return <Locale locale={DEFAULT}><Site /></Locale>
+  }
+
+  // A locale in the URL → resolve it ('pt-PT' → '*' catch-all → default) and render.
   const active = resolveLocale({ detected: locale, supported: SUPPORTED, overrides: OVERRIDES })
-  return (
-    <Locale locale={active.locale}>
-      <Site />
-    </Locale>
-  )
+  return <Locale locale={active.locale}><Site /></Locale>
 }
 ```
 
-An unsupported `/pt-PT` and a missing (`null`) locale both land on the `*` catch-all; anything else
-resolves through the usual rules (same-language → per-pattern → catch-all). The site renders in the
-default language — no redirect, no crash.
+- **With a locale** — an unsupported `/pt-PT` falls to the `*` catch-all (default); everything else
+  resolves through the usual rules (same-language → per-pattern → catch-all).
+- **Without one** — if `SystemLocale` is supported, redirect to it; otherwise render the default.
 
 ## Structure
 

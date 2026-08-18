@@ -71,6 +71,36 @@ resolveLocale({
 })
 ```
 
+## Recipe: locale routing
+
+A supported locale in the URL wins; otherwise resolve the visitor's browser locale, **redirect**
+when it differs from your default, and **fall back** to the default when it isn't supported.
+
+```ts
+import { resolveLocale, SystemLocale } from '@luwio/locale'
+
+const SUPPORTED = ['en-US', 'nl-BE', 'fr-FR']
+const DEFAULT = 'en-US'
+
+export function decideLocale(urlLocale?: string) {
+  // 1. A supported locale in the URL always wins.
+  if (urlLocale && SUPPORTED.includes(urlLocale)) {
+    return { locale: urlLocale, redirect: false }
+  }
+  // 2. No (supported) locale in the URL — resolve the browser locale onto what we ship.
+  const resolved = resolveLocale({
+    detected: SystemLocale,
+    supported: SUPPORTED,
+    overrides: { '*': DEFAULT }, // '*' catch-all → the default
+  }).locale
+  // 3. Redirect only when it differs from the default; otherwise serve the default.
+  return { locale: resolved, redirect: resolved !== DEFAULT }
+}
+```
+
+Wire `redirect` to your router (`redirect('/' + locale)`) and render with the returned `locale`.
+The [docs](https://) have this as a live, interactive example.
+
 ## Custom data sources
 
 The library ships a built-in ISO dataset, but you can **replace or extend** it with your own. A

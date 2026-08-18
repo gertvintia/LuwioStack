@@ -3,6 +3,7 @@ import {
   Continent,
   Country,
   configureDataset,
+  createLocale,
   defineDataSource,
   LocaleProvider,
   resolveLocale,
@@ -177,6 +178,56 @@ configureDataset(defineDataSource(myEntries))
 // Restore the built-in data:
 resetDataset()`
 
+const EX_ROUTING = `const SUPPORTED = ['en-US', 'nl-BE', 'fr-FR']
+const DEFAULT = 'en-US'
+
+// Decide what to serve for an incoming request. In production, pass SystemLocale
+// as detected and run the returned action through your router.
+function decide(urlLocale, detected) {
+  // 1. A supported locale in the URL always wins.
+  if (urlLocale && SUPPORTED.includes(urlLocale)) {
+    return { action: 'use the URL locale → ' + urlLocale }
+  }
+  // 2. No (supported) locale in the URL — resolve the browser locale onto what we ship.
+  const resolved = resolveLocale({
+    detected: createLocale({ languageOrLocale: detected }),
+    supported: SUPPORTED,
+    overrides: { '*': DEFAULT },
+  }).locale
+  // 3. Redirect only when it differs from the default; otherwise just serve the default.
+  return resolved !== DEFAULT
+    ? { action: 'redirect → /' + resolved }
+    : { action: 'fall back to default → /' + DEFAULT }
+}
+
+function Demo() {
+  const [url, setUrl] = useState('')
+  const [sys, setSys] = useState('fr-FR')
+  const { action } = decide(url, sys)
+  return (
+    <div style={{ display: 'grid', gap: 8, maxWidth: 360 }}>
+      <label>URL locale:{' '}
+        <select value={url} onChange={(e) => setUrl(e.target.value)}>
+          <option value=''>(none)</option>
+          <option value='nl-BE'>nl-BE</option>
+          <option value='fr-FR'>fr-FR</option>
+          <option value='pt-BR'>pt-BR (unsupported)</option>
+        </select>
+      </label>
+      <label>Browser locale:{' '}
+        <select value={sys} onChange={(e) => setSys(e.target.value)}>
+          <option value='fr-FR'>fr-FR (supported)</option>
+          <option value='en-US'>en-US (= default)</option>
+          <option value='ja-JP'>ja-JP (unsupported)</option>
+        </select>
+      </label>
+      <p style={{ margin: 0 }}>→ <strong>{action}</strong></p>
+    </div>
+  )
+}
+
+render(<Demo />)`
+
 const EX_DATASOURCE = `// Extend the built-in data with a fictional country, then look it up.
 // Including builtinDataSource keeps every real country too.
 configureDataset(
@@ -303,6 +354,16 @@ export function LocalePage() {
         <code>resolveLocale</code> returns a full <code>ILocale</code> — pass its{' '}
         <code>.locale</code> string to the provider.
       </Callout>
+
+      <h3>Locale routing — URL → redirect → fallback</h3>
+      <p>
+        The most common setup: a supported locale in the URL wins; otherwise resolve the visitor's
+        browser locale against what you ship, <strong>redirect</strong> to it when it differs from
+        your default, and <strong>fall back</strong> to the default when it isn't supported. Toggle
+        the inputs to see each branch — in production, <code>detected</code> is{' '}
+        <code>SystemLocale</code> and <code>action</code> runs through your router.
+      </p>
+      <LiveExample code={EX_ROUTING} scope={{ useState, resolveLocale, createLocale }} />
 
       <h3>Country flag &amp; spoken languages</h3>
       <p>

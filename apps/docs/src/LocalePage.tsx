@@ -150,29 +150,18 @@ render(
   </Locale>,
 )`
 
-const ROUTER_CODE = `import { Locale, resolveLocale, SystemLocale } from '@luwio/locale'
-import { redirect, useRouteLocale } from '@luwio/router'
+const ROUTER_CODE = `import { Locale, resolveLocale } from '@luwio/locale'
+import { useRouteLocale } from '@luwio/router'
 
 const SUPPORTED = ['nl-BE', 'fr-FR', 'en-US']
 const OVERRIDES = { 'en-*': 'en-US', '*': 'nl-BE' } // '*' catch-all → default
-const DEFAULT = 'nl-BE'
 
 function App() {
-  const { locale } = useRouteLocale() // string, or null when the URL has no locale
+  // The router always returns a locale: the one in the URL, or its own
+  // configured default when the URL has none — so this never sees null.
+  const { locale } = useRouteLocale()
 
-  // No locale in the URL → look at the visitor's system locale.
-  if (locale == null) {
-    if (SUPPORTED.includes(SystemLocale.locale)) {
-      return redirect('/' + SystemLocale.locale) // supported → send them there
-    }
-    return ( // unsupported system locale → render the default language
-      <Locale locale={DEFAULT}>
-        <Site />
-      </Locale>
-    )
-  }
-
-  // A locale in the URL → resolve it ('pt-PT' → '*' catch-all → default) and render.
+  // Resolve it onto what you support — an unsupported '/pt-PT' falls to '*' → default.
   const active = resolveLocale({ detected: locale, supported: SUPPORTED, overrides: OVERRIDES })
   return (
     <Locale locale={active.locale}>
@@ -283,21 +272,12 @@ export function LocalePage() {
         intended integration for the most common locale task: taking the locale from the URL.
       </Callout>
       <p>
-        The router hands you the locale from the URL via <code>useRouteLocale()</code> — a string,
-        or <code>null</code> when the route has no locale segment.
+        <code>useRouteLocale()</code> always returns a locale — the one in the URL, or the router's
+        configured default when the URL has none — so you never handle <code>null</code>. Map it
+        onto what you support with <code>resolveLocale</code>: an unsupported <code>/pt-PT</code>{' '}
+        falls to the <code>*</code> catch-all (your default), everything else through the usual
+        rules (same-language → per-pattern → catch-all). Render the result via <code>Locale</code>.
       </p>
-      <ul>
-        <li>
-          <strong>With a locale</strong> — map it onto what you support with{' '}
-          <code>resolveLocale</code>: an unsupported <code>/pt-PT</code> falls to the <code>*</code>{' '}
-          catch-all (your default). Render the result via <code>Locale</code>.
-        </li>
-        <li>
-          <strong>Without one</strong> — fall back to <code>SystemLocale</code>: if the visitor's
-          system locale is supported, <code>redirect</code> to it; otherwise render the default
-          language.
-        </li>
-      </ul>
       <CodeBlock code={ROUTER_CODE} />
 
       <h2 id="api">API reference</h2>

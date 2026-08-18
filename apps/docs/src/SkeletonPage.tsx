@@ -93,22 +93,27 @@ formatMoney(money(1999, 'USD'), 'en-US')    // '$19.99'`,
       { sig: 'formatMoney(value, locale?)', desc: 'Format via Intl.NumberFormat.' },
     ],
   },
-  google: {
+  theme: {
     intro:
-      'Helpers for loading and using Google web SDKs. It starts with one-time script loading; typed wrappers for Maps, Identity and Analytics are planned.',
-    dependency: 'No framework dependency — works anywhere with a DOM.',
-    lang: 'ts',
-    code: `import { loadGoogleScript } from '@luwio/google'
+      'Light / dark / system theme management for React. Today it ships a provider + hook that reflect the resolved theme on <html>; design tokens and an SSR no-flash script are planned.',
+    dependency: 'React 18+ is a peer dependency.',
+    lang: 'tsx',
+    code: `import { ThemeProvider, useTheme } from '@luwio/theme'
 
-await loadGoogleScript(
-  \`https://maps.googleapis.com/maps/api/js?key=\${API_KEY}\`,
-)
-// window.google.maps is now available`,
+function ThemeToggle() {
+  const { theme, resolvedTheme, setTheme } = useTheme()
+  return (
+    <button onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}>
+      {theme} ({resolvedTheme})
+    </button>
+  )
+}`,
     api: [
       {
-        sig: 'loadGoogleScript(src)',
-        desc: 'Inject a Google SDK script once; repeated calls reuse the same promise.',
+        sig: '<ThemeProvider defaultTheme? attribute?>',
+        desc: 'Provides + applies the theme; writes <html data-theme>.',
       },
+      { sig: 'useTheme()', desc: 'Returns { theme, resolvedTheme, setTheme }.' },
     ],
   },
 }

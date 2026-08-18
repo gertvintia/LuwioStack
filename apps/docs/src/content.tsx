@@ -3,6 +3,7 @@ import {
   BarChartIcon,
   CalendarIcon,
   CoinIcon,
+  ContrastIcon,
   DatabaseIcon,
   GlobeIcon,
   LayoutIcon,
@@ -108,6 +109,18 @@ export const PACKAGES: PackageMeta[] = [
       'Currency formatting and safe minor-unit math. Amounts are integer cents, so no floating-point drift.',
     gzip: '—',
     install: 'npm i @luwio/money',
+    status: 'skeleton',
+  },
+  {
+    slug: 'theme',
+    name: '@luwio/theme',
+    accent: '#6366f1',
+    icon: <ContrastIcon />,
+    tagline: 'Theming',
+    blurb:
+      'Light / dark / system theme management for React — a provider + hook that reflects the resolved theme on <html>.',
+    gzip: '—',
+    install: 'npm i @luwio/theme',
     status: 'skeleton',
   },
   {

@@ -25,7 +25,7 @@ function App() {
   return (
     <Locale
       locale="nl-BE"                 // required — the 'language-country' string
-      policy={MatchingPolicy.STRICT} // optional — same LocalePolicy resolveLocale takes
+      policy={MatchingPolicy.STRICT} // optional — overrides the default (LOOSE)
     >
       <Info />
     </Locale>
@@ -61,8 +61,9 @@ locale.country().borders()    // Countries → FR, DE, LU, NL
 Country.new({ code: 'BE' }).direct_dialing_code   // '+32'
 Continent.europe().countries().toArray().length   // European countries
 
-// Loose matching: language and country must each exist, not necessarily together
-createLocale({ languageOrLocale: 'en', country: 'BE', policy: MatchingPolicy.LOOSE })
+// Loose matching is the default: language and country must each exist, not
+// necessarily together. Pass MatchingPolicy.STRICT to require the exact combo.
+createLocale({ languageOrLocale: 'en', country: 'BE' }) // 'en-BE'
 ```
 
 ## Locale resolution

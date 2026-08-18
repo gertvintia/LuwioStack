@@ -20,7 +20,7 @@ export class Locale implements ILocale {
   private constructor(
     language: string,
     region: string,
-    policy: LocalePolicy = MatchingPolicy.STRICT,
+    policy: LocalePolicy = MatchingPolicy.LOOSE,
   ) {
     const normalized = normalizeLocale({ locale: `${language}-${region}` })
     const [lang = '', country = ''] = normalized.split('-')

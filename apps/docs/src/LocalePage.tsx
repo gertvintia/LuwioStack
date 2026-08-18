@@ -21,7 +21,7 @@ function App() {
   return (
     <Locale
       locale="nl-BE"                 // required — the 'language-country' string
-      policy={MatchingPolicy.STRICT} // optional — same LocalePolicy resolveLocale takes
+      policy={MatchingPolicy.STRICT} // optional — overrides the default (LOOSE)
     >
       <Info />
     </Locale>
@@ -61,17 +61,16 @@ const locale = resolveLocale({
 
 const POLICY_CODE = `import { createLocale, MatchingPolicy } from '@luwio/locale'
 
-// STRICT (default): the exact language-country combo must exist
-createLocale({ languageOrLocale: 'nl-BE' })
+// LOOSE (default): language and country must each exist, not necessarily together
+createLocale({ languageOrLocale: 'en', country: 'BE' }) // 'en-BE' — accepted
 
-// LOOSE: language and country must each exist, not necessarily together
-createLocale({ languageOrLocale: 'en', country: 'BE', policy: MatchingPolicy.LOOSE })
+// STRICT: the exact language-country combination must exist in the dataset
+createLocale({ languageOrLocale: 'en', country: 'BE', policy: MatchingPolicy.STRICT }) // throws
 
-// Per-pattern policy map
+// Per-pattern policy map (its \`default\` applies where no pattern matches)
 createLocale({
-  languageOrLocale: 'en',
-  country: 'BE',
-  policy: { default: MatchingPolicy.STRICT, locales: { 'en-*': MatchingPolicy.LOOSE } },
+  languageOrLocale: 'nl-BE',
+  policy: { default: MatchingPolicy.LOOSE, locales: { 'en-*': MatchingPolicy.STRICT } },
 })`
 
 // Live snippets run in noInline mode: each ends with render(<…/>). They avoid
@@ -224,8 +223,10 @@ export function LocalePage() {
 
       <h2 id="policies">Matching policies</h2>
       <p>
-        A <code>MatchingPolicy</code> controls how strictly a locale must exist in the dataset. Pass
-        a uniform policy, or a rule map resolved most-specific-first.
+        A <code>MatchingPolicy</code> controls how strictly a locale must exist in the dataset. The
+        default is <code>LOOSE</code> (language and country each exist); pass{' '}
+        <code>MatchingPolicy.STRICT</code> for exact combinations, or a rule map resolved
+        most-specific-first.
       </p>
       <CodeBlock code={POLICY_CODE} />
 
@@ -288,7 +289,7 @@ export function LocalePage() {
         rows={[
           {
             sig: 'Locale',
-            desc: 'Provider. Strict by default; pass supported + overrides to resolve like resolveLocale.',
+            desc: 'Provider taking a locale string + optional policy (default LOOSE).',
           },
           {
             sig: 'useLocale()',
@@ -312,7 +313,10 @@ export function LocalePage() {
           },
           { sig: 'Countries · Languages', desc: 'Immutable, de-duplicated collections.' },
           { sig: 'Continent', desc: 'Continent lookup with .countries().' },
-          { sig: 'MatchingPolicy', desc: 'STRICT | LOOSE enum for resolution strictness.' },
+          {
+            sig: 'MatchingPolicy',
+            desc: 'STRICT | LOOSE enum for match strictness (default LOOSE).',
+          },
         ]}
       />
     </DocsLayout>

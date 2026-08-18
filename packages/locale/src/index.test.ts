@@ -68,8 +68,13 @@ describe('Locale', () => {
     expect(locale.toIntlLocale()).toBeInstanceOf(Intl.Locale)
   })
 
-  it('throws on an unknown strict combination', () => {
+  it('throws when the language or country is unknown', () => {
     expect(() => createLocale({ languageOrLocale: 'zz', country: 'BE' })).toThrow(/unknown/i)
+  })
+
+  it('defaults to LOOSE — a valid language + country pair is accepted without a policy', () => {
+    // 'en-BE' isn't a dataset combination, but 'en' and 'BE' each exist.
+    expect(createLocale({ languageOrLocale: 'en', country: 'BE' }).locale).toBe('en-BE')
   })
 
   it('accepts a loose combination when parts exist separately', () => {

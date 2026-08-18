@@ -230,8 +230,9 @@ export function LocalePage() {
       <CodeBlock code={DATA_SOURCE_CODE} />
       <Callout>
         Include <code>builtinDataSource</code> to extend the built-in data; omit it to replace
-        entirely. Multiple sources merge left → right. For async data, fetch first and call{' '}
-        <code>configureDataset</code> once — the domain layer stays synchronous.
+        entirely. Sources merge left → right at country (alpha-2), language (ISO 639-1) and locale
+        granularity — override one country and it applies to every locale that references it. For
+        async data, fetch first and call <code>configureDataset</code> once (the domain stays sync).
       </Callout>
 
       <h2 id="examples">Examples</h2>

@@ -81,7 +81,7 @@ data source is just entries in the interface format (`IDatasetEntry`) — build 
 ```ts
 import { builtinDataSource, configureDataset, defineDataSource } from '@luwio/locale'
 
-// Extend the built-in data (include builtinDataSource; later sources win per `locale`)
+// Extend the built-in data (include builtinDataSource; later sources win)
 configureDataset(
   builtinDataSource,
   defineDataSource(myRows, (row) => ({
@@ -99,7 +99,10 @@ import { resetDataset } from '@luwio/locale'
 resetDataset()
 ```
 
-Pass several sources to `configureDataset(...)` and they're merged left → right. For async data,
+Sources merge left → right at three granularities — a single country (by alpha-2) or language (by
+ISO 639-1) overrides that unit across *every* locale that references it, while `locale` decides
+which entries exist. So you can change just Belgium's dialing code without re-supplying every
+`xx-BE` entry. For async data,
 fetch first and call `configureDataset` once it resolves (the domain layer stays synchronous).
 
 ## Structure

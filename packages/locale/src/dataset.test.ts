@@ -74,6 +74,44 @@ describe('@luwio/locale data sources', () => {
     expect(() => Country.new({ code: 'QQ' })).toThrow()
   })
 
+  it('overrides a country across every locale that references it (granularity)', () => {
+    // The built-in data has several be-* locales (nl-BE, fr-BE, …) all sharing country BE.
+    // Overriding BE from a *single* entry must apply to all of them.
+    const be = Country.new({ code: 'BE' })
+    const nl = {
+      name: 'Dutch',
+      name_local: 'Nederlands',
+      iso_639_1: 'nl',
+      iso_639_2: 'nld',
+      iso_639_3: 'nld',
+    }
+    const overriddenBE = {
+      name: be.name,
+      name_local: be.name,
+      iso_3166_1_alpha2: 'BE',
+      iso_3166_1_alpha3: 'BEL',
+      iso_3166_1_numeric: 56,
+      continent: 'Europe',
+      region: 'Western Europe',
+      capital: 'Brussels',
+      direct_dialing_code: '+000', // ← the change
+      currency_code: 'EUR',
+      currency_symbol: '€',
+      flag: '🇧🇪',
+      timezones: ['UTC+01:00'],
+      borders: ['FR', 'DE', 'LU', 'NL'],
+      languages: [nl],
+    }
+    configureDataset(
+      builtinDataSource,
+      defineDataSource([{ locale: 'nl-BE', language: nl, country: overriddenBE }]),
+    )
+    // A different be-locale still sees the override — proof it merged at country granularity,
+    // not per whole locale entry.
+    expect(Country.new({ code: 'BE' }).direct_dialing_code).toBe('+000')
+    expect(Locale.fromLocale({ locale: 'fr-BE' }).country().direct_dialing_code).toBe('+000')
+  })
+
   it('getDataset reflects the active entries', () => {
     configureDataset(defineDataSource([CUSTOM]))
     expect(getDataset()).toHaveLength(1)

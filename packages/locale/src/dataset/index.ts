@@ -1,4 +1,4 @@
-import type { DataSource, IDatasetEntry } from '../types'
+import type { DataSource, IDatasetCountry, IDatasetEntry, IDatasetLanguage } from '../types'
 import { builtinEntries } from './builtin'
 import { getDataset, resetActiveDataset, setActiveDataset } from './registry'
 
@@ -30,9 +30,10 @@ export function defineDataSource<T>(
 }
 
 /**
- * Set the active dataset from one or more sources, merged left → right — later sources override
- * earlier ones per `locale`. Include {@link builtinDataSource} to **extend** the built-in data;
- * omit it to **replace** it entirely.
+ * Set the active dataset from one or more sources, merged left → right. Later sources override
+ * earlier ones at three granularities: a single country (by alpha-2) or language (by ISO 639-1)
+ * replaces that unit across *every* locale that references it, and `locale` decides which entries
+ * exist. Include {@link builtinDataSource} to **extend** the built-in data; omit it to **replace**.
  *
  * @example
  * // extend the built-in dataset
@@ -43,11 +44,32 @@ export function defineDataSource<T>(
  * configureDataset(defineDataSource(myEntries))
  */
 export function configureDataset(...sources: DataSource[]): void {
-  const byLocale = new Map<string, IDatasetEntry>()
+  // Merge at three granularities so an override lands where you'd expect: `locale` decides which
+  // entries exist, while a single country (by alpha-2) or language (by ISO 639-1) overrides that
+  // unit across *every* locale that references it — no need to re-supply every `xx-BE` entry to
+  // change Belgium. Last source wins at each granularity.
+  const entryByLocale = new Map<string, IDatasetEntry>()
+  const countryByAlpha2 = new Map<string, IDatasetCountry>()
+  const languageByIso = new Map<string, IDatasetLanguage>()
+
   for (const source of sources) {
-    for (const entry of source.entries) byLocale.set(entry.locale, entry)
+    for (const entry of source.entries) {
+      entryByLocale.set(entry.locale, entry)
+      countryByAlpha2.set(entry.country.iso_3166_1_alpha2, entry.country)
+      if (entry.language.iso_639_1 !== '')
+        languageByIso.set(entry.language.iso_639_1, entry.language)
+    }
   }
-  setActiveDataset([...byLocale.values()])
+
+  const merged: IDatasetEntry[] = []
+  for (const entry of entryByLocale.values()) {
+    merged.push({
+      locale: entry.locale,
+      language: languageByIso.get(entry.language.iso_639_1) ?? entry.language,
+      country: countryByAlpha2.get(entry.country.iso_3166_1_alpha2) ?? entry.country,
+    })
+  }
+  setActiveDataset(merged)
 }
 
 /** Restore the built-in dataset, discarding anything set via {@link configureDataset}. */

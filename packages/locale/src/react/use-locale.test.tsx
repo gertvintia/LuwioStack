@@ -1,23 +1,24 @@
 import { renderHook } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { describe, expect, it } from 'vitest'
-import { LocaleProvider } from './locale-provider'
+import { Locale } from './locale-provider'
 import { useLocale } from './use-locale'
 
 describe('useLocale', () => {
-  it('exposes the resolved locale from the provider', () => {
+  it('exposes the resolved locale as `current`', () => {
     const wrapper = ({ children }: { children: ReactNode }) => (
-      <LocaleProvider locale="nl-BE">{children}</LocaleProvider>
+      <Locale locale="nl-BE">{children}</Locale>
     )
     const { result } = renderHook(() => useLocale(), { wrapper })
-    expect(result.current.locale.locale).toBe('nl-BE')
-    expect(result.current.language_code).toBe('nl')
-    expect(result.current.country_code).toBe('BE')
-    expect(result.current.country.name).toBe('Belgium')
-    expect(result.current.language.name).toBe('Dutch')
+    const { current } = result.current
+    expect(current.locale).toBe('nl-BE')
+    expect(current.language_code).toBe('nl')
+    expect(current.country_code).toBe('BE')
+    expect(current.country.name).toBe('Belgium')
+    expect(current.language.name).toBe('Dutch')
   })
 
   it('throws when used outside a provider', () => {
-    expect(() => renderHook(() => useLocale())).toThrow(/LocaleProvider/)
+    expect(() => renderHook(() => useLocale())).toThrow(/<Locale>/)
   })
 })

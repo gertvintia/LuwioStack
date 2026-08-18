@@ -6,7 +6,8 @@ import {
   getDataset,
   resetDataset,
 } from './dataset'
-import { Country, type IDatasetEntry, Locale } from './index'
+import { Locale } from './domain/locale'
+import { Country, type IDatasetEntry } from './index'
 
 const CUSTOM: IDatasetEntry = {
   locale: 'xx-QQ',

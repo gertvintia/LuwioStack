@@ -1,5 +1,5 @@
 import { createConfig } from '@luwio/config'
-import { LocaleProvider, useLocale } from '@luwio/locale'
+import { Locale, useLocale } from '@luwio/locale'
 import { useLocalStorage } from '@luwio/storage'
 
 // @luwio/config — typed runtime config, defined once.
@@ -22,7 +22,7 @@ function DemoWindow({
   onChange: (locale: string) => void
 }) {
   const appName = useConfigValue('appName') // @luwio/config
-  const { locale, country, language } = useLocale() // @luwio/locale
+  const { current: active } = useLocale() // @luwio/locale
   const [count, setCount] = useLocalStorage('luwio:demo:count', 0) // @luwio/storage
 
   return (
@@ -47,21 +47,21 @@ function DemoWindow({
         <div className="field">
           <span className="label">Country</span>
           <span className="value">
-            <span className="flag">{flagOf(country.alpha2)}</span> {country.name}
+            <span className="flag">{flagOf(active.country.alpha2)}</span> {active.country.name}
           </span>
         </div>
         <div className="field">
           <span className="label">Language</span>
-          <span className="value">{language.name}</span>
+          <span className="value">{active.language.name}</span>
         </div>
         <div className="field">
           <span className="label">Dialing code</span>
-          <span className="value">{country.direct_dialing_code}</span>
+          <span className="value">{active.country.direct_dialing_code}</span>
         </div>
         <div className="field">
           <span className="label">ISO codes</span>
           <span className="value">
-            {locale.locale} · {country.alpha3} · {country.numeric}
+            {active.locale} · {active.country.alpha3} · {active.country.numeric}
           </span>
         </div>
         <div className="field">
@@ -87,9 +87,9 @@ export function LiveDemo() {
 
   return (
     <ConfigProvider>
-      <LocaleProvider locale={locale}>
+      <Locale locale={locale}>
         <DemoWindow current={locale} onChange={setLocale} />
-      </LocaleProvider>
+      </Locale>
     </ConfigProvider>
   )
 }

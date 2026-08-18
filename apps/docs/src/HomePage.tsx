@@ -32,10 +32,10 @@ const DEMO_CODE = `// one app, three packages
 const { ConfigProvider } = createConfig({ appName: 'Luwio Demo' })
 
 <ConfigProvider>
-  <LocaleProvider locale="nl-BE">
-    const { country } = useLocale()        // Belgium · +32
+  <Locale locale="nl-BE">
+    const { current } = useLocale()        // current.country → Belgium · +32
     const [n, setN] = useLocalStorage('count', 0)  // persisted
-  </LocaleProvider>
+  </Locale>
 </ConfigProvider>`
 
 function Section({

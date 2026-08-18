@@ -1,4 +1,4 @@
-import { Continent, LocaleProvider, resolveLocale, SystemLocale, useLocale } from '@luwio/locale'
+import { Continent, Locale, resolveLocale, SystemLocale, useLocale } from '@luwio/locale'
 import { useState } from 'react'
 import { DocHero, type DocSection, DocsLayout } from './DocsLayout'
 import { LiveExample } from './LiveExample'
@@ -15,22 +15,22 @@ const SECTIONS: DocSection[] = [
   { id: 'api', label: 'API reference' },
 ]
 
-const REACT_CODE = `import { LocaleProvider, useLocale } from '@luwio/locale'
+const REACT_CODE = `import { Locale, useLocale } from '@luwio/locale'
 
 function App() {
   return (
-    <LocaleProvider locale="nl-BE">
+    <Locale locale="nl-BE">
       <Info />
-    </LocaleProvider>
+    </Locale>
   )
 }
 
 function Info() {
-  const { locale, country, language } = useLocale()
+  const { current } = useLocale()
   return (
     <p>
-      {language.name} in {country.name} ({locale.locale})
-      — dial {country.direct_dialing_code}
+      {current.language.name} in {current.country.name} ({current.locale})
+      — dial {current.country.direct_dialing_code}
     </p>
   )
 }`
@@ -78,23 +78,23 @@ const EX_SWITCHER = `const SUPPORTED = ['en-US', 'nl-BE', 'fr-FR', 'de-DE', 'ja-
 
 function Info() {
   // useLocale() has no setter — switching is driven by the parent's state.
-  const { country, language } = useLocale()
+  const { current } = useLocale()
   return (
-    <p>{language.name} · {country.name} · dial {country.direct_dialing_code}</p>
+    <p>{current.language.name} · {current.country.name} · dial {current.country.direct_dialing_code}</p>
   )
 }
 
 function Switcher() {
   const [locale, setLocale] = useState('nl-BE')
   return (
-    <LocaleProvider locale={locale}>
+    <Locale locale={locale}>
       <select value={locale} onChange={(e) => setLocale(e.target.value)}>
         {SUPPORTED.map((code) => (
           <option key={code} value={code}>{code}</option>
         ))}
       </select>
       <Info />
-    </LocaleProvider>
+    </Locale>
   )
 }
 
@@ -132,20 +132,20 @@ const EX_COUNTRY = `const flag = (a) =>
   a.replace(/./g, (ch) => String.fromCodePoint(127397 + ch.charCodeAt(0)))
 
 function Badge() {
-  const { country } = useLocale()
-  const spoken = country.languages().toArray().map((l) => l.name)
+  const { current } = useLocale()
+  const spoken = current.country.languages().toArray().map((l) => l.name)
   return (
     <div>
-      <strong>{flag(country.alpha2)} {country.name}</strong>
+      <strong>{flag(current.country.alpha2)} {current.country.name}</strong>
       <div>Spoken: {spoken.join(', ')}</div>
     </div>
   )
 }
 
 render(
-  <LocaleProvider locale="nl-BE">
+  <Locale locale="nl-BE">
     <Badge />
-  </LocaleProvider>,
+  </Locale>,
 )`
 
 const ROUTER_CODE = `import { defineRoutes } from '@luwio/router'
@@ -192,14 +192,14 @@ export function LocalePage() {
 
       <h2 id="react-usage">React usage</h2>
       <p>
-        Wrap your tree in <code>LocaleProvider</code> with a <code>language-country</code> string,
-        then read the resolved locale anywhere with <code>useLocale</code>.
+        Wrap your tree in <code>Locale</code> with a <code>language-country</code> string, then read
+        the resolved locale anywhere with <code>useLocale</code>.
       </p>
       <CodeBlock code={REACT_CODE} />
       <p>
-        <code>useLocale</code> returns{' '}
-        <code>{'{ locale, language, language_code, country, country_code }'}</code> and throws if
-        used outside a provider.
+        <code>useLocale</code> returns <code>{'{ current }'}</code> — the active locale with its
+        resolved <code>language</code> and <code>country</code> — and throws if used outside a
+        provider.
       </p>
 
       <h2 id="domain-model">Domain model</h2>
@@ -234,9 +234,9 @@ export function LocalePage() {
       <h3>Language switcher</h3>
       <p>
         <code>useLocale</code> is read-only, so hold the locale string in parent state and feed it
-        to <code>LocaleProvider</code>. Pick a locale and watch it re-resolve.
+        to <code>Locale</code>. Pick a locale and watch it re-resolve.
       </p>
-      <LiveExample code={EX_SWITCHER} scope={{ useState, LocaleProvider, useLocale }} />
+      <LiveExample code={EX_SWITCHER} scope={{ useState, Locale, useLocale }} />
 
       <h3>Phone-number country picker</h3>
       <p>
@@ -261,7 +261,7 @@ export function LocalePage() {
         Derive a flag emoji from the country's alpha-2 code and list the languages spoken there
         straight from the dataset.
       </p>
-      <LiveExample code={EX_COUNTRY} scope={{ LocaleProvider, useLocale }} />
+      <LiveExample code={EX_COUNTRY} scope={{ Locale, useLocale }} />
 
       <h2 id="routing">Locale routing with @luwio/router</h2>
       <Callout>
@@ -279,8 +279,11 @@ export function LocalePage() {
       <h2 id="api">API reference</h2>
       <ApiTable
         rows={[
-          { sig: 'LocaleProvider', desc: 'Provider taking a locale string + optional policy.' },
-          { sig: 'useLocale()', desc: 'Hook → the active locale, language and country.' },
+          { sig: 'Locale', desc: 'Provider taking a locale string + optional policy.' },
+          {
+            sig: 'useLocale()',
+            desc: 'Hook → { current } with the active locale, language and country.',
+          },
           {
             sig: 'createLocale()',
             desc: 'Build an ILocale from a code, locale string, or language + country.',
@@ -291,7 +294,7 @@ export function LocalePage() {
             desc: "The runtime's detected locale (region inferred if absent).",
           },
           {
-            sig: 'Locale · Language · Country',
+            sig: 'Language · Country',
             desc: 'Domain entities with codes, names and relationships.',
           },
           { sig: 'Countries · Languages', desc: 'Immutable, de-duplicated collections.' },

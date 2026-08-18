@@ -19,21 +19,22 @@ React 18+ is a peer dependency (the domain layer works without React too).
 ## React usage
 
 ```tsx
-import { LocaleProvider, useLocale } from '@luwio/locale'
+import { Locale, useLocale } from '@luwio/locale'
 
 function App() {
   return (
-    <LocaleProvider locale="nl-BE">
+    <Locale locale="nl-BE">
       <Info />
-    </LocaleProvider>
+    </Locale>
   )
 }
 
 function Info() {
-  const { locale, country, language } = useLocale()
+  const { current } = useLocale()
   return (
     <p>
-      {language.name} in {country.name} ({locale.locale}) — dial {country.direct_dialing_code}
+      {current.language.name} in {current.country.name} ({current.locale})
+      — dial {current.country.direct_dialing_code}
     </p>
   )
 }
@@ -84,7 +85,7 @@ docs for the planned shape.
 src/
 ├── domain/   Locale, Language(s), Country(ies), Continent, SystemLocale
 ├── utils/    createLocale, resolveLocale, resolvePolicy, normalizeLocale, …
-├── react/    LocaleContext, LocaleProvider, useLocale
+├── react/    LocaleContext, Locale, useLocale
 ├── dataset/  built-in dataset + internal registry (module composes its data here)
 ├── data/     dataset.json (built-in ISO 639 / ISO 3166 dataset)
 └── types.ts  interfaces + enums
@@ -92,8 +93,8 @@ src/
 
 ## API surface
 
-- **React:** `LocaleProvider`, `useLocale`
+- **React:** `Locale`, `useLocale` (returns `{ current }`)
 - **Factory:** `createLocale`, `resolveLocale`, `SystemLocale`
-- **Domain:** `Locale`, `Language`, `Languages`, `Country`, `Countries`, `Continent`
+- **Domain:** `Language`, `Languages`, `Country`, `Countries`, `Continent`
 - **Utils:** `normalizeLocale`, `matchLocalePattern`, `resolvePolicy`, `toMachineName`
 - **Types:** `ILocale`, `ICountry`, `ILanguage`, `MatchingPolicy`, `LocalePolicy`, …

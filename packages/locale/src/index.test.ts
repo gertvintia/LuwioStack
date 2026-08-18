@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { Locale } from './domain/locale'
 import {
   Continent,
   Countries,
@@ -6,7 +7,6 @@ import {
   CountryCodeFormat,
   createLocale,
   Language,
-  Locale,
   MatchingPolicy,
   matchLocalePattern,
   normalizeLocale,

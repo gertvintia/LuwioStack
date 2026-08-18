@@ -84,10 +84,28 @@ resolveLocale({
 
 ## Locale routing
 
-Getting the locale from the URL (with a redirect when it's missing) will be provided as an
-integration with [`@luwio/router`](../router) — a supported locale in the URL is used as-is,
-otherwise `resolveLocale(SystemLocale, …)` picks the best supported locale and redirects. See the
-docs for the planned shape.
+With [`@luwio/router`](../router) (planned), take the locale straight from the URL and hand it to
+`<Locale>` — you can't trust it to be supported, so pass `supported` + `overrides` and let it
+resolve:
+
+```tsx
+import { Locale } from '@luwio/locale'
+import { useRouteLocale } from '@luwio/router'
+
+const SUPPORTED = ['nl-BE', 'fr-FR', 'en-US']
+
+function App() {
+  const { locale } = useRouteLocale()          // '/pt-PT' → 'pt-PT'
+  return (
+    <Locale locale={locale} supported={SUPPORTED} overrides={{ 'en-*': 'en-US', '*': 'nl-BE' }}>
+      <Site />
+    </Locale>
+  )
+}
+```
+
+`/pt-PT` isn't supported, so it falls through the same rules as `resolveLocale` (same-language →
+per-pattern → the `*` catch-all) and renders in the default language — no redirect, no crash.
 
 ## Structure
 

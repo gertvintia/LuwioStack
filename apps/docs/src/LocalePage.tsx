@@ -153,29 +153,29 @@ render(
   </Locale>,
 )`
 
-const ROUTER_CODE = `import { defineRoutes } from '@luwio/router'
-import { resolveLocale, SystemLocale } from '@luwio/locale'
+const ROUTER_CODE = `import { Locale } from '@luwio/locale'
+import { useRouteLocale } from '@luwio/router'
 
-const SUPPORTED = ['en-US', 'nl-BE', 'fr-FR']
-const DEFAULT = 'en-US'
+const SUPPORTED = ['nl-BE', 'fr-FR', 'en-US']
 
-export const routes = defineRoutes([
-  // A supported locale in the URL is used as-is.
-  { path: '/:locale/*', render: ({ locale }) => <App locale={locale} /> },
+function App() {
+  // The router reads the locale from the URL — '/pt-PT' → 'pt-PT'.
+  const { locale } = useRouteLocale()
 
-  // No locale in the URL — resolve the visitor's browser locale and redirect.
-  {
-    path: '/*',
-    redirect: () => {
-      const { locale } = resolveLocale({
-        detected: SystemLocale,
-        supported: SUPPORTED,
-        overrides: { '*': DEFAULT }, // '*' catch-all → the default
-      })
-      return '/' + locale + '/'
-    },
-  },
-])`
+  // Hand it straight to <Locale> with your supported list + overrides.
+  // 'pt-PT' isn't supported, so the '*' catch-all renders the site in nl-BE —
+  // no redirect, no crash. overrides stays flexible: same-language and
+  // per-pattern rules still apply before the catch-all.
+  return (
+    <Locale
+      locale={locale}
+      supported={SUPPORTED}
+      overrides={{ 'en-*': 'en-US', '*': 'nl-BE' }}
+    >
+      <Site />
+    </Locale>
+  )
+}`
 
 export function LocalePage() {
   return (
@@ -279,13 +279,15 @@ export function LocalePage() {
       <h2 id="routing">Locale routing with @luwio/router</h2>
       <Callout>
         <strong>Planned.</strong> <code>@luwio/router</code> is a skeleton today — this is the
-        intended integration for the most common locale task: getting the locale from the URL, with
-        a redirect when it's missing.
+        intended integration for the most common locale task: taking the locale from the URL.
       </Callout>
       <p>
-        A supported locale in the URL is used as-is. When it's missing, resolve the visitor's
-        browser locale (<code>SystemLocale</code>) against what you ship and redirect to it — the{' '}
-        <code>*</code> catch-all lands unsupported visitors on your default.
+        The router hands you the locale from the URL via <code>useRouteLocale()</code>, which you
+        can't trust to be one you support. Pass it straight to <code>Locale</code> with your{' '}
+        <code>supported</code> list and <code>overrides</code>: an unsupported route like{' '}
+        <code>/pt-PT</code> resolves through the same rules as <code>resolveLocale</code> — a
+        same-language match, then a per-pattern rule, then the <code>*</code> catch-all — so it just
+        renders in your default language. No redirect, no crash.
       </p>
       <CodeBlock code={ROUTER_CODE} />
 

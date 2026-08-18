@@ -368,6 +368,28 @@ a {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+.badge-done {
+  color: #16a34a;
+  background: color-mix(in srgb, #22c55e 12%, transparent);
+  border-color: color-mix(in srgb, #22c55e 45%, transparent);
+}
+
+/* "Done" indicator — a green check in the nav and sidebar menus. */
+.done-check,
+.nav-done {
+  color: #22c55e;
+  font-weight: 700;
+}
+.done-check {
+  margin-left: 6px;
+  font-size: 12px;
+}
+.nav-done {
+  margin-left: 4px;
+  font-size: 11px;
+  vertical-align: text-top;
+}
+
 /* Skeleton cards read as in-progress: dashed edge, slightly muted. */
 .pkg-card.is-skeleton {
   border-style: dashed;

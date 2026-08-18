@@ -36,6 +36,11 @@ export function DocsLayout({
                 >
                   <span className="swatch" style={{ background: p.accent }} />
                   {p.name}
+                  {p.status === 'done' && (
+                    <span className="done-check" title="Complete">
+                      ✓
+                    </span>
+                  )}
                 </a>
               </li>
             ))}

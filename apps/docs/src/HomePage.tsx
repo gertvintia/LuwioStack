@@ -112,6 +112,8 @@ export function HomePage() {
               <div className="pkg-foot">
                 {p.status === 'skeleton' ? (
                   <span className="badge badge-skeleton">Skeleton</span>
+                ) : p.status === 'done' ? (
+                  <span className="badge badge-done">Stable ✓</span>
                 ) : (
                   <span className="badge">{p.gzip} gzip</span>
                 )}

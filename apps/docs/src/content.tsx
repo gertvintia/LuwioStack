@@ -14,7 +14,7 @@ import {
   SlidersIcon,
 } from './icons'
 
-export type PackageStatus = 'ready' | 'skeleton'
+export type PackageStatus = 'done' | 'ready' | 'skeleton'
 
 export interface PackageMeta {
   slug: string
@@ -39,7 +39,7 @@ export const PACKAGES: PackageMeta[] = [
       'Predictable locale management — a typed domain model over ISO country & language data, with a provider and hook.',
     gzip: '44 kB',
     install: 'npm i @luwio/locale',
-    status: 'ready',
+    status: 'done',
   },
   {
     slug: 'config',

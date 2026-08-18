@@ -25,13 +25,18 @@ function Nav({ route }: { route: string }) {
       <div className="wrap">
         <Wordmark />
         <div className="nav-links">
-          {PACKAGES.filter((p) => p.status === 'ready').map((p) => (
+          {PACKAGES.filter((p) => p.status !== 'skeleton').map((p) => (
             <a
               key={p.slug}
               className={`pkg-link${route === `/docs/${p.slug}` ? ' active' : ''}`}
               href={`#/docs/${p.slug}`}
             >
               {p.slug}
+              {p.status === 'done' && (
+                <span className="nav-done" title="Complete">
+                  ✓
+                </span>
+              )}
             </a>
           ))}
           <a className="btn btn-ghost" href={REPO_URL}>

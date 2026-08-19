@@ -53,7 +53,7 @@ provider.
 ## Domain model (no React required)
 
 ```ts
-import { Locale, Country, Continent, MatchingPolicy } from '@luwio/locale'
+import { Locale, Country, Language, Continent, MatchingPolicy } from '@luwio/locale'
 
 const locale = Locale.new({ languageOrLocale: 'nl-BE' })
 locale.language().name        // 'Dutch'
@@ -61,6 +61,7 @@ locale.country().alpha3       // 'BEL'
 locale.country().borders()    // Countries → FR, DE, LU, NL
 
 Country.new({ code: 'BE' }).direct_dialing_code   // '+32'
+Language.new({ code: 'nl' }).name                 // 'Dutch'
 Continent.europe().countries().toArray().length   // European countries
 
 // STRICT vs LOOSE, on 'en-BE' (English spoken in Belgium):

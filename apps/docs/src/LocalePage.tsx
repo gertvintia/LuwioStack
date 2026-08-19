@@ -38,7 +38,7 @@ function Info() {
   )
 }`
 
-const DOMAIN_CODE = `import { Locale, Country, Continent } from '@luwio/locale'
+const DOMAIN_CODE = `import { Locale, Country, Language, Continent } from '@luwio/locale'
 
 const locale = Locale.new({ languageOrLocale: 'nl-BE' })
 locale.language().name        // 'Dutch'
@@ -46,6 +46,7 @@ locale.country().alpha3       // 'BEL'
 locale.country().borders()    // Countries → FR, DE, LU, NL
 
 Country.new({ code: 'BE' }).direct_dialing_code   // '+32'
+Language.new({ code: 'nl' }).name                 // 'Dutch'
 Continent.europe().countries().size               // European countries`
 
 const RESOLVE_CODE = `import { resolveLocale, SystemLocale } from '@luwio/locale'

@@ -14,6 +14,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@luwio/locale': pkgSrc('locale'),
+      '@luwio/country': pkgSrc('country'),
+      '@luwio/language': pkgSrc('language'),
       '@luwio/config': pkgSrc('config'),
       '@luwio/storage': pkgSrc('storage'),
     },

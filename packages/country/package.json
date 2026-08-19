@@ -1,0 +1,50 @@
+{
+  "name": "@luwio/country",
+  "version": "0.0.0",
+  "description": "Typed ISO 3166 country data for JavaScript — countries, continents, borders, dialing codes, currencies and spoken languages. Dependency-light, framework-agnostic.",
+  "keywords": [
+    "country",
+    "iso-3166",
+    "continent",
+    "currency",
+    "i18n",
+    "locale",
+    "intl",
+    "luwio"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@luwio/language": "workspace:*"
+  }
+}

@@ -1,4 +1,4 @@
-import { type ILocale, MatchingPolicy } from '../types'
+import type { ILocale } from '../types'
 import { createLocale } from '../utils/create-locale'
 
 /**
@@ -11,13 +11,8 @@ function detectSystemLocale(): ILocale {
   try {
     const resolved = Intl.DateTimeFormat().resolvedOptions().locale
     const maximized = new Intl.Locale(resolved).maximize()
-    console.log(maximized)
     if (maximized.region) {
-      return createLocale({
-        languageOrLocale: maximized.language,
-        country: maximized.region,
-        policy: MatchingPolicy.LOOSE,
-      })
+      return createLocale({ languageOrLocale: maximized.language, country: maximized.region })
     }
   } catch {
     // fall through to the default

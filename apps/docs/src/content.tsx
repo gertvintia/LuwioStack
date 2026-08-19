@@ -12,6 +12,7 @@ import {
   PhoneIcon,
   RouteIcon,
   SlidersIcon,
+  TypeIcon,
 } from './icons'
 
 export type PackageStatus = 'done' | 'ready' | 'skeleton'
@@ -37,9 +38,33 @@ export const PACKAGES: PackageMeta[] = [
     tagline: 'Locale management',
     blurb:
       'Predictable locale management — a typed domain model over ISO country & language data, with a provider and hook.',
-    gzip: '44 kB',
+    gzip: '3 kB',
     install: 'npm i @luwio/locale',
     status: 'done',
+  },
+  {
+    slug: 'country',
+    name: '@luwio/country',
+    accent: '#10b981',
+    icon: <MapPinIcon />,
+    tagline: 'Country data',
+    blurb:
+      'Typed ISO 3166 country data — continents, borders, dialing codes, currencies, flags and the languages each country speaks.',
+    gzip: '20 kB',
+    install: 'npm i @luwio/country',
+    status: 'ready',
+  },
+  {
+    slug: 'language',
+    name: '@luwio/language',
+    accent: '#a855f7',
+    icon: <TypeIcon />,
+    tagline: 'Language data',
+    blurb:
+      'Typed ISO 639 language data — a small, immutable domain model over the ISO 639-1/2/3 list. Dependency-free.',
+    gzip: '4 kB',
+    install: 'npm i @luwio/language',
+    status: 'ready',
   },
   {
     slug: 'config',

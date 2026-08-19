@@ -1,10 +1,12 @@
 import { PRODUCT_NAME, REPO_URL, SUITE_NAME } from './brand'
 import { ConfigPage } from './ConfigPage'
+import { CountryPage } from './CountryPage'
 import { PACKAGES } from './content'
 import { GoogleAnalyticsPage } from './GoogleAnalyticsPage'
 import { GoogleMapsPage } from './GoogleMapsPage'
 import { HomePage } from './HomePage'
 import { GitHubIcon, LuwioWordmark } from './icons'
+import { LanguagePage } from './LanguagePage'
 import { LocalePage } from './LocalePage'
 import { useHashRoute } from './router'
 import { SkeletonPage } from './SkeletonPage'
@@ -71,6 +73,10 @@ function renderRoute(route: string) {
     switch (slug) {
       case 'locale':
         return <LocalePage />
+      case 'country':
+        return <CountryPage />
+      case 'language':
+        return <LanguagePage />
       case 'config':
         return <ConfigPage />
       case 'storage':

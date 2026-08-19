@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@luwio/config": "workspace:*",
+    "@luwio/country": "workspace:*",
+    "@luwio/language": "workspace:*",
     "@luwio/locale": "workspace:*",
     "@luwio/storage": "workspace:*",
     "prism-react-renderer": "^2.4.1",

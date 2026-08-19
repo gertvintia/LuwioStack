@@ -1,17 +1,7 @@
-import { getDataset } from '../dataset/registry'
-import {
-  type IContinent,
-  type ICountry,
-  type ILanguage,
-  type ILanguages,
-  type ILocale,
-  type LocalePolicy,
-  MatchingPolicy,
-} from '../types'
+import { Country, type IContinent, type ICountry } from '@luwio/country'
+import { type ILanguage, type ILanguages, Language } from '@luwio/language'
+import type { ILocale } from '../types'
 import { normalizeLocale } from '../utils/normalize-locale'
-import { resolvePolicy } from '../utils/resolve-policy'
-import { Country } from './country'
-import { Language } from './language'
 
 export class Locale implements ILocale {
   public readonly locale: string
@@ -19,64 +9,40 @@ export class Locale implements ILocale {
   public readonly language_code: string
   public readonly country_code: string
 
-  private constructor(
-    language: string,
-    region: string,
-    policy: LocalePolicy = MatchingPolicy.LOOSE,
-  ) {
+  private constructor(language: string, region: string) {
     const normalized = normalizeLocale({ locale: `${language}-${region}` })
     const [lang = '', country = ''] = normalized.split('-')
-    const effectivePolicy = resolvePolicy(policy, lang, country)
-    const entries = getDataset()
 
-    if (effectivePolicy === MatchingPolicy.STRICT) {
-      const entry = entries.find((d) => d.locale.toLowerCase() === normalized.toLowerCase())
-      if (!entry) {
-        throw new Error(`Unknown locale: ${normalized}`)
-      }
-      this.locale = entry.locale
-    } else {
-      const languageExists = entries.some(
-        (d) => d.language.iso_639_1.toLowerCase() === lang.toLowerCase(),
-      )
-      if (!languageExists) {
-        throw new Error(`Unknown language in locale: ${normalized}`)
-      }
+    // A locale is valid when its language and country are each known. There is no
+    // "combination must exist" check — `Language.new` / `Country.new` throw with a
+    // clear message if either code is unknown.
+    Language.new({ code: lang })
+    Country.new({ code: country })
 
-      const countryExists = entries.some(
-        (d) => d.country.iso_3166_1_alpha2.toLowerCase() === country.toLowerCase(),
-      )
-      if (!countryExists) {
-        throw new Error(`Unknown country in locale: ${normalized}`)
-      }
-
-      this.locale = normalized
-    }
-
-    this.code = this.locale
-    const [language_code = '', country_code = ''] = this.locale.split('-')
-    this.language_code = language_code
-    this.country_code = country_code
+    this.locale = normalized
+    this.code = normalized
+    this.language_code = lang
+    this.country_code = country
   }
 
   /** Build from separate language + country codes. */
-  public static new(value: { language: string; country: string; policy?: LocalePolicy }): Locale {
-    return new Locale(value.language, value.country, value.policy)
+  public static new(value: { language: string; country: string }): Locale {
+    return new Locale(value.language, value.country)
   }
 
   /** Build from a `language-country` string. */
-  public static fromLocale(value: { locale: string; policy?: LocalePolicy }): Locale {
+  public static fromLocale(value: { locale: string }): Locale {
     const [language = '', country = ''] = value.locale.split('-')
-    return new Locale(language, country, value.policy)
+    return new Locale(language, country)
   }
 
   /** Build from a native {@link Intl.Locale}; requires a region. */
-  public static fromIntlLocale(value: { locale: Intl.Locale; policy?: LocalePolicy }): Locale {
+  public static fromIntlLocale(value: { locale: Intl.Locale }): Locale {
     const country = value.locale.region
     if (!country) {
       throw new Error(`Unsupported Intl.Locale: ${value.locale.toString()}. A country is required.`)
     }
-    return new Locale(value.locale.language, country, value.policy)
+    return new Locale(value.locale.language, country)
   }
 
   public language(): ILanguage {
@@ -88,7 +54,7 @@ export class Locale implements ILocale {
   }
 
   public country(): ICountry {
-    return Country.from({ code: this.country_code })
+    return Country.new({ code: this.country_code })
   }
 
   public continent(): IContinent {

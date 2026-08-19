@@ -1,0 +1,10 @@
+{
+  "name": "@luwio/iso-data",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Internal source-of-truth for Luwio's ISO 639 / ISO 3166 data. Generates the bundled data slices consumed by @luwio/language, @luwio/country and friends. Not published.",
+  "type": "module",
+  "scripts": {
+    "generate": "node scripts/generate.mjs"
+  }
+}

@@ -1,4 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@luwio/country": ["../country/src/index.ts"],
+      "@luwio/language": ["../language/src/index.ts"]
+    }
+  },
   "include": ["src"]
 }

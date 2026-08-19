@@ -44,6 +44,12 @@ importers:
       '@luwio/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@luwio/country':
+        specifier: workspace:*
+        version: link:../../packages/country
+      '@luwio/language':
+        specifier: workspace:*
+        version: link:../../packages/language
       '@luwio/locale':
         specifier: workspace:*
         version: link:../../packages/locale
@@ -94,6 +100,12 @@ importers:
         specifier: 'catalog:'
         version: 19.2.8(react@19.2.8)
 
+  packages/country:
+    dependencies:
+      '@luwio/language':
+        specifier: workspace:*
+        version: link:../language
+
   packages/datetime: {}
 
   packages/google-analytics:
@@ -132,7 +144,18 @@ importers:
         specifier: 'catalog:'
         version: 19.2.8(react@19.2.8)
 
+  packages/iso-data: {}
+
+  packages/language: {}
+
   packages/locale:
+    dependencies:
+      '@luwio/country':
+        specifier: workspace:*
+        version: link:../country
+      '@luwio/language':
+        specifier: workspace:*
+        version: link:../language
     devDependencies:
       '@testing-library/react':
         specifier: ^16.3.2

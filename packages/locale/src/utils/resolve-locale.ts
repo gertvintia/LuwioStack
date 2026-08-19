@@ -1,5 +1,5 @@
 import { Locale } from '../domain/locale'
-import type { ILocale, LocaleOverrides, LocalePolicy } from '../types'
+import type { ILocale, LocaleOverrides } from '../types'
 import { matchLocalePattern } from './match-locale-pattern'
 import { normalizeLocale } from './normalize-locale'
 
@@ -25,9 +25,8 @@ export function resolveLocale(value: {
   detected: ILocale | string | null | undefined
   supported: string[]
   overrides: LocaleOverrides
-  policy?: LocalePolicy
 }): ILocale {
-  const { detected, supported, overrides, policy } = value
+  const { detected, supported, overrides } = value
 
   const detectedString = typeof detected === 'string' ? detected : (detected?.locale ?? '')
   const key = detectedString === '' ? '' : normalizeLocale({ locale: detectedString })
@@ -46,12 +45,12 @@ export function resolveLocale(value: {
   if (normalizedSupported.includes(key)) {
     return detected != null && typeof detected !== 'string'
       ? detected
-      : Locale.fromLocale({ locale: key, policy })
+      : Locale.fromLocale({ locale: key })
   }
 
   const overridden = normalizedOverrides[key]
   if (overridden) {
-    return Locale.fromLocale({ locale: overridden, policy })
+    return Locale.fromLocale({ locale: overridden })
   }
 
   const [lang = '', country = ''] = key.split('-')
@@ -62,7 +61,7 @@ export function resolveLocale(value: {
   })
 
   if (patternMatch) {
-    return Locale.fromLocale({ locale: patternMatch[1], policy })
+    return Locale.fromLocale({ locale: patternMatch[1] })
   }
 
   const byLanguage = normalizedSupported.find((s) =>
@@ -70,8 +69,8 @@ export function resolveLocale(value: {
   )
 
   if (byLanguage) {
-    return Locale.fromLocale({ locale: byLanguage, policy })
+    return Locale.fromLocale({ locale: byLanguage })
   }
 
-  return Locale.fromLocale({ locale: normalizedOverrides['*'], policy })
+  return Locale.fromLocale({ locale: normalizedOverrides['*'] })
 }

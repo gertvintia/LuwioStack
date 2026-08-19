@@ -1,20 +1,33 @@
-// Types & enums
+// Re-exported domain from the packages @luwio/locale composes — so `@luwio/locale` stays a
+// one-stop import, while each is also installable on its own.
+export {
+  CONTINENT_MAP,
+  Continent,
+  Countries,
+  Country,
+  CountryCodeFormat,
+  type IContinent,
+  type ICountries,
+  type ICountry,
+  toMachineName,
+} from '@luwio/country'
+export {
+  type ILanguage,
+  type ILanguages,
+  Language,
+  LanguageCodeFormat,
+  Languages,
+} from '@luwio/language'
 
-// Domain entities
-export { CONTINENT_MAP, Continent } from './domain/continent'
-export { Countries } from './domain/countries'
-export { Country } from './domain/country'
-export { Language } from './domain/language'
-export { Languages } from './domain/languages'
+// Locale's own domain
 export { SystemLocale } from './domain/system-locale'
 // React bindings
 export { LocaleContext } from './react/locale-context'
 export { Locale, type LocaleProps } from './react/locale-provider'
 export { type CurrentLocale, type UseLocaleResult, useLocale } from './react/use-locale'
-export * from './types'
+// Types
+export type { ILocale, LocaleOverrides } from './types'
 // Utilities
 export { matchLocalePattern } from './utils/match-locale-pattern'
 export { normalizeLocale } from './utils/normalize-locale'
 export { resolveLocale } from './utils/resolve-locale'
-export { resolvePolicy } from './utils/resolve-policy'
-export { toMachineName } from './utils/to-machine-name'

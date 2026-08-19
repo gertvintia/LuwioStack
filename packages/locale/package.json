@@ -46,6 +46,10 @@
     "lint": "biome check .",
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "@luwio/country": "workspace:*",
+    "@luwio/language": "workspace:*"
+  },
   "peerDependencies": {
     "react": ">=18"
   },

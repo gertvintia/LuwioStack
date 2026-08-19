@@ -6,5 +6,8 @@ export default defineConfig({
   dts: true,
   clean: true,
   sourcemap: true,
-  external: ['react', 'react-dom'],
+  // Build against a paths-free tsconfig — see the note in @luwio/country's tsdown.config.ts.
+  tsconfig: './tsconfig.build.json',
+  // React and sibling @luwio/* packages are dependencies — never bundle them into this dist.
+  external: [/^@luwio\//, 'react', 'react-dom'],
 })

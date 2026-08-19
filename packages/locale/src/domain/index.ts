@@ -1,7 +1,2 @@
-export { CONTINENT_MAP, Continent } from './continent'
-export { Countries } from './countries'
-export { Country } from './country'
-export { Language } from './language'
-export { Languages } from './languages'
 export { Locale } from './locale'
 export { SystemLocale } from './system-locale'

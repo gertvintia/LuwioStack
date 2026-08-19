@@ -7,11 +7,9 @@ import {
   CountryCodeFormat,
   Language,
   Locale,
-  MatchingPolicy,
   matchLocalePattern,
   normalizeLocale,
   resolveLocale,
-  resolvePolicy,
   toMachineName,
 } from './index'
 
@@ -26,7 +24,7 @@ describe('normalizeLocale', () => {
   })
 })
 
-describe('toMachineName', () => {
+describe('toMachineName (re-exported from @luwio/country)', () => {
   it('slugifies and strips diacritics', () => {
     expect(toMachineName('North America')).toBe('north_america')
     expect(toMachineName('Côte d’Ivoire')).toBe('cote_d_ivoire')
@@ -42,25 +40,11 @@ describe('matchLocalePattern', () => {
   })
 })
 
-describe('resolvePolicy', () => {
-  it('returns a uniform policy as-is', () => {
-    expect(resolvePolicy(MatchingPolicy.LOOSE, 'en', 'US')).toBe(MatchingPolicy.LOOSE)
-  })
-
-  it('picks the most specific matching rule', () => {
-    const policy = {
-      default: MatchingPolicy.STRICT,
-      locales: { 'en-*': MatchingPolicy.LOOSE },
-    }
-    expect(resolvePolicy(policy, 'en', 'ZZ')).toBe(MatchingPolicy.LOOSE)
-    expect(resolvePolicy(policy, 'nl', 'BE')).toBe(MatchingPolicy.STRICT)
-  })
-})
-
 describe('Locale', () => {
-  it('creates a strict locale from a known combination', () => {
+  it('creates a locale from a known combination', () => {
     const locale = Locale.new({ languageOrLocale: 'nl-BE' })
     expect(locale.locale).toBe('nl-BE')
+    expect(locale.code).toBe('nl-BE')
     expect(locale.language_code).toBe('nl')
     expect(locale.country_code).toBe('BE')
     expect(locale.language().name).toBe('Dutch')
@@ -68,35 +52,28 @@ describe('Locale', () => {
     expect(locale.toIntlLocale()).toBeInstanceOf(Intl.Locale)
   })
 
+  it('is valid whenever the language and country are each known — no combination check', () => {
+    // 'en-BE' isn't a listed pairing, but 'en' and 'BE' each exist → accepted.
+    expect(Locale.new({ languageOrLocale: 'en', country: 'BE' }).locale).toBe('en-BE')
+  })
+
   it('throws when the language or country is unknown', () => {
     expect(() => Locale.new({ languageOrLocale: 'zz', country: 'BE' })).toThrow(/unknown/i)
+    expect(() => Locale.new({ languageOrLocale: 'nl', country: 'ZZ' })).toThrow(/unknown/i)
   })
 
   it('resolves the continent of the locale', () => {
     expect(Locale.new({ languageOrLocale: 'nl-BE' }).continent().name).toBe('Europe')
   })
-
-  it('defaults to LOOSE — a valid language + country pair is accepted without a policy', () => {
-    // 'en-BE' isn't a dataset combination, but 'en' and 'BE' each exist.
-    expect(Locale.new({ languageOrLocale: 'en', country: 'BE' }).locale).toBe('en-BE')
-  })
-
-  it('accepts a loose combination when parts exist separately', () => {
-    const locale = Locale.new({
-      languageOrLocale: 'en',
-      country: 'BE',
-      policy: MatchingPolicy.LOOSE,
-    })
-    expect(locale.locale).toBe('en-BE')
-  })
 })
 
-describe('Country', () => {
+describe('Country (re-exported)', () => {
   it('resolves ISO codes and dialing prefix', () => {
     const be = Country.new({ code: 'BE' })
     expect(be.alpha3).toBe('BEL')
     expect(be.numeric).toHaveLength(3)
     expect(be.direct_dialing_code).toBe('+32')
+    expect(be.currency_code).toBe('EUR')
     expect(be.borders().toArray().length).toBeGreaterThan(0)
   })
 
@@ -109,13 +86,13 @@ describe('Country', () => {
   })
 })
 
-describe('Language', () => {
+describe('Language (re-exported)', () => {
   it('resolves by alpha-2 code', () => {
     expect(Language.new({ code: 'nl' }).name).toBe('Dutch')
   })
 })
 
-describe('Countries collection', () => {
+describe('Countries collection (re-exported)', () => {
   it('is immutable and de-duplicates', () => {
     const base = Countries.benelux()
     expect(base.size).toBe(3)
@@ -132,7 +109,7 @@ describe('Countries collection', () => {
   })
 })
 
-describe('Continent', () => {
+describe('Continent (re-exported)', () => {
   it('lists European countries including Belgium', () => {
     const codes = Continent.europe()
       .countries()
@@ -154,7 +131,7 @@ describe('resolveLocale', () => {
 
   it('prefers a same-language supported locale', () => {
     const resolved = resolveLocale({
-      detected: LocaleClass.fromLocale({ locale: 'fr-BE', policy: MatchingPolicy.LOOSE }),
+      detected: LocaleClass.fromLocale({ locale: 'fr-BE' }),
       supported: ['fr-FR', 'nl-NL'],
       overrides: { '*': 'nl-NL' },
     })

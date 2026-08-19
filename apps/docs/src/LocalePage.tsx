@@ -9,20 +9,16 @@ const SECTIONS: DocSection[] = [
   { id: 'react-usage', label: 'React usage' },
   { id: 'domain-model', label: 'Domain model' },
   { id: 'resolution', label: 'Locale resolution' },
-  { id: 'policies', label: 'Matching policies' },
   { id: 'examples', label: 'Examples' },
   { id: 'routing', label: 'Locale routing' },
   { id: 'api', label: 'API reference' },
 ]
 
-const REACT_CODE = `import { Locale, MatchingPolicy, useLocale } from '@luwio/locale'
+const REACT_CODE = `import { Locale, useLocale } from '@luwio/locale'
 
 function App() {
   return (
-    <Locale
-      locale="nl-BE"                 // required — the 'language-country' string
-      policy={MatchingPolicy.STRICT} // optional — overrides the default (LOOSE)
-    >
+    <Locale locale="nl-BE">   {/* the 'language-country' string */}
       <Info />
     </Locale>
   )
@@ -39,7 +35,9 @@ function Info() {
   )
 }`
 
-const DOMAIN_CODE = `import { Locale, Country, Language, Continent } from '@luwio/locale'
+const DOMAIN_CODE = `// Country/Language/Continent are re-exported from @luwio/country + @luwio/language,
+// so you can import them straight from @luwio/locale — or from their own packages.
+import { Locale, Country, Language, Continent } from '@luwio/locale'
 
 const locale = Locale.new({ languageOrLocale: 'nl-BE' })
 locale.language().name        // 'Dutch'
@@ -48,9 +46,10 @@ locale.country().borders()    // Countries → FR, DE, LU, NL
 locale.continent().name       // 'Europe'
 
 Country.new({ code: 'BE' }).direct_dialing_code   // '+32'
+Country.new({ code: 'BE' }).currency_code         // 'EUR'  (formatting → @luwio/money)
 Country.new({ code: 'BE' }).continent().code      // 'EU'
 Language.new({ code: 'nl' }).name                 // 'Dutch'
-Continent.new({ code: 'EU' }).name              // 'Europe'
+Continent.new({ code: 'EU' }).name                // 'Europe'
 Continent.europe().countries().size               // European countries`
 
 const RESOLVE_CODE = `import { resolveLocale, SystemLocale } from '@luwio/locale'
@@ -64,23 +63,16 @@ const locale = resolveLocale({
   },
 })`
 
-const POLICY_CODE = `import { Locale, MatchingPolicy } from '@luwio/locale'
+const VALIDITY_CODE = `import { Locale } from '@luwio/locale'
 
-// 'nl-BE' is a real dataset entry → both policies accept it.
-Locale.new({ languageOrLocale: 'nl-BE' })
+// A locale is valid when its language and country are each known — there's no
+// "must be a listed pair" check. 'en-BE' works even though it isn't a common pairing:
+Locale.new({ languageOrLocale: 'nl-BE' })              // 'nl-BE'
+Locale.new({ languageOrLocale: 'en', country: 'BE' })  // 'en-BE'
 
-// 'en-BE': English and Belgium each exist, but not together as a dataset entry.
-Locale.new({ languageOrLocale: 'en', country: 'BE' })                                 // LOOSE (default) → 'en-BE'
-Locale.new({ languageOrLocale: 'en', country: 'BE', policy: MatchingPolicy.STRICT })  // STRICT → throws
-
-// Either policy throws when the language or the country itself is unknown.
+// An unknown language or country throws (fail fast):
 Locale.new({ languageOrLocale: 'zz', country: 'BE' })  // 'zz' isn't a language → throws
-
-// Per-pattern map: its \`default\` applies where no pattern matches.
-Locale.new({
-  languageOrLocale: 'nl-BE',
-  policy: { default: MatchingPolicy.LOOSE, locales: { 'en-*': MatchingPolicy.STRICT } },
-})`
+Locale.new({ languageOrLocale: 'nl', country: 'ZZ' })  // 'ZZ' isn't a country  → throws`
 
 // Live snippets run in noInline mode: each ends with render(<…/>). They avoid
 // template literals so they can live inside these template-string constants.
@@ -186,10 +178,12 @@ export function LocalePage() {
       <DocHero slug="locale" />
 
       <p>
-        <code>@luwio/locale</code> gives you a typed domain model over a built-in ISO dataset — 377
-        language-country combinations. Resolve a locale, inspect the country and language behind it,
-        and expose the active locale through a provider and hook. The domain layer works with or
-        without React.
+        <code>@luwio/locale</code> ties a <em>language</em> and a <em>country</em> together into an
+        active locale. It composes <a href="#/docs/country">@luwio/country</a> and{' '}
+        <a href="#/docs/language">@luwio/language</a> (installed automatically), so a locale is
+        valid whenever its language and country are each known. Resolve a locale, inspect the
+        country and language behind it, and expose the active locale through a provider and hook —
+        the domain layer works with or without React.
       </p>
 
       <h2 id="installation">Installation</h2>
@@ -226,8 +220,11 @@ export function LocalePage() {
 
       <h2 id="domain-model">Domain model</h2>
       <p>
-        Every entity is immutable and constructed from the built-in dataset. Collections (
-        <code>Countries</code>, <code>Languages</code>) return new instances on every change.
+        Every entity is immutable. <code>Country</code>, <code>Language</code> and{' '}
+        <code>Continent</code> live in <a href="#/docs/country">@luwio/country</a> and{' '}
+        <a href="#/docs/language">@luwio/language</a> and are re-exported here, so a single{' '}
+        <code>@luwio/locale</code> import gets you everything. Collections (<code>Countries</code>,{' '}
+        <code>Languages</code>) return new instances on every change.
       </p>
       <CodeBlock code={DOMAIN_CODE} />
 
@@ -240,27 +237,12 @@ export function LocalePage() {
       </p>
       <CodeBlock code={RESOLVE_CODE} />
 
-      <h2 id="policies">Matching policies</h2>
       <p>
-        A <code>MatchingPolicy</code> controls how strictly a locale must exist in the dataset —
-        take <code>en-BE</code> (English spoken in Belgium):
+        A locale is valid whenever its <em>language</em> and its <em>country</em> are each known —
+        there's no "must be a listed pair" rule to configure. An unknown language or country throws,
+        so mistakes surface immediately.
       </p>
-      <ul>
-        <li>
-          <strong>LOOSE</strong> (default) — the <em>language</em> and the <em>country</em> must
-          each exist, not necessarily together. <code>en-BE</code> is accepted (both <code>en</code>{' '}
-          and <code>BE</code> exist), even though it isn't a listed pair.
-        </li>
-        <li>
-          <strong>STRICT</strong> — the exact <code>language-country</code> pair must be a dataset
-          entry. <code>en-BE</code> throws; <code>nl-BE</code> (a real entry) passes.
-        </li>
-      </ul>
-      <p>
-        Either way, an unknown language or country (e.g. <code>zz-BE</code>) throws. Pass a uniform
-        policy, or a rule map resolved most-specific-first.
-      </p>
-      <CodeBlock code={POLICY_CODE} />
+      <CodeBlock code={VALIDITY_CODE} />
 
       <h2 id="examples">Examples</h2>
       <p>
@@ -319,7 +301,7 @@ export function LocalePage() {
         rows={[
           {
             sig: 'Locale',
-            desc: 'Provider taking a locale string + optional policy (default LOOSE).',
+            desc: 'Provider taking a language-country string.',
           },
           {
             sig: 'useLocale()',
@@ -339,14 +321,15 @@ export function LocalePage() {
           },
           {
             sig: 'Language · Country',
-            desc: 'Domain entities with codes, names and relationships.',
+            desc: (
+              <>
+                Re-exported from <a href="#/docs/language">@luwio/language</a> ·{' '}
+                <a href="#/docs/country">@luwio/country</a>.
+              </>
+            ),
           },
           { sig: 'Countries · Languages', desc: 'Immutable, de-duplicated collections.' },
           { sig: 'Continent', desc: 'Continent lookup with .countries().' },
-          {
-            sig: 'MatchingPolicy',
-            desc: 'STRICT | LOOSE enum for match strictness (default LOOSE).',
-          },
         ]}
       />
     </DocsLayout>

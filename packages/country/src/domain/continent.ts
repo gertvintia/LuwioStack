@@ -1,4 +1,4 @@
-import { getDataset } from '../dataset/registry'
+import { countryRows } from '../data'
 import type { IContinent, ICountries } from '../types'
 import { toMachineName } from '../utils/to-machine-name'
 import { Countries } from './countries'
@@ -62,14 +62,13 @@ export class Continent implements IContinent {
   }
 
   public countries(): ICountries {
-    const entries = getDataset()
     const seen = new Set<string>()
     let result: ICountries = Countries.empty()
 
-    for (const d of entries) {
-      if (d.country.continent === this.name && !seen.has(d.country.iso_3166_1_alpha2)) {
-        seen.add(d.country.iso_3166_1_alpha2)
-        result = result.add(Country.from({ code: d.country.iso_3166_1_alpha2 }))
+    for (const c of countryRows) {
+      if (c.continent === this.name && !seen.has(c.iso_3166_1_alpha2)) {
+        seen.add(c.iso_3166_1_alpha2)
+        result = result.add(Country.from({ code: c.iso_3166_1_alpha2 }))
       }
     }
 

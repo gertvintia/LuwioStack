@@ -16,15 +16,20 @@ const SECTIONS: DocSection[] = [
 ]
 
 const REACT_CODE = `import { Locale, MatchingPolicy, useLocale } from '@luwio/locale'
+import { ErrorBoundary } from 'react-error-boundary'
 
 function App() {
   return (
-    <Locale
-      locale="nl-BE"                 // required — the 'language-country' string
-      policy={MatchingPolicy.STRICT} // optional — overrides the default (LOOSE)
-    >
-      <Info />
-    </Locale>
+    // A locale that can't be resolved throws while rendering — an error boundary
+    // turns that into a fallback instead of a blank screen.
+    <ErrorBoundary fallback={<p>Unsupported locale.</p>}>
+      <Locale
+        locale="nl-BE"                 // required — the 'language-country' string
+        policy={MatchingPolicy.STRICT} // optional — overrides the default (LOOSE)
+      >
+        <Info />
+      </Locale>
+    </ErrorBoundary>
   )
 }
 
@@ -198,9 +203,9 @@ export function LocalePage() {
         <code>useLocale</code> returns <code>{'{ current }'}</code> with{' '}
         <code>current.locale.code</code>, <code>current.language</code>, <code>current.region</code>
         , <code>current.languages</code> and <code>current.intl</code> — and throws if used outside
-        a provider. <code>Locale</code> takes just <code>locale</code> + <code>policy</code>; to map
-        an untrusted value onto what you support, resolve it first with <code>resolveLocale</code>{' '}
-        (see below).
+        a provider. A locale that can't be resolved also throws while rendering, so wrap{' '}
+        <code>Locale</code> in an error boundary (above) — or resolve untrusted values first with{' '}
+        <code>resolveLocale</code> (see below) so it never throws.
       </p>
 
       <h2 id="domain-model">Domain model</h2>

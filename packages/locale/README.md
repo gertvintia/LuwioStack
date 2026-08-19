@@ -20,15 +20,20 @@ React 18+ is a peer dependency (the domain layer works without React too).
 
 ```tsx
 import { Locale, MatchingPolicy, useLocale } from '@luwio/locale'
+import { ErrorBoundary } from 'react-error-boundary'
 
 function App() {
+  // A locale that can't be resolved throws while rendering — an error boundary
+  // turns that into a fallback instead of a blank screen.
   return (
-    <Locale
-      locale="nl-BE"                 // required — the 'language-country' string
-      policy={MatchingPolicy.STRICT} // optional — overrides the default (LOOSE)
-    >
-      <Info />
-    </Locale>
+    <ErrorBoundary fallback={<p>Unsupported locale.</p>}>
+      <Locale
+        locale="nl-BE"                 // required — the 'language-country' string
+        policy={MatchingPolicy.STRICT} // optional — overrides the default (LOOSE)
+      >
+        <Info />
+      </Locale>
+    </ErrorBoundary>
   )
 }
 
@@ -44,9 +49,10 @@ function Info() {
 ```
 
 
-With just `locale`, an unknown value throws. Add `supported` + `overrides` and `<Locale>` resolves
-exactly like [`resolveLocale`](#locale-resolution) — an unknown `locale` falls back via the
-required `*` catch-all instead of throwing. `resolveLocale` also accepts a raw string as `detected`.
+A locale that can't be resolved throws while rendering, so wrap `<Locale>` in an error boundary
+(above). For untrusted/optional values, resolve them first with
+[`resolveLocale`](#locale-resolution) — it maps onto your supported set (falling back via the
+required `*` catch-all) so `<Locale>` never throws. `useLocale` throws if used outside a provider.
 
 ## Domain model (no React required)
 

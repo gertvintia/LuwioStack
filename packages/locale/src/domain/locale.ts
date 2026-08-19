@@ -100,7 +100,7 @@ export class Locale implements ILocale {
     if (!match) {
       throw new Error(`Unknown continent for locale: ${this.locale}`)
     }
-    return Continent.new({ alpha2: match[0] })
+    return Continent.new({ code: match[0] })
   }
 
   public toIntlLocale(): Intl.Locale {

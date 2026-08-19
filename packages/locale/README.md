@@ -63,7 +63,7 @@ locale.continent().name       // 'Europe'
 
 Country.new({ code: 'BE' }).direct_dialing_code   // '+32'
 Language.new({ code: 'nl' }).name                 // 'Dutch'
-Continent.new({ alpha2: 'EU' }).name              // 'Europe'
+Continent.new({ code: 'EU' }).name              // 'Europe'
 Continent.europe().countries().toArray().length   // European countries
 
 // STRICT vs LOOSE, on 'en-BE' (English spoken in Belgium):

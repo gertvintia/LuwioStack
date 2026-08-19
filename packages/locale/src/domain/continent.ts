@@ -17,48 +17,48 @@ export const CONTINENT_MAP: Record<string, string> = {
 export class Continent implements IContinent {
   public readonly name: string
   public readonly machine_name: string
-  public readonly alpha2: string
+  public readonly code: string
 
-  private constructor(name: string, alpha2: string) {
+  private constructor(name: string, code: string) {
     this.name = name
-    this.alpha2 = alpha2
+    this.code = code
     this.machine_name = toMachineName(name)
   }
 
-  public static new(value: { alpha2: string }): Continent {
-    const name = CONTINENT_MAP[value.alpha2.toUpperCase()]
+  public static new(value: { code: string }): Continent {
+    const name = CONTINENT_MAP[value.code.toUpperCase()]
     if (!name) {
-      throw new Error(`Unknown continent code: ${value.alpha2}`)
+      throw new Error(`Unknown continent code: ${value.code}`)
     }
-    return new Continent(name, value.alpha2.toUpperCase())
+    return new Continent(name, value.code.toUpperCase())
   }
 
   public static africa(): Continent {
-    return Continent.new({ alpha2: 'AF' })
+    return Continent.new({ code: 'AF' })
   }
 
   public static antarctica(): Continent {
-    return Continent.new({ alpha2: 'AN' })
+    return Continent.new({ code: 'AN' })
   }
 
   public static asia(): Continent {
-    return Continent.new({ alpha2: 'AS' })
+    return Continent.new({ code: 'AS' })
   }
 
   public static europe(): Continent {
-    return Continent.new({ alpha2: 'EU' })
+    return Continent.new({ code: 'EU' })
   }
 
   public static northAmerica(): Continent {
-    return Continent.new({ alpha2: 'NA' })
+    return Continent.new({ code: 'NA' })
   }
 
   public static oceania(): Continent {
-    return Continent.new({ alpha2: 'OC' })
+    return Continent.new({ code: 'OC' })
   }
 
   public static southAmerica(): Continent {
-    return Continent.new({ alpha2: 'SA' })
+    return Continent.new({ code: 'SA' })
   }
 
   public countries(): ICountries {

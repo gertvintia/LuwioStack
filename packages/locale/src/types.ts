@@ -51,8 +51,8 @@ export interface IContinent {
   name: string
   /** Machine-readable identifier, stable across translations. */
   machine_name: string
-  /** ISO 3166-1 alpha-2 continent code. */
-  alpha2: string
+  /** Two-letter continent code, e.g. `"EU"`. */
+  code: string
   countries(): ICountries
 }
 

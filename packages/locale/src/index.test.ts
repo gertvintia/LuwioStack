@@ -100,6 +100,10 @@ describe('Country', () => {
     expect(be.borders().toArray().length).toBeGreaterThan(0)
   })
 
+  it('resolves its continent', () => {
+    expect(Country.new({ code: 'BE' }).continent().name).toBe('Europe')
+  })
+
   it('looks up by alpha-3 format', () => {
     expect(Country.from({ code: 'BEL', format: CountryCodeFormat.ALPHA3 }).alpha2).toBe('BE')
   })

@@ -1,6 +1,7 @@
 import { getDataset } from '../dataset/registry'
 import {
   CountryCodeFormat,
+  type IContinent,
   type ICountries,
   type ICountry,
   type IDatasetCountry,
@@ -8,6 +9,7 @@ import {
   type ILocale,
 } from '../types'
 import { toMachineName } from '../utils/to-machine-name'
+import { CONTINENT_MAP, Continent } from './continent'
 import { Countries } from './countries'
 import { Language } from './language'
 import { Languages } from './languages'
@@ -89,6 +91,19 @@ export class Country implements ICountry {
     }
 
     return borders
+  }
+
+  public continent(): IContinent {
+    const entries = getDataset()
+    const entry = entries.find(
+      (d) => d.country.iso_3166_1_alpha2.toLowerCase() === this.alpha2.toLowerCase(),
+    )
+    const name = entry?.country.continent
+    const match = Object.entries(CONTINENT_MAP).find(([, continentName]) => continentName === name)
+    if (!match) {
+      throw new Error(`Unknown continent for country: ${this.alpha2}`)
+    }
+    return Continent.new({ code: match[0] })
   }
 
   public toLocale(value: { language: string }): ILocale {

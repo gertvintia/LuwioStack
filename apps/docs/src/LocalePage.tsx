@@ -47,6 +47,7 @@ locale.country().borders()    // Countries → FR, DE, LU, NL
 locale.continent().name       // 'Europe'
 
 Country.new({ code: 'BE' }).direct_dialing_code   // '+32'
+Country.new({ code: 'BE' }).continent().code      // 'EU'
 Language.new({ code: 'nl' }).name                 // 'Dutch'
 Continent.new({ code: 'EU' }).name              // 'Europe'
 Continent.europe().countries().size               // European countries`

@@ -10,7 +10,6 @@ import {
 } from '../types'
 import { normalizeLocale } from '../utils/normalize-locale'
 import { resolvePolicy } from '../utils/resolve-policy'
-import { CONTINENT_MAP, Continent } from './continent'
 import { Country } from './country'
 import { Language } from './language'
 
@@ -91,16 +90,7 @@ export class Locale implements ILocale {
   }
 
   public continent(): IContinent {
-    const entries = getDataset()
-    const entry = entries.find(
-      (d) => d.country.iso_3166_1_alpha2.toLowerCase() === this.country_code.toLowerCase(),
-    )
-    const name = entry?.country.continent
-    const match = Object.entries(CONTINENT_MAP).find(([, continentName]) => continentName === name)
-    if (!match) {
-      throw new Error(`Unknown continent for locale: ${this.locale}`)
-    }
-    return Continent.new({ code: match[0] })
+    return this.country().continent()
   }
 
   public toIntlLocale(): Intl.Locale {

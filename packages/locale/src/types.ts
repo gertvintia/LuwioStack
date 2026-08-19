@@ -72,6 +72,7 @@ export interface ICountry {
   direct_dialing_code: string
   languages(): ILanguages
   borders(): ICountries
+  continent(): IContinent
 }
 
 export enum CountryCodeFormat {

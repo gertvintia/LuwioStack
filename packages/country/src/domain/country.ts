@@ -27,10 +27,8 @@ export class Country implements ICountry {
   public readonly numeric: string
   public readonly capital: string
   public readonly region: string
-  public readonly direct_dialing_code: string
+  public readonly dialing_code: string
   public readonly currency_code: string
-  public readonly currency_symbol: string
-  public readonly flag: string
   public readonly timezones: string[]
 
   private readonly row: ICountryRow
@@ -60,10 +58,8 @@ export class Country implements ICountry {
     this.numeric = String(row.iso_3166_1_numeric).padStart(3, '0')
     this.capital = row.capital
     this.region = row.region
-    this.direct_dialing_code = row.direct_dialing_code
+    this.dialing_code = row.dialing_code
     this.currency_code = row.currency_code
-    this.currency_symbol = row.currency_symbol
-    this.flag = row.flag
     this.timezones = row.timezones
   }
 

@@ -16,10 +16,8 @@ describe('Country', () => {
     expect(be.alpha2).toBe('BE')
     expect(be.alpha3).toBe('BEL')
     expect(be.numeric).toBe('056')
-    expect(be.direct_dialing_code).toBe('+32')
+    expect(be.dialing_code).toBe('+32')
     expect(be.currency_code).toBe('EUR')
-    expect(be.currency_symbol).toBe('€')
-    expect(be.flag).toBe('🇧🇪')
     expect(be.capital).toBe('Brussels')
   })
 

@@ -14,8 +14,8 @@ dataset, and drops matching policies in favour of a single rule.
 - **`useLocale().current.locale`** is now the full `Locale` (the same object `Locale.new()` returns)
   rather than a `{ code }` stub; the redundant flat `current.language` / `country` / `languages` /
   `intl` fields are gone — reach them via `current.locale.language()` etc.
-- `Country` gains `currency_code`, `currency_symbol`, `flag`, `capital`, `region`, `timezones` and
-  `name_local`.
+- `Country` gains `currency_code`, `capital`, `region`, `timezones` and `name_local`, and its
+  `direct_dialing_code` is renamed to `dialing_code`.
 - **`resolveLocale` and `SystemLocale` moved onto `Locale`** as `Locale.resolve()` and
   `Locale.system`, alongside `Locale.new()` — the standalone `resolveLocale` / `SystemLocale`
   exports are removed.

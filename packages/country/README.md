@@ -1,7 +1,7 @@
 # @luwio/country
 
 Typed **ISO 3166** country data for JavaScript — countries, continents, land borders, dialing
-codes, currencies, flags and the languages spoken in each. A small, immutable domain model;
+codes, currencies and the languages spoken in each. A small, immutable domain model;
 framework-agnostic (no React required).
 
 Part of [Luwio](https://github.com/) — standalone, but pairs well with the other `@luwio/*`
@@ -25,10 +25,8 @@ const be = Country.new({ code: 'BE' }) // ISO 3166-1 alpha-2
 be.name                 // 'Belgium'
 be.alpha3               // 'BEL'
 be.numeric              // '056'
-be.direct_dialing_code  // '+32'
-be.currency_code        // 'EUR'  (formatting lives in @luwio/money)
-be.currency_symbol      // '€'
-be.flag                 // '🇧🇪'
+be.dialing_code         // '+32'
+be.currency_code        // 'EUR'  (symbol + formatting live in @luwio/money)
 be.capital              // 'Brussels'
 
 be.languages().toArray().map((l) => l.name) // ['Dutch', 'French', 'German']

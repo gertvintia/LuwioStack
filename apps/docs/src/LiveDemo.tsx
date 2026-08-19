@@ -57,7 +57,7 @@ function DemoWindow({
         </div>
         <div className="field">
           <span className="label">Dialing code</span>
-          <span className="value">{active.locale.country().direct_dialing_code}</span>
+          <span className="value">{active.locale.country().dialing_code}</span>
         </div>
         <div className="field">
           <span className="label">ISO codes</span>

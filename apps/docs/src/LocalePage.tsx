@@ -30,7 +30,7 @@ function Info() {
   return (
     <p>
       {current.locale.language().name} in {current.locale.country().name} ({current.locale.code})
-      — dial {current.locale.country().direct_dialing_code}
+      — dial {current.locale.country().dialing_code}
     </p>
   )
 }`
@@ -45,7 +45,7 @@ locale.country().alpha3       // 'BEL'
 locale.country().borders()    // Countries → FR, DE, LU, NL
 locale.continent().name       // 'Europe'
 
-Country.new({ code: 'BE' }).direct_dialing_code   // '+32'
+Country.new({ code: 'BE' }).dialing_code   // '+32'
 Country.new({ code: 'BE' }).currency_code         // 'EUR'  (formatting → @luwio/money)
 Country.new({ code: 'BE' }).continent().code      // 'EU'
 Language.new({ code: 'nl' }).name                 // 'Dutch'
@@ -83,7 +83,7 @@ function Info() {
   // useLocale() has no setter — switching is driven by the parent's state.
   const { current } = useLocale()
   return (
-    <p>{current.locale.language().name} · {current.locale.country().name} · dial {current.locale.country().direct_dialing_code}</p>
+    <p>{current.locale.language().name} · {current.locale.country().name} · dial {current.locale.country().dialing_code}</p>
   )
 }
 
@@ -107,7 +107,7 @@ const EX_PHONE = `// Real European countries, each labelled with its dialing cod
 const options = Continent.europe()
   .countries()
   .toArray()
-  .map((c) => ({ value: c.alpha2, label: c.name + ' (' + c.direct_dialing_code + ')' }))
+  .map((c) => ({ value: c.alpha2, label: c.name + ' (' + c.dialing_code + ')' }))
   .sort((a, b) => a.label.localeCompare(b.label))
 
 render(

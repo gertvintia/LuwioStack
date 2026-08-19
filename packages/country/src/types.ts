@@ -27,14 +27,10 @@ export interface ICountry {
   capital: string
   /** UN geoscheme sub-region, e.g. `"Western Europe"`. */
   region: string
-  /** International Direct Dialing prefix, e.g. `"+32"`. */
-  direct_dialing_code: string
-  /** ISO 4217 currency code, e.g. `"EUR"`. Formatting lives in `@luwio/money`. */
+  /** International dialing prefix, e.g. `"+32"`. */
+  dialing_code: string
+  /** ISO 4217 currency code, e.g. `"EUR"`. Symbol + formatting live in `@luwio/money`. */
   currency_code: string
-  /** Currency symbol, e.g. `"€"`. */
-  currency_symbol: string
-  /** Flag emoji, e.g. `"🇧🇪"`. */
-  flag: string
   /** IANA/UTC-offset timezones, e.g. `["UTC+01:00"]`. */
   timezones: string[]
   languages(): ILanguages
@@ -68,10 +64,8 @@ export interface ICountryRow {
   continent: string
   region: string
   capital: string
-  direct_dialing_code: string
+  dialing_code: string
   currency_code: string
-  currency_symbol: string
-  flag: string
   timezones: string[]
   borders: string[]
   /** ISO 639-1 codes of the languages spoken here — resolved to `Language` objects on demand. */

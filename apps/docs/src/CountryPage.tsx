@@ -18,10 +18,8 @@ be.name                 // 'Belgium'
 be.alpha3               // 'BEL'
 be.numeric              // '056'
 be.capital              // 'Brussels'
-be.direct_dialing_code  // '+32'
-be.currency_code        // 'EUR'   (formatting lives in @luwio/money)
-be.currency_symbol      // '€'
-be.flag                 // '🇧🇪'
+be.dialing_code         // '+32'
+be.currency_code        // 'EUR'   (symbol + formatting live in @luwio/money)
 
 be.languages().toArray().map((l) => l.name) // ['Dutch', 'French', 'German']
 be.borders().toArray().map((c) => c.code)   // ['FR', 'DE', 'LU', 'NL']
@@ -47,7 +45,7 @@ function Neighbours() {
   const be = Country.new({ code: 'BE' })
   return (
     <div>
-      <strong>{be.flag} {be.name}</strong> borders:
+      <strong>{flag(be.code)} {be.name}</strong> borders:
       <ul>
         {be.borders().toArray().map((c) => (
           <li key={c.code}>{flag(c.code)} {c.name} ({c.currency_code})</li>
@@ -66,8 +64,8 @@ export function CountryPage() {
 
       <p>
         <code>@luwio/country</code> is a typed domain model over the ISO 3166 country list —
-        continents, land borders, dialing codes, currencies, flags and the languages each country
-        speaks. It has no framework dependency and pulls in <code>@luwio/language</code> so{' '}
+        continents, land borders, dialing codes, currencies and the languages each country speaks.
+        It has no framework dependency and pulls in <code>@luwio/language</code> so{' '}
         <code>Country.languages()</code> returns rich <code>Language</code> objects.
       </p>
 

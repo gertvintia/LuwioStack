@@ -37,7 +37,7 @@ function Info() {
   return (
     <p>
       {current.locale.language().name} in {current.locale.country().name} ({current.locale.code})
-      — dial {current.locale.country().direct_dialing_code}
+      — dial {current.locale.country().dialing_code}
     </p>
   )
 }
@@ -64,7 +64,7 @@ locale.country().alpha3       // 'BEL'
 locale.country().borders()    // Countries → FR, DE, LU, NL
 locale.continent().name       // 'Europe'
 
-Country.new({ code: 'BE' }).direct_dialing_code   // '+32'
+Country.new({ code: 'BE' }).dialing_code   // '+32'
 Country.new({ code: 'BE' }).currency_code         // 'EUR'  (formatting → @luwio/money)
 Country.new({ code: 'BE' }).continent().code      // 'EU'
 Language.new({ code: 'nl' }).name                 // 'Dutch'

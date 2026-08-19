@@ -71,7 +71,7 @@ describe('Country (re-exported)', () => {
     const be = Country.new({ code: 'BE' })
     expect(be.alpha3).toBe('BEL')
     expect(be.numeric).toHaveLength(3)
-    expect(be.direct_dialing_code).toBe('+32')
+    expect(be.dialing_code).toBe('+32')
     expect(be.currency_code).toBe('EUR')
     expect(be.borders().toArray().length).toBeGreaterThan(0)
   })

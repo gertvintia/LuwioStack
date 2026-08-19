@@ -8,10 +8,8 @@
     "continent": "Europe",
     "region": "Southern Europe",
     "capital": "Andorra la Vella",
-    "direct_dialing_code": "+376",
+    "dialing_code": "+376",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇦🇩",
     "timezones": [
       "UTC+01:00"
     ],
@@ -32,10 +30,8 @@
     "continent": "Asia",
     "region": "Western Asia",
     "capital": "Abu Dhabi",
-    "direct_dialing_code": "+971",
+    "dialing_code": "+971",
     "currency_code": "AED",
-    "currency_symbol": "د.إ",
-    "flag": "🇦🇪",
     "timezones": [
       "UTC+04:00"
     ],
@@ -56,10 +52,8 @@
     "continent": "Asia",
     "region": "Southern Asia",
     "capital": "Kabul",
-    "direct_dialing_code": "+93",
+    "dialing_code": "+93",
     "currency_code": "AFN",
-    "currency_symbol": "؋",
-    "flag": "🇦🇫",
     "timezones": [
       "UTC+04:30"
     ],
@@ -86,10 +80,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Saint John’s",
-    "direct_dialing_code": "+1268",
+    "dialing_code": "+1268",
     "currency_code": "XCD",
-    "currency_symbol": "$",
-    "flag": "🇦🇬",
     "timezones": [
       "UTC-04:00"
     ],
@@ -107,10 +99,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "The Valley",
-    "direct_dialing_code": "+1264",
+    "dialing_code": "+1264",
     "currency_code": "XCD",
-    "currency_symbol": "$",
-    "flag": "🇦🇮",
     "timezones": [
       "UTC-04:00"
     ],
@@ -128,10 +118,8 @@
     "continent": "Europe",
     "region": "Southeast Europe",
     "capital": "Tirana",
-    "direct_dialing_code": "+355",
+    "dialing_code": "+355",
     "currency_code": "ALL",
-    "currency_symbol": "L",
-    "flag": "🇦🇱",
     "timezones": [
       "UTC+01:00"
     ],
@@ -154,10 +142,8 @@
     "continent": "Asia",
     "region": "Western Asia",
     "capital": "Yerevan",
-    "direct_dialing_code": "+374",
+    "dialing_code": "+374",
     "currency_code": "AMD",
-    "currency_symbol": "֏",
-    "flag": "🇦🇲",
     "timezones": [
       "UTC+04:00"
     ],
@@ -180,10 +166,8 @@
     "continent": "Africa",
     "region": "Middle Africa",
     "capital": "Luanda",
-    "direct_dialing_code": "+244",
+    "dialing_code": "+244",
     "currency_code": "AOA",
-    "currency_symbol": "Kz",
-    "flag": "🇦🇴",
     "timezones": [
       "UTC+01:00"
     ],
@@ -206,10 +190,8 @@
     "continent": "Antarctica",
     "region": "",
     "capital": "",
-    "direct_dialing_code": "",
+    "dialing_code": "",
     "currency_code": "",
-    "currency_symbol": "",
-    "flag": "🇦🇶",
     "timezones": [
       "UTC-03:00",
       "UTC+03:00",
@@ -235,10 +217,8 @@
     "continent": "South America",
     "region": "South America",
     "capital": "Buenos Aires",
-    "direct_dialing_code": "+54",
+    "dialing_code": "+54",
     "currency_code": "ARS",
-    "currency_symbol": "$",
-    "flag": "🇦🇷",
     "timezones": [
       "UTC-03:00"
     ],
@@ -263,10 +243,8 @@
     "continent": "Oceania",
     "region": "Polynesia",
     "capital": "Pago Pago",
-    "direct_dialing_code": "+1684",
+    "dialing_code": "+1684",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇦🇸",
     "timezones": [
       "UTC-11:00"
     ],
@@ -285,10 +263,8 @@
     "continent": "Europe",
     "region": "Central Europe",
     "capital": "Vienna",
-    "direct_dialing_code": "+43",
+    "dialing_code": "+43",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇦🇹",
     "timezones": [
       "UTC+01:00"
     ],
@@ -315,10 +291,8 @@
     "continent": "Oceania",
     "region": "Australia and New Zealand",
     "capital": "Canberra",
-    "direct_dialing_code": "+61",
+    "dialing_code": "+61",
     "currency_code": "AUD",
-    "currency_symbol": "$",
-    "flag": "🇦🇺",
     "timezones": [
       "UTC+05:00",
       "UTC+06:30",
@@ -343,10 +317,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Oranjestad",
-    "direct_dialing_code": "+297",
+    "dialing_code": "+297",
     "currency_code": "AWG",
-    "currency_symbol": "ƒ",
-    "flag": "🇦🇼",
     "timezones": [
       "UTC-04:00"
     ],
@@ -365,10 +337,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "Mariehamn",
-    "direct_dialing_code": "+35818",
+    "dialing_code": "+35818",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇦🇽",
     "timezones": [
       "UTC+02:00"
     ],
@@ -386,10 +356,8 @@
     "continent": "Europe",
     "region": "Western Asia",
     "capital": "Baku",
-    "direct_dialing_code": "+994",
+    "dialing_code": "+994",
     "currency_code": "AZN",
-    "currency_symbol": "₼",
-    "flag": "🇦🇿",
     "timezones": [
       "UTC+04:00"
     ],
@@ -413,10 +381,8 @@
     "continent": "Europe",
     "region": "Southeast Europe",
     "capital": "Sarajevo",
-    "direct_dialing_code": "+387",
+    "dialing_code": "+387",
     "currency_code": "BAM",
-    "currency_symbol": "",
-    "flag": "🇧🇦",
     "timezones": [
       "UTC+01:00"
     ],
@@ -440,10 +406,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Bridgetown",
-    "direct_dialing_code": "+1246",
+    "dialing_code": "+1246",
     "currency_code": "BBD",
-    "currency_symbol": "$",
-    "flag": "🇧🇧",
     "timezones": [
       "UTC-04:00"
     ],
@@ -461,10 +425,8 @@
     "continent": "Asia",
     "region": "Southern Asia",
     "capital": "Dhaka",
-    "direct_dialing_code": "+880",
+    "dialing_code": "+880",
     "currency_code": "BDT",
-    "currency_symbol": "৳",
-    "flag": "🇧🇩",
     "timezones": [
       "UTC+06:00"
     ],
@@ -485,10 +447,8 @@
     "continent": "Europe",
     "region": "Western Europe",
     "capital": "Brussels",
-    "direct_dialing_code": "+32",
+    "dialing_code": "+32",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇧🇪",
     "timezones": [
       "UTC+01:00"
     ],
@@ -513,10 +473,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Ouagadougou",
-    "direct_dialing_code": "+226",
+    "dialing_code": "+226",
     "currency_code": "XOF",
-    "currency_symbol": "Fr",
-    "flag": "🇧🇫",
     "timezones": [
       "UTC"
     ],
@@ -542,10 +500,8 @@
     "continent": "Europe",
     "region": "Southeast Europe",
     "capital": "Sofia",
-    "direct_dialing_code": "+359",
+    "dialing_code": "+359",
     "currency_code": "BGN",
-    "currency_symbol": "лв",
-    "flag": "🇧🇬",
     "timezones": [
       "UTC+02:00"
     ],
@@ -569,10 +525,8 @@
     "continent": "Asia",
     "region": "Western Asia",
     "capital": "Manama",
-    "direct_dialing_code": "+973",
+    "dialing_code": "+973",
     "currency_code": "BHD",
-    "currency_symbol": ".د.ب",
-    "flag": "🇧🇭",
     "timezones": [
       "UTC+03:00"
     ],
@@ -590,10 +544,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Bujumbura",
-    "direct_dialing_code": "+257",
+    "dialing_code": "+257",
     "currency_code": "BIF",
-    "currency_symbol": "Fr",
-    "flag": "🇧🇮",
     "timezones": [
       "UTC+02:00"
     ],
@@ -616,10 +568,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Porto-Novo",
-    "direct_dialing_code": "+229",
+    "dialing_code": "+229",
     "currency_code": "XOF",
-    "currency_symbol": "Fr",
-    "flag": "🇧🇯",
     "timezones": [
       "UTC+01:00"
     ],
@@ -642,10 +592,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Gustavia",
-    "direct_dialing_code": "+590",
+    "dialing_code": "+590",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇧🇱",
     "timezones": [
       "UTC-04:00"
     ],
@@ -663,10 +611,8 @@
     "continent": "North America",
     "region": "North America",
     "capital": "Hamilton",
-    "direct_dialing_code": "+1441",
+    "dialing_code": "+1441",
     "currency_code": "BMD",
-    "currency_symbol": "$",
-    "flag": "🇧🇲",
     "timezones": [
       "UTC-04:00"
     ],
@@ -684,10 +630,8 @@
     "continent": "Asia",
     "region": "South-Eastern Asia",
     "capital": "Bandar Seri Begawan",
-    "direct_dialing_code": "+673",
+    "dialing_code": "+673",
     "currency_code": "BND",
-    "currency_symbol": "$",
-    "flag": "🇧🇳",
     "timezones": [
       "UTC+08:00"
     ],
@@ -707,10 +651,8 @@
     "continent": "South America",
     "region": "South America",
     "capital": "Sucre",
-    "direct_dialing_code": "+591",
+    "dialing_code": "+591",
     "currency_code": "BOB",
-    "currency_symbol": "Bs.",
-    "flag": "🇧🇴",
     "timezones": [
       "UTC-04:00"
     ],
@@ -736,10 +678,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "",
-    "direct_dialing_code": "+599",
+    "dialing_code": "+599",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇧🇶",
     "timezones": [
       "UTC-04:00"
     ],
@@ -757,10 +697,8 @@
     "continent": "South America",
     "region": "South America",
     "capital": "Brasilia",
-    "direct_dialing_code": "+55",
+    "dialing_code": "+55",
     "currency_code": "BRL",
-    "currency_symbol": "R$",
-    "flag": "🇧🇷",
     "timezones": [
       "UTC-05:00",
       "UTC-04:00",
@@ -792,10 +730,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Nassau",
-    "direct_dialing_code": "+1242",
+    "dialing_code": "+1242",
     "currency_code": "BSD",
-    "currency_symbol": "$",
-    "flag": "🇧🇸",
     "timezones": [
       "UTC-05:00"
     ],
@@ -813,10 +749,8 @@
     "continent": "Asia",
     "region": "Southern Asia",
     "capital": "Thimphu",
-    "direct_dialing_code": "+975",
+    "dialing_code": "+975",
     "currency_code": "BTN",
-    "currency_symbol": "Nu.",
-    "flag": "🇧🇹",
     "timezones": [
       "UTC+06:00"
     ],
@@ -837,10 +771,8 @@
     "continent": "Antarctica",
     "region": "",
     "capital": "",
-    "direct_dialing_code": "+47",
+    "dialing_code": "+47",
     "currency_code": "NOK",
-    "currency_symbol": "",
-    "flag": "🇧🇻",
     "timezones": [
       "UTC+01:00"
     ],
@@ -860,10 +792,8 @@
     "continent": "Africa",
     "region": "Southern Africa",
     "capital": "Gaborone",
-    "direct_dialing_code": "+267",
+    "dialing_code": "+267",
     "currency_code": "BWP",
-    "currency_symbol": "P",
-    "flag": "🇧🇼",
     "timezones": [
       "UTC+02:00"
     ],
@@ -887,10 +817,8 @@
     "continent": "Europe",
     "region": "Eastern Europe",
     "capital": "Minsk",
-    "direct_dialing_code": "+375",
+    "dialing_code": "+375",
     "currency_code": "BYR",
-    "currency_symbol": "",
-    "flag": "🇧🇾",
     "timezones": [
       "UTC+03:00"
     ],
@@ -915,10 +843,8 @@
     "continent": "North America",
     "region": "Central America",
     "capital": "Belmopan",
-    "direct_dialing_code": "+501",
+    "dialing_code": "+501",
     "currency_code": "BZD",
-    "currency_symbol": "$",
-    "flag": "🇧🇿",
     "timezones": [
       "UTC-06:00"
     ],
@@ -940,10 +866,8 @@
     "continent": "North America",
     "region": "North America",
     "capital": "Ottawa",
-    "direct_dialing_code": "+1",
+    "dialing_code": "+1",
     "currency_code": "CAD",
-    "currency_symbol": "$",
-    "flag": "🇨🇦",
     "timezones": [
       "UTC-08:00",
       "UTC-07:00",
@@ -969,10 +893,8 @@
     "continent": "Asia",
     "region": "Australia and New Zealand",
     "capital": "West Island",
-    "direct_dialing_code": "+61",
+    "dialing_code": "+61",
     "currency_code": "AUD",
-    "currency_symbol": "$",
-    "flag": "🇨🇨",
     "timezones": [
       "UTC+06:30"
     ],
@@ -990,10 +912,8 @@
     "continent": "Africa",
     "region": "Middle Africa",
     "capital": "Kinshasa",
-    "direct_dialing_code": "+243",
+    "dialing_code": "+243",
     "currency_code": "CDF",
-    "currency_symbol": "FC",
-    "flag": "🇨🇩",
     "timezones": [
       "UTC+01:00",
       "UTC+02:00"
@@ -1026,10 +946,8 @@
     "continent": "Africa",
     "region": "Middle Africa",
     "capital": "Bangui",
-    "direct_dialing_code": "+236",
+    "dialing_code": "+236",
     "currency_code": "XAF",
-    "currency_symbol": "Fr",
-    "flag": "🇨🇫",
     "timezones": [
       "UTC+01:00"
     ],
@@ -1055,10 +973,8 @@
     "continent": "Africa",
     "region": "Middle Africa",
     "capital": "Brazzaville",
-    "direct_dialing_code": "+242",
+    "dialing_code": "+242",
     "currency_code": "XAF",
-    "currency_symbol": "Fr",
-    "flag": "🇨🇬",
     "timezones": [
       "UTC+01:00"
     ],
@@ -1083,10 +999,8 @@
     "continent": "Europe",
     "region": "Western Europe",
     "capital": "Bern",
-    "direct_dialing_code": "+41",
+    "dialing_code": "+41",
     "currency_code": "CHF",
-    "currency_symbol": "Fr.",
-    "flag": "🇨🇭",
     "timezones": [
       "UTC+01:00"
     ],
@@ -1113,10 +1027,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Yamoussoukro",
-    "direct_dialing_code": "+225",
+    "dialing_code": "+225",
     "currency_code": "XOF",
-    "currency_symbol": "Fr",
-    "flag": "🇨🇮",
     "timezones": [
       "UTC"
     ],
@@ -1140,10 +1052,8 @@
     "continent": "Oceania",
     "region": "Polynesia",
     "capital": "Avarua",
-    "direct_dialing_code": "+682",
+    "dialing_code": "+682",
     "currency_code": "CKD",
-    "currency_symbol": "$",
-    "flag": "🇨🇰",
     "timezones": [
       "UTC-10:00"
     ],
@@ -1161,10 +1071,8 @@
     "continent": "South America",
     "region": "South America",
     "capital": "Santiago",
-    "direct_dialing_code": "+56",
+    "dialing_code": "+56",
     "currency_code": "CLP",
-    "currency_symbol": "$",
-    "flag": "🇨🇱",
     "timezones": [
       "UTC-06:00",
       "UTC-04:00"
@@ -1187,10 +1095,8 @@
     "continent": "Africa",
     "region": "Middle Africa",
     "capital": "Yaounde",
-    "direct_dialing_code": "+237",
+    "dialing_code": "+237",
     "currency_code": "XAF",
-    "currency_symbol": "Fr",
-    "flag": "🇨🇲",
     "timezones": [
       "UTC+01:00"
     ],
@@ -1216,10 +1122,8 @@
     "continent": "Asia",
     "region": "Eastern Asia",
     "capital": "Beijing",
-    "direct_dialing_code": "+86",
+    "dialing_code": "+86",
     "currency_code": "CNY",
-    "currency_symbol": "¥",
-    "flag": "🇨🇳",
     "timezones": [
       "UTC+08:00"
     ],
@@ -1254,10 +1158,8 @@
     "continent": "South America",
     "region": "South America",
     "capital": "Bogota",
-    "direct_dialing_code": "+57",
+    "dialing_code": "+57",
     "currency_code": "COP",
-    "currency_symbol": "$",
-    "flag": "🇨🇴",
     "timezones": [
       "UTC-05:00"
     ],
@@ -1281,10 +1183,8 @@
     "continent": "North America",
     "region": "Central America",
     "capital": "San José",
-    "direct_dialing_code": "+506",
+    "dialing_code": "+506",
     "currency_code": "CRC",
-    "currency_symbol": "₡",
-    "flag": "🇨🇷",
     "timezones": [
       "UTC-06:00"
     ],
@@ -1305,10 +1205,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Havana",
-    "direct_dialing_code": "+53",
+    "dialing_code": "+53",
     "currency_code": "CUP",
-    "currency_symbol": "$",
-    "flag": "🇨🇺",
     "timezones": [
       "UTC-05:00"
     ],
@@ -1326,10 +1224,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Praia",
-    "direct_dialing_code": "+238",
+    "dialing_code": "+238",
     "currency_code": "CVE",
-    "currency_symbol": "Esc",
-    "flag": "🇨🇻",
     "timezones": [
       "UTC-01:00"
     ],
@@ -1347,10 +1243,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Willemstad",
-    "direct_dialing_code": "+599",
+    "dialing_code": "+599",
     "currency_code": "XCG",
-    "currency_symbol": "Cg",
-    "flag": "🇨🇼",
     "timezones": [
       "UTC-04:00"
     ],
@@ -1370,10 +1264,8 @@
     "continent": "Asia",
     "region": "Australia and New Zealand",
     "capital": "Flying Fish Cove",
-    "direct_dialing_code": "+61",
+    "dialing_code": "+61",
     "currency_code": "AUD",
-    "currency_symbol": "$",
-    "flag": "🇨🇽",
     "timezones": [
       "UTC+07:00"
     ],
@@ -1391,10 +1283,8 @@
     "continent": "Europe",
     "region": "Southern Europe",
     "capital": "Nicosia",
-    "direct_dialing_code": "+357",
+    "dialing_code": "+357",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇨🇾",
     "timezones": [
       "UTC+02:00"
     ],
@@ -1414,10 +1304,8 @@
     "continent": "Europe",
     "region": "Central Europe",
     "capital": "Prague",
-    "direct_dialing_code": "+420",
+    "dialing_code": "+420",
     "currency_code": "CZK",
-    "currency_symbol": "Kč",
-    "flag": "🇨🇿",
     "timezones": [
       "UTC+01:00"
     ],
@@ -1441,10 +1329,8 @@
     "continent": "Europe",
     "region": "Western Europe",
     "capital": "Berlin",
-    "direct_dialing_code": "+49",
+    "dialing_code": "+49",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇩🇪",
     "timezones": [
       "UTC+01:00"
     ],
@@ -1472,10 +1358,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Djibouti",
-    "direct_dialing_code": "+253",
+    "dialing_code": "+253",
     "currency_code": "DJF",
-    "currency_symbol": "Fr",
-    "flag": "🇩🇯",
     "timezones": [
       "UTC+03:00"
     ],
@@ -1498,10 +1382,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "Copenhagen",
-    "direct_dialing_code": "+45",
+    "dialing_code": "+45",
     "currency_code": "DKK",
-    "currency_symbol": "kr",
-    "flag": "🇩🇰",
     "timezones": [
       "UTC-04:00",
       "UTC-03:00",
@@ -1525,10 +1407,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Roseau",
-    "direct_dialing_code": "+1767",
+    "dialing_code": "+1767",
     "currency_code": "XCD",
-    "currency_symbol": "$",
-    "flag": "🇩🇲",
     "timezones": [
       "UTC-04:00"
     ],
@@ -1546,10 +1426,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Santo Domingo",
-    "direct_dialing_code": "+1",
+    "dialing_code": "+1",
     "currency_code": "DOP",
-    "currency_symbol": "$",
-    "flag": "🇩🇴",
     "timezones": [
       "UTC-04:00"
     ],
@@ -1569,10 +1447,8 @@
     "continent": "Africa",
     "region": "Northern Africa",
     "capital": "Algiers",
-    "direct_dialing_code": "+213",
+    "dialing_code": "+213",
     "currency_code": "DZD",
-    "currency_symbol": "د.ج",
-    "flag": "🇩🇿",
     "timezones": [
       "UTC+01:00"
     ],
@@ -1598,10 +1474,8 @@
     "continent": "South America",
     "region": "South America",
     "capital": "Quito",
-    "direct_dialing_code": "+593",
+    "dialing_code": "+593",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇪🇨",
     "timezones": [
       "UTC-06:00",
       "UTC-05:00"
@@ -1623,10 +1497,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "Tallinn",
-    "direct_dialing_code": "+372",
+    "dialing_code": "+372",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇪🇪",
     "timezones": [
       "UTC+02:00"
     ],
@@ -1647,10 +1519,8 @@
     "continent": "Africa",
     "region": "Northern Africa",
     "capital": "Cairo",
-    "direct_dialing_code": "+20",
+    "dialing_code": "+20",
     "currency_code": "EGP",
-    "currency_symbol": "£",
-    "flag": "🇪🇬",
     "timezones": [
       "UTC+02:00"
     ],
@@ -1673,10 +1543,8 @@
     "continent": "Africa",
     "region": "Northern Africa",
     "capital": "El Aaiún",
-    "direct_dialing_code": "+2",
+    "dialing_code": "+2",
     "currency_code": "MAD",
-    "currency_symbol": "DH",
-    "flag": "🇪🇭",
     "timezones": [
       "UTC+00:00"
     ],
@@ -1698,10 +1566,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Asmara",
-    "direct_dialing_code": "+291",
+    "dialing_code": "+291",
     "currency_code": "ERN",
-    "currency_symbol": "Nfk",
-    "flag": "🇪🇷",
     "timezones": [
       "UTC+03:00"
     ],
@@ -1726,10 +1592,8 @@
     "continent": "Europe",
     "region": "Southern Europe",
     "capital": "Madrid",
-    "direct_dialing_code": "+34",
+    "dialing_code": "+34",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇪🇸",
     "timezones": [
       "UTC",
       "UTC+01:00"
@@ -1754,10 +1618,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Addis Ababa",
-    "direct_dialing_code": "+251",
+    "dialing_code": "+251",
     "currency_code": "ETB",
-    "currency_symbol": "Br",
-    "flag": "🇪🇹",
     "timezones": [
       "UTC+03:00"
     ],
@@ -1782,10 +1644,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "Helsinki",
-    "direct_dialing_code": "+358",
+    "dialing_code": "+358",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇫🇮",
     "timezones": [
       "UTC+02:00"
     ],
@@ -1808,10 +1668,8 @@
     "continent": "Oceania",
     "region": "Melanesia",
     "capital": "Suva",
-    "direct_dialing_code": "+679",
+    "dialing_code": "+679",
     "currency_code": "FJD",
-    "currency_symbol": "$",
-    "flag": "🇫🇯",
     "timezones": [
       "UTC+12:00"
     ],
@@ -1830,10 +1688,8 @@
     "continent": "South America",
     "region": "South America",
     "capital": "Stanley",
-    "direct_dialing_code": "+500",
+    "dialing_code": "+500",
     "currency_code": "FKP",
-    "currency_symbol": "£",
-    "flag": "🇫🇰",
     "timezones": [
       "UTC-04:00"
     ],
@@ -1851,10 +1707,8 @@
     "continent": "Oceania",
     "region": "Micronesia",
     "capital": "",
-    "direct_dialing_code": "+691",
+    "dialing_code": "+691",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇫🇲",
     "timezones": [
       "UTC+10:00",
       "UTC+11:00"
@@ -1873,10 +1727,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "Tórshavn",
-    "direct_dialing_code": "+298",
+    "dialing_code": "+298",
     "currency_code": "FOK",
-    "currency_symbol": "kr",
-    "flag": "🇫🇴",
     "timezones": [
       "UTC+00:00"
     ],
@@ -1894,10 +1746,8 @@
     "continent": "Europe",
     "region": "Western Europe",
     "capital": "Paris",
-    "direct_dialing_code": "+33",
+    "dialing_code": "+33",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇫🇷",
     "timezones": [
       "UTC-10:00",
       "UTC-09:30",
@@ -1937,10 +1787,8 @@
     "continent": "Africa",
     "region": "Middle Africa",
     "capital": "Libreville",
-    "direct_dialing_code": "+241",
+    "dialing_code": "+241",
     "currency_code": "XAF",
-    "currency_symbol": "Fr",
-    "flag": "🇬🇦",
     "timezones": [
       "UTC+01:00"
     ],
@@ -1962,10 +1810,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "London",
-    "direct_dialing_code": "+44",
+    "dialing_code": "+44",
     "currency_code": "GBP",
-    "currency_symbol": "£",
-    "flag": "🇬🇧",
     "timezones": [
       "UTC-08:00",
       "UTC-05:00",
@@ -1993,10 +1839,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Saint George's",
-    "direct_dialing_code": "+1473",
+    "dialing_code": "+1473",
     "currency_code": "XCD",
-    "currency_symbol": "$",
-    "flag": "🇬🇩",
     "timezones": [
       "UTC-04:00"
     ],
@@ -2014,10 +1858,8 @@
     "continent": "Asia",
     "region": "Western Asia",
     "capital": "Tbilisi",
-    "direct_dialing_code": "+995",
+    "dialing_code": "+995",
     "currency_code": "GEL",
-    "currency_symbol": "₾",
-    "flag": "🇬🇪",
     "timezones": [
       "UTC+04:00"
     ],
@@ -2040,10 +1882,8 @@
     "continent": "South America",
     "region": "South America",
     "capital": "Cayenne",
-    "direct_dialing_code": "+594",
+    "dialing_code": "+594",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇬🇫",
     "timezones": [
       "UTC-03:00"
     ],
@@ -2064,10 +1904,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "Saint Peter Port",
-    "direct_dialing_code": "+44",
+    "dialing_code": "+44",
     "currency_code": "GGP",
-    "currency_symbol": "£",
-    "flag": "🇬🇬",
     "timezones": [
       "UTC+00:00"
     ],
@@ -2086,10 +1924,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Accra",
-    "direct_dialing_code": "+233",
+    "dialing_code": "+233",
     "currency_code": "GHS",
-    "currency_symbol": "₵",
-    "flag": "🇬🇭",
     "timezones": [
       "UTC"
     ],
@@ -2111,10 +1947,8 @@
     "continent": "Europe",
     "region": "Southern Europe",
     "capital": "Gibraltar",
-    "direct_dialing_code": "+350",
+    "dialing_code": "+350",
     "currency_code": "GIP",
-    "currency_symbol": "£",
-    "flag": "🇬🇮",
     "timezones": [
       "UTC+01:00"
     ],
@@ -2134,10 +1968,8 @@
     "continent": "North America",
     "region": "North America",
     "capital": "Nuuk",
-    "direct_dialing_code": "+299",
+    "dialing_code": "+299",
     "currency_code": "DKK",
-    "currency_symbol": "kr.",
-    "flag": "🇬🇱",
     "timezones": [
       "UTC-04:00",
       "UTC-03:00",
@@ -2158,10 +1990,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Banjul",
-    "direct_dialing_code": "+220",
+    "dialing_code": "+220",
     "currency_code": "GMD",
-    "currency_symbol": "D",
-    "flag": "🇬🇲",
     "timezones": [
       "UTC+00:00"
     ],
@@ -2181,10 +2011,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Conakry",
-    "direct_dialing_code": "+224",
+    "dialing_code": "+224",
     "currency_code": "GNF",
-    "currency_symbol": "Fr",
-    "flag": "🇬🇳",
     "timezones": [
       "UTC"
     ],
@@ -2210,10 +2038,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Basse-Terre",
-    "direct_dialing_code": "+590",
+    "dialing_code": "+590",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇬🇵",
     "timezones": [
       "UTC-04:00"
     ],
@@ -2231,10 +2057,8 @@
     "continent": "Africa",
     "region": "Middle Africa",
     "capital": "Malabo",
-    "direct_dialing_code": "+240",
+    "dialing_code": "+240",
     "currency_code": "XAF",
-    "currency_symbol": "Fr",
-    "flag": "🇬🇶",
     "timezones": [
       "UTC+01:00"
     ],
@@ -2257,10 +2081,8 @@
     "continent": "Europe",
     "region": "Southern Europe",
     "capital": "Athens",
-    "direct_dialing_code": "+30",
+    "dialing_code": "+30",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇬🇷",
     "timezones": [
       "UTC+02:00"
     ],
@@ -2283,10 +2105,8 @@
     "continent": "Antarctica",
     "region": "",
     "capital": "King Edward Point",
-    "direct_dialing_code": "+500",
+    "dialing_code": "+500",
     "currency_code": "GBP",
-    "currency_symbol": "",
-    "flag": "🇬🇸",
     "timezones": [
       "UTC-02:00"
     ],
@@ -2304,10 +2124,8 @@
     "continent": "North America",
     "region": "Central America",
     "capital": "Guatemala City",
-    "direct_dialing_code": "+502",
+    "dialing_code": "+502",
     "currency_code": "GTQ",
-    "currency_symbol": "Q",
-    "flag": "🇬🇹",
     "timezones": [
       "UTC-06:00"
     ],
@@ -2330,10 +2148,8 @@
     "continent": "Oceania",
     "region": "Micronesia",
     "capital": "Hagåtña",
-    "direct_dialing_code": "+1671",
+    "dialing_code": "+1671",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇬🇺",
     "timezones": [
       "UTC+10:00"
     ],
@@ -2353,10 +2169,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Bissau",
-    "direct_dialing_code": "+245",
+    "dialing_code": "+245",
     "currency_code": "XOF",
-    "currency_symbol": "Fr",
-    "flag": "🇬🇼",
     "timezones": [
       "UTC"
     ],
@@ -2377,10 +2191,8 @@
     "continent": "South America",
     "region": "South America",
     "capital": "Georgetown",
-    "direct_dialing_code": "+592",
+    "dialing_code": "+592",
     "currency_code": "GYD",
-    "currency_symbol": "$",
-    "flag": "🇬🇾",
     "timezones": [
       "UTC-04:00"
     ],
@@ -2402,10 +2214,8 @@
     "continent": "Asia",
     "region": "Eastern Asia",
     "capital": "Hong Kong",
-    "direct_dialing_code": "+852",
+    "dialing_code": "+852",
     "currency_code": "HKD",
-    "currency_symbol": "$",
-    "flag": "🇭🇰",
     "timezones": [
       "UTC+08:00"
     ],
@@ -2426,10 +2236,8 @@
     "continent": "Antarctica",
     "region": "",
     "capital": "",
-    "direct_dialing_code": "",
+    "dialing_code": "",
     "currency_code": "AUD",
-    "currency_symbol": "",
-    "flag": "🇭🇲",
     "timezones": [
       "UTC+05:00"
     ],
@@ -2447,10 +2255,8 @@
     "continent": "North America",
     "region": "Central America",
     "capital": "Tegucigalpa",
-    "direct_dialing_code": "+504",
+    "dialing_code": "+504",
     "currency_code": "HNL",
-    "currency_symbol": "L",
-    "flag": "🇭🇳",
     "timezones": [
       "UTC-06:00"
     ],
@@ -2472,10 +2278,8 @@
     "continent": "Europe",
     "region": "Southeast Europe",
     "capital": "Zagreb",
-    "direct_dialing_code": "+385",
+    "dialing_code": "+385",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇭🇷",
     "timezones": [
       "UTC+01:00"
     ],
@@ -2499,10 +2303,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Port-au-Prince",
-    "direct_dialing_code": "+509",
+    "dialing_code": "+509",
     "currency_code": "HTG",
-    "currency_symbol": "G",
-    "flag": "🇭🇹",
     "timezones": [
       "UTC-05:00"
     ],
@@ -2523,10 +2325,8 @@
     "continent": "Europe",
     "region": "Central Europe",
     "capital": "Budapest",
-    "direct_dialing_code": "+36",
+    "dialing_code": "+36",
     "currency_code": "HUF",
-    "currency_symbol": "Ft",
-    "flag": "🇭🇺",
     "timezones": [
       "UTC+01:00"
     ],
@@ -2552,10 +2352,8 @@
     "continent": "Asia",
     "region": "South-Eastern Asia",
     "capital": "Jakarta",
-    "direct_dialing_code": "+62",
+    "dialing_code": "+62",
     "currency_code": "IDR",
-    "currency_symbol": "Rp",
-    "flag": "🇮🇩",
     "timezones": [
       "UTC+07:00",
       "UTC+08:00",
@@ -2579,10 +2377,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "Dublin",
-    "direct_dialing_code": "+353",
+    "dialing_code": "+353",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇮🇪",
     "timezones": [
       "UTC"
     ],
@@ -2603,10 +2399,8 @@
     "continent": "Asia",
     "region": "Western Asia",
     "capital": "Jerusalem",
-    "direct_dialing_code": "+972",
+    "dialing_code": "+972",
     "currency_code": "ILS",
-    "currency_symbol": "₪",
-    "flag": "🇮🇱",
     "timezones": [
       "UTC+02:00"
     ],
@@ -2631,10 +2425,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "Douglas",
-    "direct_dialing_code": "+44",
+    "dialing_code": "+44",
     "currency_code": "IMP",
-    "currency_symbol": "£",
-    "flag": "🇮🇲",
     "timezones": [
       "UTC+00:00"
     ],
@@ -2653,10 +2445,8 @@
     "continent": "Asia",
     "region": "Southern Asia",
     "capital": "New Delhi",
-    "direct_dialing_code": "+91",
+    "dialing_code": "+91",
     "currency_code": "INR",
-    "currency_symbol": "₹",
-    "flag": "🇮🇳",
     "timezones": [
       "UTC+05:30"
     ],
@@ -2682,10 +2472,8 @@
     "continent": "Asia",
     "region": "Eastern Africa",
     "capital": "",
-    "direct_dialing_code": "+246",
+    "dialing_code": "+246",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇮🇴",
     "timezones": [
       "UTC+06:00"
     ],
@@ -2703,10 +2491,8 @@
     "continent": "Asia",
     "region": "Western Asia",
     "capital": "Baghdad",
-    "direct_dialing_code": "+964",
+    "dialing_code": "+964",
     "currency_code": "IQD",
-    "currency_symbol": "ع.د",
-    "flag": "🇮🇶",
     "timezones": [
       "UTC+03:00"
     ],
@@ -2732,10 +2518,8 @@
     "continent": "Asia",
     "region": "Southern Asia",
     "capital": "Tehran",
-    "direct_dialing_code": "+98",
+    "dialing_code": "+98",
     "currency_code": "IRR",
-    "currency_symbol": "﷼",
-    "flag": "🇮🇷",
     "timezones": [
       "UTC+03:30"
     ],
@@ -2761,10 +2545,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "Reykjavík",
-    "direct_dialing_code": "+354",
+    "dialing_code": "+354",
     "currency_code": "ISK",
-    "currency_symbol": "kr",
-    "flag": "🇮🇸",
     "timezones": [
       "UTC"
     ],
@@ -2782,10 +2564,8 @@
     "continent": "Europe",
     "region": "Southern Europe",
     "capital": "Rome",
-    "direct_dialing_code": "+39",
+    "dialing_code": "+39",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇮🇹",
     "timezones": [
       "UTC+01:00"
     ],
@@ -2810,10 +2590,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "Saint Helier",
-    "direct_dialing_code": "+44",
+    "dialing_code": "+44",
     "currency_code": "JEP",
-    "currency_symbol": "£",
-    "flag": "🇯🇪",
     "timezones": [
       "UTC+01:00"
     ],
@@ -2832,10 +2610,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Kingston",
-    "direct_dialing_code": "+1",
+    "dialing_code": "+1",
     "currency_code": "JMD",
-    "currency_symbol": "$",
-    "flag": "🇯🇲",
     "timezones": [
       "UTC-05:00"
     ],
@@ -2853,10 +2629,8 @@
     "continent": "Asia",
     "region": "Western Asia",
     "capital": "Amman",
-    "direct_dialing_code": "+962",
+    "dialing_code": "+962",
     "currency_code": "JOD",
-    "currency_symbol": "د.ا",
-    "flag": "🇯🇴",
     "timezones": [
       "UTC+03:00"
     ],
@@ -2880,10 +2654,8 @@
     "continent": "Asia",
     "region": "Eastern Asia",
     "capital": "Tokyo",
-    "direct_dialing_code": "+81",
+    "dialing_code": "+81",
     "currency_code": "JPY",
-    "currency_symbol": "¥",
-    "flag": "🇯🇵",
     "timezones": [
       "UTC+09:00"
     ],
@@ -2901,10 +2673,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Nairobi",
-    "direct_dialing_code": "+254",
+    "dialing_code": "+254",
     "currency_code": "KES",
-    "currency_symbol": "Sh",
-    "flag": "🇰🇪",
     "timezones": [
       "UTC+03:00"
     ],
@@ -2929,10 +2699,8 @@
     "continent": "Asia",
     "region": "Central Asia",
     "capital": "Bishkek",
-    "direct_dialing_code": "+996",
+    "dialing_code": "+996",
     "currency_code": "KGS",
-    "currency_symbol": "с",
-    "flag": "🇰🇬",
     "timezones": [
       "UTC+06:00"
     ],
@@ -2956,10 +2724,8 @@
     "continent": "Asia",
     "region": "South-Eastern Asia",
     "capital": "Phnom Penh",
-    "direct_dialing_code": "+855",
+    "dialing_code": "+855",
     "currency_code": "KHR",
-    "currency_symbol": "៛",
-    "flag": "🇰🇭",
     "timezones": [
       "UTC+07:00"
     ],
@@ -2981,10 +2747,8 @@
     "continent": "Oceania",
     "region": "Micronesia",
     "capital": "Tarawa",
-    "direct_dialing_code": "+686",
+    "dialing_code": "+686",
     "currency_code": "KID",
-    "currency_symbol": "$",
-    "flag": "🇰🇮",
     "timezones": [
       "UTC+12:00",
       "UTC+13:00",
@@ -3004,10 +2768,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Moroni",
-    "direct_dialing_code": "+269",
+    "dialing_code": "+269",
     "currency_code": "KMF",
-    "currency_symbol": "Fr",
-    "flag": "🇰🇲",
     "timezones": [
       "UTC+03:00"
     ],
@@ -3026,10 +2788,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Basseterre",
-    "direct_dialing_code": "+1869",
+    "dialing_code": "+1869",
     "currency_code": "XCD",
-    "currency_symbol": "$",
-    "flag": "🇰🇳",
     "timezones": [
       "UTC-04:00"
     ],
@@ -3047,10 +2807,8 @@
     "continent": "Asia",
     "region": "Eastern Asia",
     "capital": "Pyongyang",
-    "direct_dialing_code": "+850",
+    "dialing_code": "+850",
     "currency_code": "KPW",
-    "currency_symbol": "₩",
-    "flag": "🇰🇵",
     "timezones": [
       "UTC+09:00"
     ],
@@ -3072,10 +2830,8 @@
     "continent": "Asia",
     "region": "Eastern Asia",
     "capital": "Seoul",
-    "direct_dialing_code": "+82",
+    "dialing_code": "+82",
     "currency_code": "KRW",
-    "currency_symbol": "₩",
-    "flag": "🇰🇷",
     "timezones": [
       "UTC+09:00"
     ],
@@ -3095,10 +2851,8 @@
     "continent": "Asia",
     "region": "Western Asia",
     "capital": "Kuwait City",
-    "direct_dialing_code": "+965",
+    "dialing_code": "+965",
     "currency_code": "KWD",
-    "currency_symbol": "د.ك",
-    "flag": "🇰🇼",
     "timezones": [
       "UTC+03:00"
     ],
@@ -3119,10 +2873,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "George Town",
-    "direct_dialing_code": "+1345",
+    "dialing_code": "+1345",
     "currency_code": "KYD",
-    "currency_symbol": "$",
-    "flag": "🇰🇾",
     "timezones": [
       "UTC-05:00"
     ],
@@ -3140,10 +2892,8 @@
     "continent": "Asia",
     "region": "Central Asia",
     "capital": "Nursultan",
-    "direct_dialing_code": "+7",
+    "dialing_code": "+7",
     "currency_code": "KZT",
-    "currency_symbol": "₸",
-    "flag": "🇰🇿",
     "timezones": [
       "UTC+05:00",
       "UTC+06:00"
@@ -3169,10 +2919,8 @@
     "continent": "Asia",
     "region": "South-Eastern Asia",
     "capital": "Vientiane",
-    "direct_dialing_code": "+856",
+    "dialing_code": "+856",
     "currency_code": "LAK",
-    "currency_symbol": "₭",
-    "flag": "🇱🇦",
     "timezones": [
       "UTC+07:00"
     ],
@@ -3196,10 +2944,8 @@
     "continent": "Asia",
     "region": "Western Asia",
     "capital": "Beirut",
-    "direct_dialing_code": "+961",
+    "dialing_code": "+961",
     "currency_code": "LBP",
-    "currency_symbol": "ل.ل",
-    "flag": "🇱🇧",
     "timezones": [
       "UTC+02:00"
     ],
@@ -3221,10 +2967,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Castries",
-    "direct_dialing_code": "+1758",
+    "dialing_code": "+1758",
     "currency_code": "XCD",
-    "currency_symbol": "$",
-    "flag": "🇱🇨",
     "timezones": [
       "UTC-04:00"
     ],
@@ -3242,10 +2986,8 @@
     "continent": "Europe",
     "region": "Western Europe",
     "capital": "Vaduz",
-    "direct_dialing_code": "+423",
+    "dialing_code": "+423",
     "currency_code": "CHF",
-    "currency_symbol": "Fr",
-    "flag": "🇱🇮",
     "timezones": [
       "UTC+01:00"
     ],
@@ -3266,10 +3008,8 @@
     "continent": "Asia",
     "region": "Southern Asia",
     "capital": "Colombo",
-    "direct_dialing_code": "+94",
+    "dialing_code": "+94",
     "currency_code": "LKR",
-    "currency_symbol": "Rs  රු",
-    "flag": "🇱🇰",
     "timezones": [
       "UTC+05:30"
     ],
@@ -3290,10 +3030,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Monrovia",
-    "direct_dialing_code": "+231",
+    "dialing_code": "+231",
     "currency_code": "LRD",
-    "currency_symbol": "$",
-    "flag": "🇱🇷",
     "timezones": [
       "UTC"
     ],
@@ -3315,10 +3053,8 @@
     "continent": "Africa",
     "region": "Southern Africa",
     "capital": "Maseru",
-    "direct_dialing_code": "+266",
+    "dialing_code": "+266",
     "currency_code": "LSL",
-    "currency_symbol": "L",
-    "flag": "🇱🇸",
     "timezones": [
       "UTC+02:00"
     ],
@@ -3339,10 +3075,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "Vilnius",
-    "direct_dialing_code": "+370",
+    "dialing_code": "+370",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇱🇹",
     "timezones": [
       "UTC+02:00"
     ],
@@ -3365,10 +3099,8 @@
     "continent": "Europe",
     "region": "Western Europe",
     "capital": "Luxembourg",
-    "direct_dialing_code": "+352",
+    "dialing_code": "+352",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇱🇺",
     "timezones": [
       "UTC+01:00"
     ],
@@ -3392,10 +3124,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "Riga",
-    "direct_dialing_code": "+371",
+    "dialing_code": "+371",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇱🇻",
     "timezones": [
       "UTC+02:00"
     ],
@@ -3418,10 +3148,8 @@
     "continent": "Africa",
     "region": "Northern Africa",
     "capital": "Tripoli",
-    "direct_dialing_code": "+218",
+    "dialing_code": "+218",
     "currency_code": "LYD",
-    "currency_symbol": "ل.د",
-    "flag": "🇱🇾",
     "timezones": [
       "UTC+01:00"
     ],
@@ -3446,10 +3174,8 @@
     "continent": "Africa",
     "region": "Northern Africa",
     "capital": "Rabat",
-    "direct_dialing_code": "+212",
+    "dialing_code": "+212",
     "currency_code": "MAD",
-    "currency_symbol": "د.م.",
-    "flag": "🇲🇦",
     "timezones": [
       "UTC"
     ],
@@ -3471,10 +3197,8 @@
     "continent": "Europe",
     "region": "Western Europe",
     "capital": "Monaco",
-    "direct_dialing_code": "+377",
+    "dialing_code": "+377",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇲🇨",
     "timezones": [
       "UTC+01:00"
     ],
@@ -3494,10 +3218,8 @@
     "continent": "Europe",
     "region": "Eastern Europe",
     "capital": "Chisinau",
-    "direct_dialing_code": "+373",
+    "dialing_code": "+373",
     "currency_code": "MDL",
-    "currency_symbol": "L",
-    "flag": "🇲🇩",
     "timezones": [
       "UTC+02:00"
     ],
@@ -3518,10 +3240,8 @@
     "continent": "Europe",
     "region": "Southeast Europe",
     "capital": "Podgorica",
-    "direct_dialing_code": "+382",
+    "dialing_code": "+382",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇲🇪",
     "timezones": [
       "UTC+01:00"
     ],
@@ -3548,10 +3268,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Marigot",
-    "direct_dialing_code": "+590",
+    "dialing_code": "+590",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇲🇫",
     "timezones": [
       "UTC-04:00"
     ],
@@ -3573,10 +3291,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Antananarivo",
-    "direct_dialing_code": "+261",
+    "dialing_code": "+261",
     "currency_code": "MGA",
-    "currency_symbol": "Ar",
-    "flag": "🇲🇬",
     "timezones": [
       "UTC+03:00"
     ],
@@ -3595,10 +3311,8 @@
     "continent": "Oceania",
     "region": "Micronesia",
     "capital": "Majuro",
-    "direct_dialing_code": "+692",
+    "dialing_code": "+692",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇲🇭",
     "timezones": [
       "UTC+12:00"
     ],
@@ -3617,10 +3331,8 @@
     "continent": "Europe",
     "region": "Southeast Europe",
     "capital": "Skopje",
-    "direct_dialing_code": "+389",
+    "dialing_code": "+389",
     "currency_code": "MKD",
-    "currency_symbol": "den",
-    "flag": "🇲🇰",
     "timezones": [
       "UTC+01:00"
     ],
@@ -3644,10 +3356,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Bamako",
-    "direct_dialing_code": "+223",
+    "dialing_code": "+223",
     "currency_code": "XOF",
-    "currency_symbol": "Fr",
-    "flag": "🇲🇱",
     "timezones": [
       "UTC"
     ],
@@ -3673,10 +3383,8 @@
     "continent": "Asia",
     "region": "South-Eastern Asia",
     "capital": "Nay Pyi Taw",
-    "direct_dialing_code": "+95",
+    "dialing_code": "+95",
     "currency_code": "MMK",
-    "currency_symbol": "Ks",
-    "flag": "🇲🇲",
     "timezones": [
       "UTC+06:30"
     ],
@@ -3700,10 +3408,8 @@
     "continent": "Asia",
     "region": "Eastern Asia",
     "capital": "Ulaanbaatar",
-    "direct_dialing_code": "+976",
+    "dialing_code": "+976",
     "currency_code": "MNT",
-    "currency_symbol": "₮",
-    "flag": "🇲🇳",
     "timezones": [
       "UTC+07:00",
       "UTC+08:00"
@@ -3725,10 +3431,8 @@
     "continent": "Asia",
     "region": "Eastern Asia",
     "capital": "Concelho de Macau",
-    "direct_dialing_code": "+853",
+    "dialing_code": "+853",
     "currency_code": "MOP",
-    "currency_symbol": "P",
-    "flag": "🇲🇴",
     "timezones": [
       "UTC+08:00"
     ],
@@ -3749,10 +3453,8 @@
     "continent": "Oceania",
     "region": "Micronesia",
     "capital": "Saipan",
-    "direct_dialing_code": "+1670",
+    "dialing_code": "+1670",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇲🇵",
     "timezones": [
       "UTC+10:00"
     ],
@@ -3771,10 +3473,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Fort-de-France",
-    "direct_dialing_code": "+596",
+    "dialing_code": "+596",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇲🇶",
     "timezones": [
       "UTC-04:00"
     ],
@@ -3792,10 +3492,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Nouakchott",
-    "direct_dialing_code": "+222",
+    "dialing_code": "+222",
     "currency_code": "MRO",
-    "currency_symbol": "",
-    "flag": "🇲🇷",
     "timezones": [
       "UTC"
     ],
@@ -3818,10 +3516,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Brades",
-    "direct_dialing_code": "+1664",
+    "dialing_code": "+1664",
     "currency_code": "XCD",
-    "currency_symbol": "$",
-    "flag": "🇲🇸",
     "timezones": [
       "UTC-04:00"
     ],
@@ -3839,10 +3535,8 @@
     "continent": "Europe",
     "region": "Southern Europe",
     "capital": "Valletta",
-    "direct_dialing_code": "+356",
+    "dialing_code": "+356",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇲🇹",
     "timezones": [
       "UTC+01:00"
     ],
@@ -3861,10 +3555,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Port Louis",
-    "direct_dialing_code": "+230",
+    "dialing_code": "+230",
     "currency_code": "MUR",
-    "currency_symbol": "₨",
-    "flag": "🇲🇺",
     "timezones": [
       "UTC+04:00"
     ],
@@ -3882,10 +3574,8 @@
     "continent": "Asia",
     "region": "Southern Asia",
     "capital": "Malé",
-    "direct_dialing_code": "+960",
+    "dialing_code": "+960",
     "currency_code": "MVR",
-    "currency_symbol": ".ރ",
-    "flag": "🇲🇻",
     "timezones": [
       "UTC+05:00"
     ],
@@ -3903,10 +3593,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Lilongwe",
-    "direct_dialing_code": "+265",
+    "dialing_code": "+265",
     "currency_code": "MWK",
-    "currency_symbol": "MK",
-    "flag": "🇲🇼",
     "timezones": [
       "UTC+02:00"
     ],
@@ -3929,10 +3617,8 @@
     "continent": "North America",
     "region": "North America",
     "capital": "Mexico City",
-    "direct_dialing_code": "+52",
+    "dialing_code": "+52",
     "currency_code": "MXN",
-    "currency_symbol": "$",
-    "flag": "🇲🇽",
     "timezones": [
       "UTC-08:00",
       "UTC-07:00",
@@ -3956,10 +3642,8 @@
     "continent": "Asia",
     "region": "South-Eastern Asia",
     "capital": "Kuala Lumpur",
-    "direct_dialing_code": "+60",
+    "dialing_code": "+60",
     "currency_code": "MYR",
-    "currency_symbol": "RM",
-    "flag": "🇲🇾",
     "timezones": [
       "UTC+08:00"
     ],
@@ -3981,10 +3665,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Maputo",
-    "direct_dialing_code": "+258",
+    "dialing_code": "+258",
     "currency_code": "MZN",
-    "currency_symbol": "MT",
-    "flag": "🇲🇿",
     "timezones": [
       "UTC+02:00"
     ],
@@ -4009,10 +3691,8 @@
     "continent": "Africa",
     "region": "Southern Africa",
     "capital": "Windhoek",
-    "direct_dialing_code": "+264",
+    "dialing_code": "+264",
     "currency_code": "NAD",
-    "currency_symbol": "$",
-    "flag": "🇳🇦",
     "timezones": [
       "UTC+01:00"
     ],
@@ -4036,10 +3716,8 @@
     "continent": "Oceania",
     "region": "Melanesia",
     "capital": "Nouméa",
-    "direct_dialing_code": "+687",
+    "dialing_code": "+687",
     "currency_code": "XPF",
-    "currency_symbol": "₣",
-    "flag": "🇳🇨",
     "timezones": [
       "UTC+11:00"
     ],
@@ -4057,10 +3735,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Niamey",
-    "direct_dialing_code": "+227",
+    "dialing_code": "+227",
     "currency_code": "XOF",
-    "currency_symbol": "Fr",
-    "flag": "🇳🇪",
     "timezones": [
       "UTC+01:00"
     ],
@@ -4086,10 +3762,8 @@
     "continent": "Oceania",
     "region": "Australia and New Zealand",
     "capital": "Kingston",
-    "direct_dialing_code": "+672",
+    "dialing_code": "+672",
     "currency_code": "AUD",
-    "currency_symbol": "$",
-    "flag": "🇳🇫",
     "timezones": [
       "UTC+11:30"
     ],
@@ -4107,10 +3781,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Abuja",
-    "direct_dialing_code": "+234",
+    "dialing_code": "+234",
     "currency_code": "NGN",
-    "currency_symbol": "₦",
-    "flag": "🇳🇬",
     "timezones": [
       "UTC+01:00"
     ],
@@ -4133,10 +3805,8 @@
     "continent": "North America",
     "region": "Central America",
     "capital": "Managua",
-    "direct_dialing_code": "+505",
+    "dialing_code": "+505",
     "currency_code": "NIO",
-    "currency_symbol": "C$",
-    "flag": "🇳🇮",
     "timezones": [
       "UTC-06:00"
     ],
@@ -4157,10 +3827,8 @@
     "continent": "Europe",
     "region": "Western Europe",
     "capital": "Amsterdam",
-    "direct_dialing_code": "+31",
+    "dialing_code": "+31",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇳🇱",
     "timezones": [
       "UTC-04:00",
       "UTC+01:00"
@@ -4182,10 +3850,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "Oslo",
-    "direct_dialing_code": "+47",
+    "dialing_code": "+47",
     "currency_code": "NOK",
-    "currency_symbol": "kr",
-    "flag": "🇳🇴",
     "timezones": [
       "UTC+01:00"
     ],
@@ -4209,10 +3875,8 @@
     "continent": "Asia",
     "region": "Southern Asia",
     "capital": "Kathmandu",
-    "direct_dialing_code": "+977",
+    "dialing_code": "+977",
     "currency_code": "NPR",
-    "currency_symbol": "₨",
-    "flag": "🇳🇵",
     "timezones": [
       "UTC+05:45"
     ],
@@ -4233,10 +3897,8 @@
     "continent": "Oceania",
     "region": "Micronesia",
     "capital": "Yaren",
-    "direct_dialing_code": "+674",
+    "dialing_code": "+674",
     "currency_code": "AUD",
-    "currency_symbol": "$",
-    "flag": "🇳🇷",
     "timezones": [
       "UTC+12:00"
     ],
@@ -4255,10 +3917,8 @@
     "continent": "Oceania",
     "region": "Polynesia",
     "capital": "Alofi",
-    "direct_dialing_code": "+683",
+    "dialing_code": "+683",
     "currency_code": "NZD",
-    "currency_symbol": "$",
-    "flag": "🇳🇺",
     "timezones": [
       "UTC-11:00"
     ],
@@ -4276,10 +3936,8 @@
     "continent": "Oceania",
     "region": "Australia and New Zealand",
     "capital": "Wellington",
-    "direct_dialing_code": "+64",
+    "dialing_code": "+64",
     "currency_code": "NZD",
-    "currency_symbol": "$",
-    "flag": "🇳🇿",
     "timezones": [
       "UTC-11:00",
       "UTC-10:00",
@@ -4302,10 +3960,8 @@
     "continent": "Asia",
     "region": "Western Asia",
     "capital": "Muscat",
-    "direct_dialing_code": "+968",
+    "dialing_code": "+968",
     "currency_code": "OMR",
-    "currency_symbol": "ر.ع.",
-    "flag": "🇴🇲",
     "timezones": [
       "UTC+04:00"
     ],
@@ -4327,10 +3983,8 @@
     "continent": "North America",
     "region": "Central America",
     "capital": "Panama City",
-    "direct_dialing_code": "+507",
+    "dialing_code": "+507",
     "currency_code": "PAB",
-    "currency_symbol": "B/.",
-    "flag": "🇵🇦",
     "timezones": [
       "UTC-05:00"
     ],
@@ -4351,10 +4005,8 @@
     "continent": "South America",
     "region": "South America",
     "capital": "Lima",
-    "direct_dialing_code": "+51",
+    "dialing_code": "+51",
     "currency_code": "PEN",
-    "currency_symbol": "S/ ",
-    "flag": "🇵🇪",
     "timezones": [
       "UTC-05:00"
     ],
@@ -4378,10 +4030,8 @@
     "continent": "Oceania",
     "region": "Polynesia",
     "capital": "Papeete",
-    "direct_dialing_code": "+689",
+    "dialing_code": "+689",
     "currency_code": "XPF",
-    "currency_symbol": "₣",
-    "flag": "🇵🇫",
     "timezones": [
       "UTC-10:00",
       "UTC-09:30",
@@ -4401,10 +4051,8 @@
     "continent": "Oceania",
     "region": "Melanesia",
     "capital": "Port Moresby",
-    "direct_dialing_code": "+675",
+    "dialing_code": "+675",
     "currency_code": "PGK",
-    "currency_symbol": "K",
-    "flag": "🇵🇬",
     "timezones": [
       "UTC+10:00"
     ],
@@ -4424,10 +4072,8 @@
     "continent": "Asia",
     "region": "South-Eastern Asia",
     "capital": "Manila",
-    "direct_dialing_code": "+63",
+    "dialing_code": "+63",
     "currency_code": "PHP",
-    "currency_symbol": "₱",
-    "flag": "🇵🇭",
     "timezones": [
       "UTC+08:00"
     ],
@@ -4445,10 +4091,8 @@
     "continent": "Asia",
     "region": "Southern Asia",
     "capital": "Islamabad",
-    "direct_dialing_code": "+92",
+    "dialing_code": "+92",
     "currency_code": "PKR",
-    "currency_symbol": "₨",
-    "flag": "🇵🇰",
     "timezones": [
       "UTC+05:00"
     ],
@@ -4472,10 +4116,8 @@
     "continent": "Europe",
     "region": "Central Europe",
     "capital": "Warsaw",
-    "direct_dialing_code": "+48",
+    "dialing_code": "+48",
     "currency_code": "PLN",
-    "currency_symbol": "zł",
-    "flag": "🇵🇱",
     "timezones": [
       "UTC+01:00"
     ],
@@ -4501,10 +4143,8 @@
     "continent": "North America",
     "region": "North America",
     "capital": "Saint-Pierre",
-    "direct_dialing_code": "+508",
+    "dialing_code": "+508",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇵🇲",
     "timezones": [
       "UTC-03:00"
     ],
@@ -4522,10 +4162,8 @@
     "continent": "Oceania",
     "region": "Polynesia",
     "capital": "Adamstown",
-    "direct_dialing_code": "+64",
+    "dialing_code": "+64",
     "currency_code": "NZD",
-    "currency_symbol": "$",
-    "flag": "🇵🇳",
     "timezones": [
       "UTC-08:00"
     ],
@@ -4543,10 +4181,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "San Juan",
-    "direct_dialing_code": "+1",
+    "dialing_code": "+1",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇵🇷",
     "timezones": [
       "UTC-04:00"
     ],
@@ -4565,10 +4201,8 @@
     "continent": "Asia",
     "region": "Western Asia",
     "capital": "Ramallah",
-    "direct_dialing_code": "+970",
+    "dialing_code": "+970",
     "currency_code": "ILS",
-    "currency_symbol": "₪",
-    "flag": "🇵🇸",
     "timezones": [
       "UTC+02:00"
     ],
@@ -4590,10 +4224,8 @@
     "continent": "Europe",
     "region": "Southern Europe",
     "capital": "Lisbon",
-    "direct_dialing_code": "+351",
+    "dialing_code": "+351",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇵🇹",
     "timezones": [
       "UTC-01:00",
       "UTC"
@@ -4614,10 +4246,8 @@
     "continent": "Oceania",
     "region": "Micronesia",
     "capital": "",
-    "direct_dialing_code": "+680",
+    "dialing_code": "+680",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇵🇼",
     "timezones": [
       "UTC+09:00"
     ],
@@ -4635,10 +4265,8 @@
     "continent": "South America",
     "region": "South America",
     "capital": "Asunción",
-    "direct_dialing_code": "+595",
+    "dialing_code": "+595",
     "currency_code": "PYG",
-    "currency_symbol": "₲",
-    "flag": "🇵🇾",
     "timezones": [
       "UTC-04:00"
     ],
@@ -4661,10 +4289,8 @@
     "continent": "Asia",
     "region": "Western Asia",
     "capital": "Doha",
-    "direct_dialing_code": "+974",
+    "dialing_code": "+974",
     "currency_code": "QAR",
-    "currency_symbol": "ر.ق",
-    "flag": "🇶🇦",
     "timezones": [
       "UTC+03:00"
     ],
@@ -4684,10 +4310,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Saint-Denis",
-    "direct_dialing_code": "+262",
+    "dialing_code": "+262",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇷🇪",
     "timezones": [
       "UTC+04:00"
     ],
@@ -4705,10 +4329,8 @@
     "continent": "Europe",
     "region": "Southeast Europe",
     "capital": "Bucharest",
-    "direct_dialing_code": "+40",
+    "dialing_code": "+40",
     "currency_code": "RON",
-    "currency_symbol": "lei",
-    "flag": "🇷🇴",
     "timezones": [
       "UTC+02:00"
     ],
@@ -4732,10 +4354,8 @@
     "continent": "Europe",
     "region": "Southeast Europe",
     "capital": "Belgrade",
-    "direct_dialing_code": "+381",
+    "dialing_code": "+381",
     "currency_code": "RSD",
-    "currency_symbol": "дин.",
-    "flag": "🇷🇸",
     "timezones": [
       "UTC+01:00"
     ],
@@ -4762,10 +4382,8 @@
     "continent": "Europe",
     "region": "Eastern Europe",
     "capital": "Moscow",
-    "direct_dialing_code": "+7",
+    "dialing_code": "+7",
     "currency_code": "RUB",
-    "currency_symbol": "₽",
-    "flag": "🇷🇺",
     "timezones": [
       "UTC+03:00",
       "UTC+04:00",
@@ -4806,10 +4424,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Kigali",
-    "direct_dialing_code": "+250",
+    "dialing_code": "+250",
     "currency_code": "RWF",
-    "currency_symbol": "Fr",
-    "flag": "🇷🇼",
     "timezones": [
       "UTC+02:00"
     ],
@@ -4834,10 +4450,8 @@
     "continent": "Asia",
     "region": "Western Asia",
     "capital": "Riyadh",
-    "direct_dialing_code": "+966",
+    "dialing_code": "+966",
     "currency_code": "SAR",
-    "currency_symbol": "ر.س",
-    "flag": "🇸🇦",
     "timezones": [
       "UTC+03:00"
     ],
@@ -4863,10 +4477,8 @@
     "continent": "Oceania",
     "region": "Melanesia",
     "capital": "Honiara",
-    "direct_dialing_code": "+677",
+    "dialing_code": "+677",
     "currency_code": "SBD",
-    "currency_symbol": "$",
-    "flag": "🇸🇧",
     "timezones": [
       "UTC+11:00"
     ],
@@ -4884,10 +4496,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Victoria",
-    "direct_dialing_code": "+248",
+    "dialing_code": "+248",
     "currency_code": "SCR",
-    "currency_symbol": "₨",
-    "flag": "🇸🇨",
     "timezones": [
       "UTC+04:00"
     ],
@@ -4906,10 +4516,8 @@
     "continent": "Africa",
     "region": "Northern Africa",
     "capital": "Khartoum",
-    "direct_dialing_code": "+249",
+    "dialing_code": "+249",
     "currency_code": "SDG",
-    "currency_symbol": "",
-    "flag": "🇸🇩",
     "timezones": [
       "UTC+03:00"
     ],
@@ -4936,10 +4544,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "Stockholm",
-    "direct_dialing_code": "+46",
+    "dialing_code": "+46",
     "currency_code": "SEK",
-    "currency_symbol": "kr",
-    "flag": "🇸🇪",
     "timezones": [
       "UTC+01:00"
     ],
@@ -4960,10 +4566,8 @@
     "continent": "Asia",
     "region": "South-Eastern Asia",
     "capital": "Singapore",
-    "direct_dialing_code": "+65",
+    "dialing_code": "+65",
     "currency_code": "SGD",
-    "currency_symbol": "$",
-    "flag": "🇸🇬",
     "timezones": [
       "UTC+08:00"
     ],
@@ -4984,10 +4588,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Jamestown",
-    "direct_dialing_code": "+2",
+    "dialing_code": "+2",
     "currency_code": "SHP",
-    "currency_symbol": "£",
-    "flag": "🇸🇭",
     "timezones": [
       "UTC+00:00"
     ],
@@ -5005,10 +4607,8 @@
     "continent": "Europe",
     "region": "Central Europe",
     "capital": "Ljubljana",
-    "direct_dialing_code": "+386",
+    "dialing_code": "+386",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇸🇮",
     "timezones": [
       "UTC+01:00"
     ],
@@ -5031,10 +4631,8 @@
     "continent": "Europe",
     "region": "Northern Europe",
     "capital": "Longyearbyen",
-    "direct_dialing_code": "+4779",
+    "dialing_code": "+4779",
     "currency_code": "NOK",
-    "currency_symbol": "kr",
-    "flag": "🇸🇯",
     "timezones": [
       "UTC+01:00"
     ],
@@ -5052,10 +4650,8 @@
     "continent": "Europe",
     "region": "Central Europe",
     "capital": "Bratislava",
-    "direct_dialing_code": "+421",
+    "dialing_code": "+421",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇸🇰",
     "timezones": [
       "UTC+01:00"
     ],
@@ -5079,10 +4675,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Freetown",
-    "direct_dialing_code": "+232",
+    "dialing_code": "+232",
     "currency_code": "SLL",
-    "currency_symbol": "Le",
-    "flag": "🇸🇱",
     "timezones": [
       "UTC"
     ],
@@ -5103,10 +4697,8 @@
     "continent": "Europe",
     "region": "Southern Europe",
     "capital": "San Marino",
-    "direct_dialing_code": "+378",
+    "dialing_code": "+378",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇸🇲",
     "timezones": [
       "UTC+01:00"
     ],
@@ -5126,10 +4718,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Dakar",
-    "direct_dialing_code": "+221",
+    "dialing_code": "+221",
     "currency_code": "XOF",
-    "currency_symbol": "Fr",
-    "flag": "🇸🇳",
     "timezones": [
       "UTC"
     ],
@@ -5153,10 +4743,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Mogadishu",
-    "direct_dialing_code": "+252",
+    "dialing_code": "+252",
     "currency_code": "SOS",
-    "currency_symbol": "Sh",
-    "flag": "🇸🇴",
     "timezones": [
       "UTC+03:00"
     ],
@@ -5179,10 +4767,8 @@
     "continent": "South America",
     "region": "South America",
     "capital": "Paramaribo",
-    "direct_dialing_code": "+597",
+    "dialing_code": "+597",
     "currency_code": "SRD",
-    "currency_symbol": "$",
-    "flag": "🇸🇷",
     "timezones": [
       "UTC-03:00"
     ],
@@ -5204,10 +4790,8 @@
     "continent": "Africa",
     "region": "Middle Africa",
     "capital": "Juba",
-    "direct_dialing_code": "+211",
+    "dialing_code": "+211",
     "currency_code": "SSP",
-    "currency_symbol": "£",
-    "flag": "🇸🇸",
     "timezones": [
       "UTC+03:00"
     ],
@@ -5232,10 +4816,8 @@
     "continent": "Africa",
     "region": "Middle Africa",
     "capital": "São Tomé",
-    "direct_dialing_code": "+239",
+    "dialing_code": "+239",
     "currency_code": "STD",
-    "currency_symbol": "",
-    "flag": "🇸🇹",
     "timezones": [
       "UTC"
     ],
@@ -5253,10 +4835,8 @@
     "continent": "North America",
     "region": "Central America",
     "capital": "San Salvador",
-    "direct_dialing_code": "+503",
+    "dialing_code": "+503",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇸🇻",
     "timezones": [
       "UTC-06:00"
     ],
@@ -5277,10 +4857,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Philipsburg",
-    "direct_dialing_code": "+1721",
+    "dialing_code": "+1721",
     "currency_code": "XCG",
-    "currency_symbol": "Cg",
-    "flag": "🇸🇽",
     "timezones": [
       "UTC-04:00"
     ],
@@ -5301,10 +4879,8 @@
     "continent": "Asia",
     "region": "Western Asia",
     "capital": "Damascus",
-    "direct_dialing_code": "+963",
+    "dialing_code": "+963",
     "currency_code": "SYP",
-    "currency_symbol": "£",
-    "flag": "🇸🇾",
     "timezones": [
       "UTC+02:00"
     ],
@@ -5328,10 +4904,8 @@
     "continent": "Africa",
     "region": "Southern Africa",
     "capital": "Mbabane",
-    "direct_dialing_code": "+268",
+    "dialing_code": "+268",
     "currency_code": "SZL",
-    "currency_symbol": "L",
-    "flag": "🇸🇿",
     "timezones": [
       "UTC+02:00"
     ],
@@ -5353,10 +4927,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Cockburn Town",
-    "direct_dialing_code": "+1649",
+    "dialing_code": "+1649",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇹🇨",
     "timezones": [
       "UTC-04:00"
     ],
@@ -5374,10 +4946,8 @@
     "continent": "Africa",
     "region": "Middle Africa",
     "capital": "N'Djamena",
-    "direct_dialing_code": "+235",
+    "dialing_code": "+235",
     "currency_code": "XAF",
-    "currency_symbol": "Fr",
-    "flag": "🇹🇩",
     "timezones": [
       "UTC+01:00"
     ],
@@ -5403,10 +4973,8 @@
     "continent": "Antarctica",
     "region": "",
     "capital": "Port-aux-Français",
-    "direct_dialing_code": "+262",
+    "dialing_code": "+262",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇹🇫",
     "timezones": [
       "UTC+05:00"
     ],
@@ -5424,10 +4992,8 @@
     "continent": "Africa",
     "region": "Western Africa",
     "capital": "Lomé",
-    "direct_dialing_code": "+228",
+    "dialing_code": "+228",
     "currency_code": "XOF",
-    "currency_symbol": "Fr",
-    "flag": "🇹🇬",
     "timezones": [
       "UTC"
     ],
@@ -5449,10 +5015,8 @@
     "continent": "Asia",
     "region": "South-Eastern Asia",
     "capital": "Bangkok",
-    "direct_dialing_code": "+66",
+    "dialing_code": "+66",
     "currency_code": "THB",
-    "currency_symbol": "฿",
-    "flag": "🇹🇭",
     "timezones": [
       "UTC+07:00"
     ],
@@ -5475,10 +5039,8 @@
     "continent": "Asia",
     "region": "Central Asia",
     "capital": "Dushanbe",
-    "direct_dialing_code": "+992",
+    "dialing_code": "+992",
     "currency_code": "TJS",
-    "currency_symbol": "ЅМ",
-    "flag": "🇹🇯",
     "timezones": [
       "UTC+05:00"
     ],
@@ -5502,10 +5064,8 @@
     "continent": "Oceania",
     "region": "Polynesia",
     "capital": "",
-    "direct_dialing_code": "+690",
+    "dialing_code": "+690",
     "currency_code": "NZD",
-    "currency_symbol": "$",
-    "flag": "🇹🇰",
     "timezones": [
       "UTC+13:00"
     ],
@@ -5523,10 +5083,8 @@
     "continent": "Oceania",
     "region": "South-Eastern Asia",
     "capital": "Dili",
-    "direct_dialing_code": "+670",
+    "dialing_code": "+670",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇹🇱",
     "timezones": [
       "UTC+09:00"
     ],
@@ -5546,10 +5104,8 @@
     "continent": "Asia",
     "region": "Central Asia",
     "capital": "Ashgabat",
-    "direct_dialing_code": "+993",
+    "dialing_code": "+993",
     "currency_code": "TMT",
-    "currency_symbol": "m",
-    "flag": "🇹🇲",
     "timezones": [
       "UTC+05:00"
     ],
@@ -5573,10 +5129,8 @@
     "continent": "Africa",
     "region": "Northern Africa",
     "capital": "Tunis",
-    "direct_dialing_code": "+216",
+    "dialing_code": "+216",
     "currency_code": "TND",
-    "currency_symbol": "د.ت",
-    "flag": "🇹🇳",
     "timezones": [
       "UTC+01:00"
     ],
@@ -5597,10 +5151,8 @@
     "continent": "Oceania",
     "region": "Polynesia",
     "capital": "Nuku‘alofa",
-    "direct_dialing_code": "+676",
+    "dialing_code": "+676",
     "currency_code": "TOP",
-    "currency_symbol": "T$",
-    "flag": "🇹🇴",
     "timezones": [
       "UTC+13:00"
     ],
@@ -5619,10 +5171,8 @@
     "continent": "Europe",
     "region": "Western Asia",
     "capital": "Ankara",
-    "direct_dialing_code": "+90",
+    "dialing_code": "+90",
     "currency_code": "TRY",
-    "currency_symbol": "₺",
-    "flag": "🇹🇷",
     "timezones": [
       "UTC+03:00"
     ],
@@ -5649,10 +5199,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Port-of-Spain",
-    "direct_dialing_code": "+1868",
+    "dialing_code": "+1868",
     "currency_code": "TTD",
-    "currency_symbol": "$",
-    "flag": "🇹🇹",
     "timezones": [
       "UTC-04:00"
     ],
@@ -5670,10 +5218,8 @@
     "continent": "Oceania",
     "region": "Polynesia",
     "capital": "Funafuti",
-    "direct_dialing_code": "+688",
+    "dialing_code": "+688",
     "currency_code": "TVD",
-    "currency_symbol": "$",
-    "flag": "🇹🇻",
     "timezones": [
       "UTC+12:00"
     ],
@@ -5691,10 +5237,8 @@
     "continent": "Asia",
     "region": "Eastern Asia",
     "capital": "Taipei",
-    "direct_dialing_code": "+886",
+    "dialing_code": "+886",
     "currency_code": "TWD",
-    "currency_symbol": "$",
-    "flag": "🇹🇼",
     "timezones": [
       "UTC+08:00"
     ],
@@ -5712,10 +5256,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Dodoma",
-    "direct_dialing_code": "+255",
+    "dialing_code": "+255",
     "currency_code": "TZS",
-    "currency_symbol": "Sh",
-    "flag": "🇹🇿",
     "timezones": [
       "UTC+03:00"
     ],
@@ -5743,10 +5285,8 @@
     "continent": "Europe",
     "region": "Eastern Europe",
     "capital": "Kyiv",
-    "direct_dialing_code": "+380",
+    "dialing_code": "+380",
     "currency_code": "UAH",
-    "currency_symbol": "₴",
-    "flag": "🇺🇦",
     "timezones": [
       "UTC+02:00"
     ],
@@ -5772,10 +5312,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Kampala",
-    "direct_dialing_code": "+256",
+    "dialing_code": "+256",
     "currency_code": "UGX",
-    "currency_symbol": "Sh",
-    "flag": "🇺🇬",
     "timezones": [
       "UTC+03:00"
     ],
@@ -5800,10 +5338,8 @@
     "continent": "Oceania",
     "region": "North America",
     "capital": "",
-    "direct_dialing_code": "+268",
+    "dialing_code": "+268",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇺🇲",
     "timezones": [
       "UTC-11:00",
       "UTC-10:00",
@@ -5823,10 +5359,8 @@
     "continent": "North America",
     "region": "North America",
     "capital": "Washington, D.C.",
-    "direct_dialing_code": "+1",
+    "dialing_code": "+1",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇺🇸",
     "timezones": [
       "UTC-12:00",
       "UTC-11:00",
@@ -5857,10 +5391,8 @@
     "continent": "South America",
     "region": "South America",
     "capital": "Montevideo",
-    "direct_dialing_code": "+598",
+    "dialing_code": "+598",
     "currency_code": "UYU",
-    "currency_symbol": "$",
-    "flag": "🇺🇾",
     "timezones": [
       "UTC-03:00"
     ],
@@ -5881,10 +5413,8 @@
     "continent": "Asia",
     "region": "Central Asia",
     "capital": "Tashkent",
-    "direct_dialing_code": "+998",
+    "dialing_code": "+998",
     "currency_code": "UZS",
-    "currency_symbol": "so'm",
-    "flag": "🇺🇿",
     "timezones": [
       "UTC+05:00"
     ],
@@ -5909,10 +5439,8 @@
     "continent": "Europe",
     "region": "Southern Europe",
     "capital": "Vatican City",
-    "direct_dialing_code": "+3",
+    "dialing_code": "+3",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇻🇦",
     "timezones": [
       "UTC+01:00"
     ],
@@ -5935,10 +5463,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Kingstown",
-    "direct_dialing_code": "+1784",
+    "dialing_code": "+1784",
     "currency_code": "XCD",
-    "currency_symbol": "$",
-    "flag": "🇻🇨",
     "timezones": [
       "UTC-04:00"
     ],
@@ -5956,10 +5482,8 @@
     "continent": "South America",
     "region": "South America",
     "capital": "Caracas",
-    "direct_dialing_code": "+58",
+    "dialing_code": "+58",
     "currency_code": "VED",
-    "currency_symbol": "",
-    "flag": "🇻🇪",
     "timezones": [
       "UTC-04:00"
     ],
@@ -5981,10 +5505,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Road Town",
-    "direct_dialing_code": "+1284",
+    "dialing_code": "+1284",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇻🇬",
     "timezones": [
       "UTC-04:00"
     ],
@@ -6002,10 +5524,8 @@
     "continent": "North America",
     "region": "Caribbean",
     "capital": "Charlotte Amalie",
-    "direct_dialing_code": "+1340",
+    "dialing_code": "+1340",
     "currency_code": "USD",
-    "currency_symbol": "$",
-    "flag": "🇻🇮",
     "timezones": [
       "UTC-04:00"
     ],
@@ -6023,10 +5543,8 @@
     "continent": "Asia",
     "region": "South-Eastern Asia",
     "capital": "Hanoi",
-    "direct_dialing_code": "+84",
+    "dialing_code": "+84",
     "currency_code": "VND",
-    "currency_symbol": "₫",
-    "flag": "🇻🇳",
     "timezones": [
       "UTC+07:00"
     ],
@@ -6048,10 +5566,8 @@
     "continent": "Oceania",
     "region": "Melanesia",
     "capital": "Port-Vila",
-    "direct_dialing_code": "+678",
+    "dialing_code": "+678",
     "currency_code": "VUV",
-    "currency_symbol": "Vt",
-    "flag": "🇻🇺",
     "timezones": [
       "UTC+11:00"
     ],
@@ -6071,10 +5587,8 @@
     "continent": "Oceania",
     "region": "Polynesia",
     "capital": "Mata-Utu",
-    "direct_dialing_code": "+681",
+    "dialing_code": "+681",
     "currency_code": "XPF",
-    "currency_symbol": "₣",
-    "flag": "🇼🇫",
     "timezones": [
       "UTC+12:00"
     ],
@@ -6092,10 +5606,8 @@
     "continent": "Oceania",
     "region": "Polynesia",
     "capital": "Apia",
-    "direct_dialing_code": "+685",
+    "dialing_code": "+685",
     "currency_code": "WST",
-    "currency_symbol": "T",
-    "flag": "🇼🇸",
     "timezones": [
       "UTC+13:00"
     ],
@@ -6114,10 +5626,8 @@
     "continent": "Europe",
     "region": "Southeast Europe",
     "capital": "Pristina",
-    "direct_dialing_code": "+383",
+    "dialing_code": "+383",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇽🇰",
     "timezones": [
       "UTC+01:00"
     ],
@@ -6141,10 +5651,8 @@
     "continent": "Asia",
     "region": "Western Asia",
     "capital": "Sanaa",
-    "direct_dialing_code": "+967",
+    "dialing_code": "+967",
     "currency_code": "YER",
-    "currency_symbol": "﷼",
-    "flag": "🇾🇪",
     "timezones": [
       "UTC+03:00"
     ],
@@ -6165,10 +5673,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Mamoudzou",
-    "direct_dialing_code": "+262",
+    "dialing_code": "+262",
     "currency_code": "EUR",
-    "currency_symbol": "€",
-    "flag": "🇾🇹",
     "timezones": [
       "UTC+03:00"
     ],
@@ -6186,10 +5692,8 @@
     "continent": "Africa",
     "region": "Southern Africa",
     "capital": "Pretoria",
-    "direct_dialing_code": "+27",
+    "dialing_code": "+27",
     "currency_code": "ZAR",
-    "currency_symbol": "R",
-    "flag": "🇿🇦",
     "timezones": [
       "UTC+02:00"
     ],
@@ -6223,10 +5727,8 @@
     "continent": "Africa",
     "region": "Eastern Africa",
     "capital": "Lusaka",
-    "direct_dialing_code": "+260",
+    "dialing_code": "+260",
     "currency_code": "ZMW",
-    "currency_symbol": "ZK",
-    "flag": "🇿🇲",
     "timezones": [
       "UTC+02:00"
     ],
@@ -6253,10 +5755,8 @@
     "continent": "Africa",
     "region": "Southern Africa",
     "capital": "Harare",
-    "direct_dialing_code": "+263",
+    "dialing_code": "+263",
     "currency_code": "ZWL",
-    "currency_symbol": "$",
-    "flag": "🇿🇼",
     "timezones": [
       "UTC+02:00"
     ],

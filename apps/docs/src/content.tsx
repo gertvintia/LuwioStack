@@ -49,7 +49,7 @@ export const PACKAGES: PackageMeta[] = [
     icon: <MapPinIcon />,
     tagline: 'Country data',
     blurb:
-      'Typed ISO 3166 country data — continents, borders, dialing codes, currencies, flags and the languages each country speaks.',
+      'Typed ISO 3166 country data — continents, borders, dialing codes, currencies and the languages each country speaks.',
     gzip: '20 kB',
     install: 'npm i @luwio/country',
     status: 'ready',

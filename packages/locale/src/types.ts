@@ -43,6 +43,7 @@ export interface ILocale {
   language(): ILanguage
   languages(): ILanguages
   country(): ICountry
+  continent(): IContinent
   toIntlLocale(): Intl.Locale
 }
 

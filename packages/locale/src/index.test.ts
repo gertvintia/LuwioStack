@@ -72,6 +72,10 @@ describe('Locale', () => {
     expect(() => Locale.new({ languageOrLocale: 'zz', country: 'BE' })).toThrow(/unknown/i)
   })
 
+  it('resolves the continent of the locale', () => {
+    expect(Locale.new({ languageOrLocale: 'nl-BE' }).continent().name).toBe('Europe')
+  })
+
   it('defaults to LOOSE — a valid language + country pair is accepted without a policy', () => {
     // 'en-BE' isn't a dataset combination, but 'en' and 'BE' each exist.
     expect(Locale.new({ languageOrLocale: 'en', country: 'BE' }).locale).toBe('en-BE')

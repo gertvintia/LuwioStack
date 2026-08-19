@@ -16,20 +16,15 @@ const SECTIONS: DocSection[] = [
 ]
 
 const REACT_CODE = `import { Locale, MatchingPolicy, useLocale } from '@luwio/locale'
-import { ErrorBoundary } from 'react-error-boundary'
 
 function App() {
   return (
-    // A locale that can't be resolved throws while rendering — an error boundary
-    // turns that into a fallback instead of a blank screen.
-    <ErrorBoundary fallback={<p>Unsupported locale.</p>}>
-      <Locale
-        locale="nl-BE"                 // required — the 'language-country' string
-        policy={MatchingPolicy.STRICT} // optional — overrides the default (LOOSE)
-      >
-        <Info />
-      </Locale>
-    </ErrorBoundary>
+    <Locale
+      locale="nl-BE"                 // required — the 'language-country' string
+      policy={MatchingPolicy.STRICT} // optional — overrides the default (LOOSE)
+    >
+      <Info />
+    </Locale>
   )
 }
 
@@ -207,18 +202,17 @@ export function LocalePage() {
         <code>useLocale</code> returns <code>{'{ current }'}</code> with{' '}
         <code>current.locale.code</code>, <code>current.language</code>, <code>current.region</code>
         , <code>current.languages</code> and <code>current.intl</code> — and throws if used outside
-        a provider. A locale that can't be resolved also throws while rendering, so wrap{' '}
-        <code>Locale</code> in an error boundary (above) — or resolve untrusted values first with{' '}
-        <code>resolveLocale</code> (see below) so it never throws.
+        a provider. Give <code>Locale</code> a locale you control; for untrusted values (the URL,
+        storage, an API) resolve them first with <code>resolveLocale</code> (see below) so an
+        unsupported locale falls back instead of throwing.
       </p>
 
       <Callout>
-        <strong>When does it crash — and should it?</strong> A hardcoded locale that can't be
-        resolved (a typo like <code>en-XX</code>) throws while rendering. That's on purpose: it's a
-        bug you want to catch in development, and an error boundary keeps it from blanking the
-        screen. For a locale from the URL, storage or an API, don't let it reach <code>Locale</code>
-        raw — run it through <code>resolveLocale</code> first so untrusted input resolves to a
-        supported locale and never crashes on your users.
+        <strong>Untrusted locales.</strong> A hardcoded locale that can't be resolved (a typo like{' '}
+        <code>en-XX</code>) throws while rendering — a fail-fast signal you want in development. But
+        never hand <code>Locale</code> a locale from the URL, storage or an API raw: run it through{' '}
+        <code>resolveLocale</code> first, which maps it onto one you support (via the required{' '}
+        <code>*</code> catch-all) so user data can't crash the app.
       </Callout>
 
       <h2 id="domain-model">Domain model</h2>

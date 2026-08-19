@@ -14,8 +14,8 @@ describe('useLocale', () => {
     expect(current.locale.code).toBe('nl-BE')
     expect(current.language.code).toBe('nl')
     expect(current.language.name).toBe('Dutch')
-    expect(current.region.code).toBe('BE')
-    expect(current.region.name).toBe('Belgium')
+    expect(current.country.code).toBe('BE')
+    expect(current.country.name).toBe('Belgium')
     expect(current.intl.language).toBe('nl')
   })
 

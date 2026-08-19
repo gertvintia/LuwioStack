@@ -36,8 +36,8 @@ function Info() {
   const { current } = useLocale()
   return (
     <p>
-      {current.language.name} in {current.region.name} ({current.locale.code})
-      — dial {current.region.direct_dialing_code}
+      {current.language.name} in {current.country.name} ({current.locale.code})
+      — dial {current.country.direct_dialing_code}
     </p>
   )
 }
@@ -127,7 +127,7 @@ src/
 
 ## API surface
 
-- **React:** `Locale`, `useLocale` (returns `{ current }` → `locale.code`, `language`, `region`, `languages`, `intl`)
+- **React:** `Locale`, `useLocale` (returns `{ current }` → `locale.code`, `language`, `country`, `languages`, `intl`)
 - **Factory:** `createLocale`, `resolveLocale`, `SystemLocale`
 - **Domain:** `Language`, `Languages`, `Country`, `Countries`, `Continent`
 - **Utils:** `normalizeLocale`, `matchLocalePattern`, `resolvePolicy`, `toMachineName`

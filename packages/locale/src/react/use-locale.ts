@@ -8,9 +8,9 @@ export interface CurrentLocale {
   locale: { readonly code: string }
   /** The language — `language.code` is `'nl'`, `language.name` is `'Dutch'`. */
   language: ILanguage
-  /** The region (country) — `region.code` is `'BE'`, `region.name` is `'Belgium'`. */
-  region: ICountry
-  /** Every language spoken in the region, plus the active one. */
+  /** The country — `country.code` is `'BE'`, `country.name` is `'Belgium'`. */
+  country: ICountry
+  /** Every language spoken in the country, plus the active one. */
   languages: ILanguages
   /** The native `Intl.Locale`. */
   intl: Intl.Locale
@@ -32,7 +32,7 @@ function toCurrent(locale: ILocale): CurrentLocale {
   const current: CurrentLocale = {
     locale: { code: locale.locale },
     language: locale.language(),
-    region: locale.country(),
+    country: locale.country(),
     languages: locale.languages(),
     intl: locale.toIntlLocale(),
   }

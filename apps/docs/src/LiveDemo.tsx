@@ -47,7 +47,7 @@ function DemoWindow({
         <div className="field">
           <span className="label">Country</span>
           <span className="value">
-            <span className="flag">{flagOf(active.region.code)}</span> {active.region.name}
+            <span className="flag">{flagOf(active.country.code)}</span> {active.country.name}
           </span>
         </div>
         <div className="field">
@@ -56,12 +56,12 @@ function DemoWindow({
         </div>
         <div className="field">
           <span className="label">Dialing code</span>
-          <span className="value">{active.region.direct_dialing_code}</span>
+          <span className="value">{active.country.direct_dialing_code}</span>
         </div>
         <div className="field">
           <span className="label">ISO codes</span>
           <span className="value">
-            {active.locale.code} · {active.region.alpha3} · {active.region.numeric}
+            {active.locale.code} · {active.country.alpha3} · {active.country.numeric}
           </span>
         </div>
         <div className="field">

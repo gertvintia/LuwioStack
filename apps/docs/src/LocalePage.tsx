@@ -32,8 +32,8 @@ function Info() {
   const { current } = useLocale()
   return (
     <p>
-      {current.language.name} in {current.region.name} ({current.locale.code})
-      — dial {current.region.direct_dialing_code}
+      {current.language.name} in {current.country.name} ({current.locale.code})
+      — dial {current.country.direct_dialing_code}
     </p>
   )
 }`
@@ -86,7 +86,7 @@ function Info() {
   // useLocale() has no setter — switching is driven by the parent's state.
   const { current } = useLocale()
   return (
-    <p>{current.language.name} · {current.region.name} · dial {current.region.direct_dialing_code}</p>
+    <p>{current.language.name} · {current.country.name} · dial {current.country.direct_dialing_code}</p>
   )
 }
 
@@ -139,10 +139,10 @@ const EX_COUNTRY = `const flag = (a) =>
 
 function Badge() {
   const { current } = useLocale()
-  const spoken = current.region.languages().toArray().map((l) => l.name)
+  const spoken = current.country.languages().toArray().map((l) => l.name)
   return (
     <div>
-      <strong>{flag(current.region.code)} {current.region.name}</strong>
+      <strong>{flag(current.country.code)} {current.country.name}</strong>
       <div>Spoken: {spoken.join(', ')}</div>
     </div>
   )
@@ -200,11 +200,12 @@ export function LocalePage() {
       <CodeBlock code={REACT_CODE} />
       <p>
         <code>useLocale</code> returns <code>{'{ current }'}</code> with{' '}
-        <code>current.locale.code</code>, <code>current.language</code>, <code>current.region</code>
-        , <code>current.languages</code> and <code>current.intl</code> — and throws if used outside
-        a provider. Give <code>Locale</code> a locale you control; for untrusted values (the URL,
-        storage, an API) resolve them first with <code>resolveLocale</code> (see below) so an
-        unsupported locale falls back instead of throwing.
+        <code>current.locale.code</code>, <code>current.language</code>,{' '}
+        <code>current.country</code>, <code>current.languages</code> and <code>current.intl</code> —
+        and throws if used outside a provider. Give <code>Locale</code> a locale you control; for
+        untrusted values (the URL, storage, an API) resolve them first with{' '}
+        <code>resolveLocale</code> (see below) so an unsupported locale falls back instead of
+        throwing.
       </p>
 
       <Callout>

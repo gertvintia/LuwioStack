@@ -87,9 +87,13 @@ import { Locale } from '@luwio/locale'
 
 Locale.resolve({
   detected: Locale.system, // the runtime's detected locale
-  supported: ['nl-BE', 'fr-FR', 'en-US'],
+  supported: ['nl-BE', 'fr-FR', 'en-US'], // optional — omit to accept any valid locale
   overrides: { 'en-*': 'en-US', '*': 'nl-BE' }, // '*' catch-all is required
 })
+
+// No `supported` list → the whole dataset: any valid locale is returned as-is,
+// only an unknown/missing one falls through to the overrides + '*' catch-all.
+Locale.resolve({ detected: Locale.system, overrides: { '*': 'nl-BE' } })
 ```
 
 ## Locale routing

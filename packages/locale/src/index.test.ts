@@ -146,6 +146,26 @@ describe('Locale.resolve', () => {
   })
 })
 
+describe('Locale.resolve (no supported list — whole dataset)', () => {
+  it('accepts any valid detected locale as-is', () => {
+    // 'nl-DE' isn't a common pairing, but nl and DE are each known → valid → returned.
+    expect(Locale.resolve({ detected: 'nl-DE', overrides: { '*': 'en-US' } }).locale).toBe('nl-DE')
+    expect(Locale.resolve({ detected: 'fr-FR', overrides: { '*': 'en-US' } }).locale).toBe('fr-FR')
+  })
+
+  it('falls back to the catch-all for an invalid/unknown detected locale', () => {
+    expect(Locale.resolve({ detected: 'zz-ZZ', overrides: { '*': 'nl-BE' } }).locale).toBe('nl-BE')
+    expect(Locale.resolve({ detected: null, overrides: { '*': 'nl-BE' } }).locale).toBe('nl-BE')
+  })
+
+  it('still applies overrides before the catch-all', () => {
+    // 'en-XX' is invalid (XX unknown), so it isn't accepted as-is; the 'en-*' pattern maps it.
+    expect(
+      Locale.resolve({ detected: 'en-XX', overrides: { 'en-*': 'en-US', '*': 'nl-BE' } }).locale,
+    ).toBe('en-US')
+  })
+})
+
 describe('Locale.resolve (string detected)', () => {
   it('resolves an unknown string via the * catch-all instead of throwing', () => {
     const r = Locale.resolve({

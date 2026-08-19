@@ -7,14 +7,28 @@ function isPattern(key: string): boolean {
   return key.includes('*') || key.includes('[')
 }
 
+/** Whether `key` is a valid locale (a known language + a known country). */
+function isValidLocale(key: string): boolean {
+  if (key === '') return false
+  try {
+    Locale.fromLocale({ locale: key })
+    return true
+  } catch {
+    return false
+  }
+}
+
 /**
- * Resolves a detected locale to the best match within a list of supported locales.
+ * Resolves a detected locale to the best match among the locales your app supports.
+ *
+ * `supported` is optional: omit it to accept **any** valid locale (a known language + known
+ * country) — the whole dataset. Provide a list to constrain resolution to just those locales.
  *
  * Resolution order:
- * 1. Exact match in the supported list
+ * 1. The detected locale itself, when it's supported (in the list, or — with no list — any valid locale)
  * 2. Exact override key match (e.g. `'en-GB': 'nl-BE'`)
  * 3. Pattern override key match using `*` and `[a,b]` syntax (e.g. `'en-*'`, `'en-[BE,NL]'`)
- * 4. First supported locale with the same language (e.g. `nl-DE` → `nl-NL`)
+ * 4. First supported locale with the same language (e.g. `nl-DE` → `nl-NL`); only with a `supported` list
  * 5. Catch-all override `'*'` (required — guarantees a locale is always returned)
  *
  * `detected` may be an {@link ILocale}, a raw locale string (e.g. straight from a URL), or
@@ -23,7 +37,7 @@ function isPattern(key: string): boolean {
  */
 export function resolveLocale(value: {
   detected: ILocale | string | null | undefined
-  supported: string[]
+  supported?: string[]
   overrides: LocaleOverrides
 }): ILocale {
   const { detected, supported, overrides } = value
@@ -34,7 +48,10 @@ export function resolveLocale(value: {
     detected != null && typeof detected !== 'string'
       ? detected.language_code
       : (key.split('-')[0] ?? '')
-  const normalizedSupported = supported.map((s) => normalizeLocale({ locale: s }))
+  // No `supported` list → the whole dataset: every valid locale is supported.
+  const normalizedSupported = supported?.map((s) => normalizeLocale({ locale: s }))
+  const isSupported = (k: string): boolean =>
+    normalizedSupported ? normalizedSupported.includes(k) : isValidLocale(k)
   const normalizedOverrides = Object.fromEntries(
     Object.entries(overrides).map(([k, v]) => [
       isPattern(k) ? k : normalizeLocale({ locale: k }),
@@ -42,7 +59,7 @@ export function resolveLocale(value: {
     ]),
   ) as LocaleOverrides
 
-  if (normalizedSupported.includes(key)) {
+  if (isSupported(key)) {
     return detected != null && typeof detected !== 'string'
       ? detected
       : Locale.fromLocale({ locale: key })
@@ -64,7 +81,8 @@ export function resolveLocale(value: {
     return Locale.fromLocale({ locale: patternMatch[1] })
   }
 
-  const byLanguage = normalizedSupported.find((s) =>
+  // Same-language fallback only applies to an explicit supported list.
+  const byLanguage = normalizedSupported?.find((s) =>
     s.toLowerCase().startsWith(`${languageCode.toLowerCase()}-`),
   )
 

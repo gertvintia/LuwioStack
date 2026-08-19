@@ -235,6 +235,12 @@ export function LocalePage() {
         <code>*-BE</code>) → first supported locale with the same language → the required{' '}
         <code>*</code> catch-all.
       </p>
+      <p>
+        <code>supported</code> is optional — omit it to accept <em>any</em> valid locale (a known
+        language + known country), i.e. the whole dataset. A detected locale that's valid is then
+        returned as-is; only an unknown or missing one falls through to the overrides and{' '}
+        <code>*</code> catch-all.
+      </p>
       <CodeBlock code={RESOLVE_CODE} />
 
       <p>
@@ -313,7 +319,7 @@ export function LocalePage() {
           },
           {
             sig: 'Locale.resolve()',
-            desc: 'Resolve a detected locale (ILocale or string) against a supported list.',
+            desc: 'Resolve a detected locale against a supported list (optional — omit for any valid locale).',
           },
           {
             sig: 'Locale.system',

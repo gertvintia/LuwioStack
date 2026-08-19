@@ -19,3 +19,5 @@ dataset, and drops matching policies in favour of a single rule.
 - **`resolveLocale` and `SystemLocale` moved onto `Locale`** as `Locale.resolve()` and
   `Locale.system`, alongside `Locale.new()` — the standalone `resolveLocale` / `SystemLocale`
   exports are removed.
+- `Locale.resolve`'s `supported` list is now **optional** — omit it to accept any valid locale (a
+  known language + known country), i.e. the whole dataset.

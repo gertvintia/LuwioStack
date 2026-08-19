@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { Locale } from './domain/locale'
+import { Locale as LocaleClass } from './domain/locale'
 import {
   Continent,
   Countries,
   Country,
   CountryCodeFormat,
-  createLocale,
   Language,
+  Locale,
   MatchingPolicy,
   matchLocalePattern,
   normalizeLocale,
@@ -59,7 +59,7 @@ describe('resolvePolicy', () => {
 
 describe('Locale', () => {
   it('creates a strict locale from a known combination', () => {
-    const locale = createLocale({ languageOrLocale: 'nl-BE' })
+    const locale = Locale.new({ languageOrLocale: 'nl-BE' })
     expect(locale.locale).toBe('nl-BE')
     expect(locale.language_code).toBe('nl')
     expect(locale.country_code).toBe('BE')
@@ -69,16 +69,16 @@ describe('Locale', () => {
   })
 
   it('throws when the language or country is unknown', () => {
-    expect(() => createLocale({ languageOrLocale: 'zz', country: 'BE' })).toThrow(/unknown/i)
+    expect(() => Locale.new({ languageOrLocale: 'zz', country: 'BE' })).toThrow(/unknown/i)
   })
 
   it('defaults to LOOSE — a valid language + country pair is accepted without a policy', () => {
     // 'en-BE' isn't a dataset combination, but 'en' and 'BE' each exist.
-    expect(createLocale({ languageOrLocale: 'en', country: 'BE' }).locale).toBe('en-BE')
+    expect(Locale.new({ languageOrLocale: 'en', country: 'BE' }).locale).toBe('en-BE')
   })
 
   it('accepts a loose combination when parts exist separately', () => {
-    const locale = createLocale({
+    const locale = Locale.new({
       languageOrLocale: 'en',
       country: 'BE',
       policy: MatchingPolicy.LOOSE,
@@ -137,7 +137,7 @@ describe('Continent', () => {
 describe('resolveLocale', () => {
   it('falls back through the resolution chain to the catch-all', () => {
     const resolved = resolveLocale({
-      detected: Locale.fromLocale({ locale: 'es-ES' }),
+      detected: LocaleClass.fromLocale({ locale: 'es-ES' }),
       supported: ['nl-BE', 'fr-FR'],
       overrides: { '*': 'nl-BE' },
     })
@@ -146,7 +146,7 @@ describe('resolveLocale', () => {
 
   it('prefers a same-language supported locale', () => {
     const resolved = resolveLocale({
-      detected: Locale.fromLocale({ locale: 'fr-BE', policy: MatchingPolicy.LOOSE }),
+      detected: LocaleClass.fromLocale({ locale: 'fr-BE', policy: MatchingPolicy.LOOSE }),
       supported: ['fr-FR', 'nl-NL'],
       overrides: { '*': 'nl-NL' },
     })

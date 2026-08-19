@@ -13,7 +13,6 @@ export { Locale, type LocaleProps } from './react/locale-provider'
 export { type CurrentLocale, type UseLocaleResult, useLocale } from './react/use-locale'
 export * from './types'
 // Utilities
-export { createLocale } from './utils/create-locale'
 export { matchLocalePattern } from './utils/match-locale-pattern'
 export { normalizeLocale } from './utils/normalize-locale'
 export { resolveLocale } from './utils/resolve-locale'

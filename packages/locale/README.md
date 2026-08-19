@@ -53,9 +53,9 @@ provider.
 ## Domain model (no React required)
 
 ```ts
-import { createLocale, Country, Continent, MatchingPolicy } from '@luwio/locale'
+import { Locale, Country, Continent, MatchingPolicy } from '@luwio/locale'
 
-const locale = createLocale({ languageOrLocale: 'nl-BE' })
+const locale = Locale.new({ languageOrLocale: 'nl-BE' })
 locale.language().name        // 'Dutch'
 locale.country().alpha3       // 'BEL'
 locale.country().borders()    // Countries → FR, DE, LU, NL
@@ -67,8 +67,8 @@ Continent.europe().countries().toArray().length   // European countries
 //   LOOSE (default) — 'en' and 'BE' each exist → accepted, even if not a listed pair.
 //   STRICT          — must be an exact dataset entry → 'en-BE' throws ('nl-BE' passes).
 // Either way, an unknown language or country (e.g. 'zz-BE') throws.
-createLocale({ languageOrLocale: 'en', country: 'BE' })                                // 'en-BE' (LOOSE)
-createLocale({ languageOrLocale: 'en', country: 'BE', policy: MatchingPolicy.STRICT }) // throws
+Locale.new({ languageOrLocale: 'en', country: 'BE' })                                // 'en-BE' (LOOSE)
+Locale.new({ languageOrLocale: 'en', country: 'BE', policy: MatchingPolicy.STRICT }) // throws
 ```
 
 ## Locale resolution
@@ -118,7 +118,7 @@ usual rules (same-language → per-pattern → catch-all). No crash, no manual n
 ```
 src/
 ├── domain/   Locale, Language(s), Country(ies), Continent, SystemLocale
-├── utils/    createLocale, resolveLocale, resolvePolicy, normalizeLocale, …
+├── utils/    resolveLocale, resolvePolicy, normalizeLocale, createLocale (→ Locale.new), …
 ├── react/    LocaleContext, Locale, useLocale
 ├── dataset/  built-in dataset + internal registry (module composes its data here)
 ├── data/     dataset.json (built-in ISO 639 / ISO 3166 dataset)
@@ -128,7 +128,7 @@ src/
 ## API surface
 
 - **React:** `Locale`, `useLocale` (returns `{ current }` → `locale.code`, `language`, `country`, `languages`, `intl`)
-- **Factory:** `createLocale`, `resolveLocale`, `SystemLocale`
+- **Factory:** `Locale.new`, `resolveLocale`, `SystemLocale`
 - **Domain:** `Language`, `Languages`, `Country`, `Countries`, `Continent`
 - **Utils:** `normalizeLocale`, `matchLocalePattern`, `resolvePolicy`, `toMachineName`
 - **Types:** `ILocale`, `ICountry`, `ILanguage`, `MatchingPolicy`, `LocalePolicy`, …

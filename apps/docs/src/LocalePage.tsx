@@ -38,9 +38,9 @@ function Info() {
   )
 }`
 
-const DOMAIN_CODE = `import { createLocale, Country, Continent } from '@luwio/locale'
+const DOMAIN_CODE = `import { Locale, Country, Continent } from '@luwio/locale'
 
-const locale = createLocale({ languageOrLocale: 'nl-BE' })
+const locale = Locale.new({ languageOrLocale: 'nl-BE' })
 locale.language().name        // 'Dutch'
 locale.country().alpha3       // 'BEL'
 locale.country().borders()    // Countries → FR, DE, LU, NL
@@ -59,20 +59,20 @@ const locale = resolveLocale({
   },
 })`
 
-const POLICY_CODE = `import { createLocale, MatchingPolicy } from '@luwio/locale'
+const POLICY_CODE = `import { Locale, MatchingPolicy } from '@luwio/locale'
 
 // 'nl-BE' is a real dataset entry → both policies accept it.
-createLocale({ languageOrLocale: 'nl-BE' })
+Locale.new({ languageOrLocale: 'nl-BE' })
 
 // 'en-BE': English and Belgium each exist, but not together as a dataset entry.
-createLocale({ languageOrLocale: 'en', country: 'BE' })                                 // LOOSE (default) → 'en-BE'
-createLocale({ languageOrLocale: 'en', country: 'BE', policy: MatchingPolicy.STRICT })  // STRICT → throws
+Locale.new({ languageOrLocale: 'en', country: 'BE' })                                 // LOOSE (default) → 'en-BE'
+Locale.new({ languageOrLocale: 'en', country: 'BE', policy: MatchingPolicy.STRICT })  // STRICT → throws
 
 // Either policy throws when the language or the country itself is unknown.
-createLocale({ languageOrLocale: 'zz', country: 'BE' })  // 'zz' isn't a language → throws
+Locale.new({ languageOrLocale: 'zz', country: 'BE' })  // 'zz' isn't a language → throws
 
 // Per-pattern map: its \`default\` applies where no pattern matches.
-createLocale({
+Locale.new({
   languageOrLocale: 'nl-BE',
   policy: { default: MatchingPolicy.LOOSE, locales: { 'en-*': MatchingPolicy.STRICT } },
 })`
@@ -318,7 +318,7 @@ export function LocalePage() {
             desc: 'Hook → { current } with the active locale, language and country.',
           },
           {
-            sig: 'createLocale()',
+            sig: 'Locale.new()',
             desc: 'Build an ILocale from a code, locale string, or language + country.',
           },
           {

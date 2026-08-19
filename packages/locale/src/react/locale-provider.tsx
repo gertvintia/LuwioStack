@@ -1,6 +1,7 @@
 import { type PropsWithChildren, useMemo } from 'react'
 import { Locale as LocaleClass } from '../domain/locale'
 import type { LocalePolicy } from '../types'
+import { createLocale } from '../utils/create-locale'
 import { LocaleContext } from './locale-context'
 
 export interface LocaleProps extends PropsWithChildren {
@@ -23,3 +24,13 @@ export function Locale({ locale, policy, children }: LocaleProps) {
   const value = useMemo(() => LocaleClass.fromLocale({ locale, policy }), [locale, policy])
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
 }
+
+/**
+ * Build an {@link ILocale} imperatively (outside React) — the same factory the provider uses under
+ * the hood, mirroring `Country.new` / `Language.new`.
+ *
+ * @example
+ * Locale.new({ languageOrLocale: 'nl-BE' })
+ * Locale.new({ languageOrLocale: 'en', country: 'BE' }) // LOOSE by default
+ */
+Locale.new = createLocale

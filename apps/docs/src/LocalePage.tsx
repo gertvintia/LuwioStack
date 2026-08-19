@@ -66,13 +66,17 @@ const locale = resolveLocale({
 
 const POLICY_CODE = `import { createLocale, MatchingPolicy } from '@luwio/locale'
 
-// LOOSE (default): language and country must each exist, not necessarily together
-createLocale({ languageOrLocale: 'en', country: 'BE' }) // 'en-BE' — accepted
+// 'nl-BE' is a real dataset entry → both policies accept it.
+createLocale({ languageOrLocale: 'nl-BE' })
 
-// STRICT: the exact language-country combination must exist in the dataset
-createLocale({ languageOrLocale: 'en', country: 'BE', policy: MatchingPolicy.STRICT }) // throws
+// 'en-BE': English and Belgium each exist, but not together as a dataset entry.
+createLocale({ languageOrLocale: 'en', country: 'BE' })                                 // LOOSE (default) → 'en-BE'
+createLocale({ languageOrLocale: 'en', country: 'BE', policy: MatchingPolicy.STRICT })  // STRICT → throws
 
-// Per-pattern policy map (its \`default\` applies where no pattern matches)
+// Either policy throws when the language or the country itself is unknown.
+createLocale({ languageOrLocale: 'zz', country: 'BE' })  // 'zz' isn't a language → throws
+
+// Per-pattern map: its \`default\` applies where no pattern matches.
 createLocale({
   languageOrLocale: 'nl-BE',
   policy: { default: MatchingPolicy.LOOSE, locales: { 'en-*': MatchingPolicy.STRICT } },
@@ -208,6 +212,15 @@ export function LocalePage() {
         <code>resolveLocale</code> (see below) so it never throws.
       </p>
 
+      <Callout>
+        <strong>When does it crash — and should it?</strong> A hardcoded locale that can't be
+        resolved (a typo like <code>en-XX</code>) throws while rendering. That's on purpose: it's a
+        bug you want to catch in development, and an error boundary keeps it from blanking the
+        screen. For a locale from the URL, storage or an API, don't let it reach <code>Locale</code>
+        raw — run it through <code>resolveLocale</code> first so untrusted input resolves to a
+        supported locale and never crashes on your users.
+      </Callout>
+
       <h2 id="domain-model">Domain model</h2>
       <p>
         Every entity is immutable and constructed from the built-in dataset. Collections (
@@ -226,10 +239,23 @@ export function LocalePage() {
 
       <h2 id="policies">Matching policies</h2>
       <p>
-        A <code>MatchingPolicy</code> controls how strictly a locale must exist in the dataset. The
-        default is <code>LOOSE</code> (language and country each exist); pass{' '}
-        <code>MatchingPolicy.STRICT</code> for exact combinations, or a rule map resolved
-        most-specific-first.
+        A <code>MatchingPolicy</code> controls how strictly a locale must exist in the dataset —
+        take <code>en-BE</code> (English spoken in Belgium):
+      </p>
+      <ul>
+        <li>
+          <strong>LOOSE</strong> (default) — the <em>language</em> and the <em>country</em> must
+          each exist, not necessarily together. <code>en-BE</code> is accepted (both <code>en</code>{' '}
+          and <code>BE</code> exist), even though it isn't a listed pair.
+        </li>
+        <li>
+          <strong>STRICT</strong> — the exact <code>language-country</code> pair must be a dataset
+          entry. <code>en-BE</code> throws; <code>nl-BE</code> (a real entry) passes.
+        </li>
+      </ul>
+      <p>
+        Either way, an unknown language or country (e.g. <code>zz-BE</code>) throws. Pass a uniform
+        policy, or a rule map resolved most-specific-first.
       </p>
       <CodeBlock code={POLICY_CODE} />
 

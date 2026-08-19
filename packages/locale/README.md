@@ -67,9 +67,12 @@ locale.country().borders()    // Countries → FR, DE, LU, NL
 Country.new({ code: 'BE' }).direct_dialing_code   // '+32'
 Continent.europe().countries().toArray().length   // European countries
 
-// Loose matching is the default: language and country must each exist, not
-// necessarily together. Pass MatchingPolicy.STRICT to require the exact combo.
-createLocale({ languageOrLocale: 'en', country: 'BE' }) // 'en-BE'
+// STRICT vs LOOSE, on 'en-BE' (English spoken in Belgium):
+//   LOOSE (default) — 'en' and 'BE' each exist → accepted, even if not a listed pair.
+//   STRICT          — must be an exact dataset entry → 'en-BE' throws ('nl-BE' passes).
+// Either way, an unknown language or country (e.g. 'zz-BE') throws.
+createLocale({ languageOrLocale: 'en', country: 'BE' })                                // 'en-BE' (LOOSE)
+createLocale({ languageOrLocale: 'en', country: 'BE', policy: MatchingPolicy.STRICT }) // throws
 ```
 
 ## Locale resolution

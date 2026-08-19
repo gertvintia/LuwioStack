@@ -44,7 +44,7 @@ function Info() {
 ```
 
 Give `<Locale>` a locale you control. For untrusted values — from the URL, storage or an API —
-resolve them first with [`resolveLocale`](#locale-resolution): it maps the value onto your supported
+resolve them first with [`Locale.resolve`](#locale-resolution): it maps the value onto your supported
 set (falling back via the required `*` catch-all) so an unsupported locale can't crash the app. A
 locale that still can't be resolved throws while rendering; `useLocale` throws if used outside a
 provider.
@@ -79,14 +79,14 @@ Locale.new({ languageOrLocale: 'zz', country: 'BE' })  // throws — 'zz' isn't 
 
 ## Locale resolution
 
-`resolveLocale` maps a detected locale onto the ones your app supports, with exact →
+`Locale.resolve` maps a detected locale onto the ones your app supports, with exact →
 override → wildcard → same-language → catch-all fallback:
 
 ```ts
-import { resolveLocale, SystemLocale } from '@luwio/locale'
+import { Locale } from '@luwio/locale'
 
-resolveLocale({
-  detected: SystemLocale,
+Locale.resolve({
+  detected: Locale.system, // the runtime's detected locale
   supported: ['nl-BE', 'fr-FR', 'en-US'],
   overrides: { 'en-*': 'en-US', '*': 'nl-BE' }, // '*' catch-all is required
 })
@@ -99,7 +99,7 @@ in the URL, or the router's configured default when the URL has none — so you 
 Resolve it onto what you support, then hand the result to `<Locale>`:
 
 ```tsx
-import { Locale, resolveLocale } from '@luwio/locale'
+import { Locale } from '@luwio/locale'
 import { useRouteLocale } from '@luwio/router'
 
 const SUPPORTED = ['nl-BE', 'fr-FR', 'en-US']
@@ -107,7 +107,7 @@ const OVERRIDES = { 'en-*': 'en-US', '*': 'nl-BE' } // '*' catch-all → default
 
 function App() {
   const { locale } = useRouteLocale() // always a locale (route's, or the router default)
-  const active = resolveLocale({ detected: locale, supported: SUPPORTED, overrides: OVERRIDES })
+  const active = Locale.resolve({ detected: locale, supported: SUPPORTED, overrides: OVERRIDES })
   return (
     <Locale locale={active.locale}>
       <Site />
@@ -123,8 +123,8 @@ usual rules (same-language → per-pattern → catch-all). No crash, no manual n
 
 ```
 src/
-├── domain/   Locale, SystemLocale
-├── utils/    resolveLocale, normalizeLocale, matchLocalePattern, createLocale (→ Locale.new)
+├── domain/   Locale, system-locale (→ Locale.system)
+├── utils/    resolve-locale (→ Locale.resolve), normalizeLocale, matchLocalePattern, create-locale (→ Locale.new)
 ├── react/    LocaleContext, Locale, useLocale
 └── types.ts  ILocale, LocaleOverrides
 ```
@@ -134,7 +134,7 @@ Country, language and continent data live in `@luwio/country` / `@luwio/language
 ## API surface
 
 - **React:** `Locale`, `useLocale` (returns `{ current }`; `current.locale` is the active `Locale`, same as `Locale.new()` → `.code`, `.language()`, `.country()`, `.continent()`, `.toIntlLocale()`)
-- **Factory:** `Locale.new`, `resolveLocale`, `SystemLocale`
+- **Factory:** `Locale.new`, `Locale.resolve`, `Locale.system`
 - **Re-exported domain:** `Country`, `Countries`, `Continent` (from `@luwio/country`), `Language`, `Languages` (from `@luwio/language`)
 - **Utils:** `normalizeLocale`, `matchLocalePattern`, `toMachineName`
 - **Types:** `ILocale`, `LocaleOverrides`, `ICountry`, `ILanguage`, …

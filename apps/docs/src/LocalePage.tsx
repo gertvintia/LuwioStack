@@ -1,4 +1,4 @@
-import { Continent, Locale, resolveLocale, SystemLocale, useLocale } from '@luwio/locale'
+import { Continent, Locale, useLocale } from '@luwio/locale'
 import { useState } from 'react'
 import { DocHero, type DocSection, DocsLayout } from './DocsLayout'
 import { LiveExample } from './LiveExample'
@@ -52,10 +52,10 @@ Language.new({ code: 'nl' }).name                 // 'Dutch'
 Continent.new({ code: 'EU' }).name                // 'Europe'
 Continent.europe().countries().size               // European countries`
 
-const RESOLVE_CODE = `import { resolveLocale, SystemLocale } from '@luwio/locale'
+const RESOLVE_CODE = `import { Locale } from '@luwio/locale'
 
-const locale = resolveLocale({
-  detected: SystemLocale,                 // the runtime's locale
+const locale = Locale.resolve({
+  detected: Locale.system,                // the runtime's locale
   supported: ['nl-BE', 'fr-FR', 'en-US'],
   overrides: {
     'en-*': 'en-US',                       // any English → en-US
@@ -119,15 +119,15 @@ render(
 )`
 
 const EX_RESOLVE = `// Collapse the runtime's locale onto the ones this app supports.
-const active = resolveLocale({
-  detected: SystemLocale,
+const active = Locale.resolve({
+  detected: Locale.system,
   supported: ['en-US', 'nl-BE', 'fr-FR'],
   overrides: { 'nl-*': 'nl-BE', '*': 'en-US' },
 })
 
 render(
   <p>
-    Detected <code>{SystemLocale.locale}</code> → resolved <strong>{active.locale}</strong>
+    Detected <code>{Locale.system.locale}</code> → resolved <strong>{active.locale}</strong>
   </p>,
 )`
 
@@ -152,7 +152,7 @@ render(
   </Locale>,
 )`
 
-const ROUTER_CODE = `import { Locale, resolveLocale } from '@luwio/locale'
+const ROUTER_CODE = `import { Locale } from '@luwio/locale'
 import { useRouteLocale } from '@luwio/router'
 
 const SUPPORTED = ['nl-BE', 'fr-FR', 'en-US']
@@ -164,7 +164,7 @@ function App() {
   const { locale } = useRouteLocale()
 
   // Resolve it onto what you support — an unsupported '/pt-PT' falls to '*' → default.
-  const active = resolveLocale({ detected: locale, supported: SUPPORTED, overrides: OVERRIDES })
+  const active = Locale.resolve({ detected: locale, supported: SUPPORTED, overrides: OVERRIDES })
   return (
     <Locale locale={active.locale}>
       <Site />
@@ -206,7 +206,7 @@ export function LocalePage() {
         <code>current.locale.continent()</code> and <code>current.locale.toIntlLocale()</code>. It
         throws if used outside a provider. Give <code>Locale</code> a locale you control; for
         untrusted values (the URL, storage, an API) resolve them first with{' '}
-        <code>resolveLocale</code> (see below) so an unsupported locale falls back instead of
+        <code>Locale.resolve</code> (see below) so an unsupported locale falls back instead of
         throwing.
       </p>
 
@@ -214,7 +214,7 @@ export function LocalePage() {
         <strong>Untrusted locales.</strong> A hardcoded locale that can't be resolved (a typo like{' '}
         <code>en-XX</code>) throws while rendering — a fail-fast signal you want in development. But
         never hand <code>Locale</code> a locale from the URL, storage or an API raw: run it through{' '}
-        <code>resolveLocale</code> first, which maps it onto one you support (via the required{' '}
+        <code>Locale.resolve</code> first, which maps it onto one you support (via the required{' '}
         <code>*</code> catch-all) so user data can't crash the app.
       </Callout>
 
@@ -230,8 +230,8 @@ export function LocalePage() {
 
       <h2 id="resolution">Locale resolution</h2>
       <p>
-        <code>resolveLocale</code> maps a detected locale onto the ones your app supports. It tries,
-        in order: exact match → exact override → wildcard override (<code>en-*</code>,{' '}
+        <code>Locale.resolve</code> maps a detected locale onto the ones your app supports. It
+        tries, in order: exact match → exact override → wildcard override (<code>en-*</code>,{' '}
         <code>*-BE</code>) → first supported locale with the same language → the required{' '}
         <code>*</code> catch-all.
       </p>
@@ -266,12 +266,12 @@ export function LocalePage() {
 
       <h3>Resolve the visitor's locale on boot</h3>
       <p>
-        Detect the runtime locale with <code>SystemLocale</code> and collapse it onto the locales
+        Detect the runtime locale with <code>Locale.system</code> and collapse it onto the locales
         your app actually ships. The result below is resolved from <em>your</em> browser.
       </p>
-      <LiveExample code={EX_RESOLVE} scope={{ resolveLocale, SystemLocale }} />
+      <LiveExample code={EX_RESOLVE} scope={{ Locale }} />
       <Callout>
-        <code>resolveLocale</code> returns a full <code>ILocale</code> — pass its{' '}
+        <code>Locale.resolve</code> returns a full <code>ILocale</code> — pass its{' '}
         <code>.locale</code> string to the provider.
       </Callout>
 
@@ -290,7 +290,7 @@ export function LocalePage() {
       <p>
         <code>useRouteLocale()</code> always returns a locale — the one in the URL, or the router's
         configured default when the URL has none — so you never handle <code>null</code>. Map it
-        onto what you support with <code>resolveLocale</code>: an unsupported <code>/pt-PT</code>{' '}
+        onto what you support with <code>Locale.resolve</code>: an unsupported <code>/pt-PT</code>{' '}
         falls to the <code>*</code> catch-all (your default), everything else through the usual
         rules (same-language → per-pattern → catch-all). Render the result via <code>Locale</code>.
       </p>
@@ -312,11 +312,11 @@ export function LocalePage() {
             desc: 'Build an ILocale from a code, locale string, or language + country.',
           },
           {
-            sig: 'resolveLocale()',
+            sig: 'Locale.resolve()',
             desc: 'Resolve a detected locale (ILocale or string) against a supported list.',
           },
           {
-            sig: 'SystemLocale',
+            sig: 'Locale.system',
             desc: "The runtime's detected locale (region inferred if absent).",
           },
           {

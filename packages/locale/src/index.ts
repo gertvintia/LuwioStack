@@ -19,9 +19,8 @@ export {
   Languages,
 } from '@luwio/language'
 
-// Locale's own domain
-export { SystemLocale } from './domain/system-locale'
-// React bindings
+// React bindings. `Locale` also carries the static factories `Locale.new` (construct),
+// `Locale.resolve` (resolve against a supported set) and `Locale.system` (the detected locale).
 export { LocaleContext } from './react/locale-context'
 export { Locale, type LocaleProps } from './react/locale-provider'
 export { type CurrentLocale, type UseLocaleResult, useLocale } from './react/use-locale'
@@ -30,4 +29,3 @@ export type { ILocale, LocaleOverrides } from './types'
 // Utilities
 export { matchLocalePattern } from './utils/match-locale-pattern'
 export { normalizeLocale } from './utils/normalize-locale'
-export { resolveLocale } from './utils/resolve-locale'

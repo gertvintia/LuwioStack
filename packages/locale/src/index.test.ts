@@ -9,7 +9,6 @@ import {
   Locale,
   matchLocalePattern,
   normalizeLocale,
-  resolveLocale,
   toMachineName,
 } from './index'
 
@@ -119,9 +118,17 @@ describe('Continent (re-exported)', () => {
   })
 })
 
-describe('resolveLocale', () => {
+describe('Locale.system', () => {
+  it('exposes the detected runtime locale as a full Locale', () => {
+    expect(typeof Locale.system.locale).toBe('string')
+    expect(Locale.system.code).toBe(Locale.system.locale)
+    expect(typeof Locale.system.country().name).toBe('string')
+  })
+})
+
+describe('Locale.resolve', () => {
   it('falls back through the resolution chain to the catch-all', () => {
-    const resolved = resolveLocale({
+    const resolved = Locale.resolve({
       detected: LocaleClass.fromLocale({ locale: 'es-ES' }),
       supported: ['nl-BE', 'fr-FR'],
       overrides: { '*': 'nl-BE' },
@@ -130,7 +137,7 @@ describe('resolveLocale', () => {
   })
 
   it('prefers a same-language supported locale', () => {
-    const resolved = resolveLocale({
+    const resolved = Locale.resolve({
       detected: LocaleClass.fromLocale({ locale: 'fr-BE' }),
       supported: ['fr-FR', 'nl-NL'],
       overrides: { '*': 'nl-NL' },
@@ -139,9 +146,9 @@ describe('resolveLocale', () => {
   })
 })
 
-describe('resolveLocale (string detected)', () => {
+describe('Locale.resolve (string detected)', () => {
   it('resolves an unknown string via the * catch-all instead of throwing', () => {
-    const r = resolveLocale({
+    const r = Locale.resolve({
       detected: 'zz-ZZ',
       supported: ['en-US', 'nl-BE'],
       overrides: { '*': 'en-US' },
@@ -150,7 +157,7 @@ describe('resolveLocale (string detected)', () => {
   })
 
   it('resolves null/undefined (no locale in the route) via the * catch-all', () => {
-    const r = resolveLocale({
+    const r = Locale.resolve({
       detected: null,
       supported: ['en-US', 'nl-BE'],
       overrides: { '*': 'nl-BE' },
@@ -159,7 +166,7 @@ describe('resolveLocale (string detected)', () => {
   })
 
   it('returns a supported string as-is', () => {
-    const r = resolveLocale({
+    const r = Locale.resolve({
       detected: 'nl-BE',
       supported: ['en-US', 'nl-BE'],
       overrides: { '*': 'en-US' },

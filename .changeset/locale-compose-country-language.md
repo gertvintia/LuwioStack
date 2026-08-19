@@ -16,3 +16,6 @@ dataset, and drops matching policies in favour of a single rule.
   `intl` fields are gone — reach them via `current.locale.language()` etc.
 - `Country` gains `currency_code`, `currency_symbol`, `flag`, `capital`, `region`, `timezones` and
   `name_local`.
+- **`resolveLocale` and `SystemLocale` moved onto `Locale`** as `Locale.resolve()` and
+  `Locale.system`, alongside `Locale.new()` — the standalone `resolveLocale` / `SystemLocale`
+  exports are removed.

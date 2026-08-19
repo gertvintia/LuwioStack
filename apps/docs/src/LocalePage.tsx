@@ -30,10 +30,11 @@ function App() {
 
 function Info() {
   const { current } = useLocale()
+  // current.locale is the active Locale — the same object Locale.new() returns.
   return (
     <p>
-      {current.language.name} in {current.country.name} ({current.locale.code})
-      — dial {current.country.direct_dialing_code}
+      {current.locale.language().name} in {current.locale.country().name} ({current.locale.code})
+      — dial {current.locale.country().direct_dialing_code}
     </p>
   )
 }`
@@ -90,7 +91,7 @@ function Info() {
   // useLocale() has no setter — switching is driven by the parent's state.
   const { current } = useLocale()
   return (
-    <p>{current.language.name} · {current.country.name} · dial {current.country.direct_dialing_code}</p>
+    <p>{current.locale.language().name} · {current.locale.country().name} · dial {current.locale.country().direct_dialing_code}</p>
   )
 }
 
@@ -143,10 +144,11 @@ const EX_COUNTRY = `const flag = (a) =>
 
 function Badge() {
   const { current } = useLocale()
-  const spoken = current.country.languages().toArray().map((l) => l.name)
+  const country = current.locale.country()
+  const spoken = country.languages().toArray().map((l) => l.name)
   return (
     <div>
-      <strong>{flag(current.country.code)} {current.country.name}</strong>
+      <strong>{flag(country.code)} {country.name}</strong>
       <div>Spoken: {spoken.join(', ')}</div>
     </div>
   )
@@ -203,10 +205,12 @@ export function LocalePage() {
       </p>
       <CodeBlock code={REACT_CODE} />
       <p>
-        <code>useLocale</code> returns <code>{'{ current }'}</code> with{' '}
-        <code>current.locale.code</code>, <code>current.language</code>,{' '}
-        <code>current.country</code>, <code>current.languages</code> and <code>current.intl</code> —
-        and throws if used outside a provider. Give <code>Locale</code> a locale you control; for
+        <code>useLocale</code> returns <code>{'{ current }'}</code>, where{' '}
+        <code>current.locale</code> is the active locale — the same object <code>Locale.new()</code>{' '}
+        returns, so use it the same way: <code>current.locale.code</code>,{' '}
+        <code>current.locale.language()</code>, <code>current.locale.country()</code>,{' '}
+        <code>current.locale.continent()</code> and <code>current.locale.toIntlLocale()</code>. It
+        throws if used outside a provider. Give <code>Locale</code> a locale you control; for
         untrusted values (the URL, storage, an API) resolve them first with{' '}
         <code>resolveLocale</code> (see below) so an unsupported locale falls back instead of
         throwing.
@@ -319,7 +323,7 @@ export function LocalePage() {
           },
           {
             sig: 'useLocale()',
-            desc: 'Hook → { current } with the active locale, language and country.',
+            desc: 'Hook → { current }; current.locale is the active Locale (same as Locale.new()).',
           },
           {
             sig: 'Locale.new()',

@@ -38,6 +38,8 @@ export type LocalePolicy =
 
 export interface ILocale {
   locale: string
+  /** The BCP-47 tag, e.g. `'nl-BE'`. Alias of {@link ILocale.locale}, for symmetry with the `code` on `ICountry`/`ILanguage`/`IContinent`. */
+  code: string
   language_code: string
   country_code: string
   language(): ILanguage

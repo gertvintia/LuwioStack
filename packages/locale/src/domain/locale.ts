@@ -15,6 +15,7 @@ import { Language } from './language'
 
 export class Locale implements ILocale {
   public readonly locale: string
+  public readonly code: string
   public readonly language_code: string
   public readonly country_code: string
 
@@ -52,6 +53,7 @@ export class Locale implements ILocale {
       this.locale = normalized
     }
 
+    this.code = this.locale
     const [language_code = '', country_code = ''] = this.locale.split('-')
     this.language_code = language_code
     this.country_code = country_code

@@ -34,10 +34,11 @@ function App() {
 
 function Info() {
   const { current } = useLocale()
+  // current.locale is the active Locale — the same object Locale.new() returns.
   return (
     <p>
-      {current.language.name} in {current.country.name} ({current.locale.code})
-      — dial {current.country.direct_dialing_code}
+      {current.locale.language().name} in {current.locale.country().name} ({current.locale.code})
+      — dial {current.locale.country().direct_dialing_code}
     </p>
   )
 }
@@ -131,7 +132,7 @@ src/
 
 ## API surface
 
-- **React:** `Locale`, `useLocale` (returns `{ current }` → `locale.code`, `language`, `country`, `languages`, `intl`)
+- **React:** `Locale`, `useLocale` (returns `{ current }`; `current.locale` is the active `Locale`, same as `Locale.new()` → `.code`, `.language()`, `.country()`, `.continent()`, `.toIntlLocale()`)
 - **Factory:** `Locale.new`, `resolveLocale`, `SystemLocale`
 - **Domain:** `Language`, `Languages`, `Country`, `Countries`, `Continent`
 - **Utils:** `normalizeLocale`, `matchLocalePattern`, `resolvePolicy`, `toMachineName`

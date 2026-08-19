@@ -47,21 +47,23 @@ function DemoWindow({
         <div className="field">
           <span className="label">Country</span>
           <span className="value">
-            <span className="flag">{flagOf(active.country.code)}</span> {active.country.name}
+            <span className="flag">{flagOf(active.locale.country().code)}</span>{' '}
+            {active.locale.country().name}
           </span>
         </div>
         <div className="field">
           <span className="label">Language</span>
-          <span className="value">{active.language.name}</span>
+          <span className="value">{active.locale.language().name}</span>
         </div>
         <div className="field">
           <span className="label">Dialing code</span>
-          <span className="value">{active.country.direct_dialing_code}</span>
+          <span className="value">{active.locale.country().direct_dialing_code}</span>
         </div>
         <div className="field">
           <span className="label">ISO codes</span>
           <span className="value">
-            {active.locale.code} · {active.country.alpha3} · {active.country.numeric}
+            {active.locale.code} · {active.locale.country().alpha3} ·{' '}
+            {active.locale.country().numeric}
           </span>
         </div>
         <div className="field">

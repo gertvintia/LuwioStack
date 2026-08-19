@@ -11,12 +11,14 @@ describe('useLocale', () => {
     )
     const { result } = renderHook(() => useLocale(), { wrapper })
     const { current } = result.current
+    // `current.locale` is the same shape `Locale.new()` returns.
     expect(current.locale.code).toBe('nl-BE')
-    expect(current.language.code).toBe('nl')
-    expect(current.language.name).toBe('Dutch')
-    expect(current.country.code).toBe('BE')
-    expect(current.country.name).toBe('Belgium')
-    expect(current.intl.language).toBe('nl')
+    expect(current.locale.language().code).toBe('nl')
+    expect(current.locale.language().name).toBe('Dutch')
+    expect(current.locale.country().code).toBe('BE')
+    expect(current.locale.country().name).toBe('Belgium')
+    expect(current.locale.continent().name).toBe('Europe')
+    expect(current.locale.toIntlLocale().language).toBe('nl')
   })
 
   it('returns a stable `current` across renders', () => {

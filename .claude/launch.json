@@ -4,8 +4,14 @@
     {
       "name": "docs",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "@luwio/docs", "dev"],
+      "runtimeArgs": ["--filter", "@luwio/docs", "exec", "vite", "--port", "5199", "--strictPort", "--no-open"],
       "port": 5199
+    },
+    {
+      "name": "showcase",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@luwio/showcase", "exec", "vite", "--port", "5200", "--strictPort", "--no-open"],
+      "port": 5200
     }
   ]
 }

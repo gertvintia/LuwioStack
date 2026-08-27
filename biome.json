@@ -11,6 +11,7 @@
       "!**/dist",
       "!**/.turbo",
       "!**/coverage",
+      "!packages/cli/templates",
       "!packages/*/src/data/*.json",
       "!packages/iso-data/src/raw/*.json"
     ]

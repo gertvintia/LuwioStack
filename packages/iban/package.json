@@ -1,0 +1,70 @@
+{
+  "name": "@luwio/iban",
+  "version": "0.0.0",
+  "description": "Typed IBAN validation and formatting for React — the global ISO 13616 check over a per-country registry, with a `<Iban>` provider and `useIban` hook.",
+  "keywords": [
+    "iban",
+    "iso-13616",
+    "bank",
+    "banking",
+    "validation",
+    "react",
+    "hooks",
+    "luwio"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./react": {
+      "import": {
+        "types": "./dist/react.d.mts",
+        "default": "./dist/react.mjs"
+      },
+      "require": {
+        "types": "./dist/react.d.cts",
+        "default": "./dist/react.cjs"
+      }
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch --no-clean",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@luwio/country": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.2",
+    "@types/react": "catalog:",
+    "happy-dom": "^20.11.2",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  }
+}

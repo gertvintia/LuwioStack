@@ -1,0 +1,93 @@
+{
+  "name": "@luwio/eid",
+  "version": "0.0.0",
+  "description": "Framework for reading national eID smartcards from a physical reader — a transport-agnostic domain, a pluggable CardReader interface, a per-country card-profile registry with an honest capability matrix, and a `<Eid>` provider + `useEid` hook.",
+  "keywords": [
+    "eid",
+    "id-card",
+    "smartcard",
+    "pcsc",
+    "apdu",
+    "belpic",
+    "identity",
+    "react",
+    "hooks",
+    "luwio"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./react": {
+      "import": {
+        "types": "./dist/react.d.mts",
+        "default": "./dist/react.mjs"
+      },
+      "require": {
+        "types": "./dist/react.d.cts",
+        "default": "./dist/react.cjs"
+      }
+    },
+    "./node": {
+      "import": {
+        "types": "./dist/node.d.mts",
+        "default": "./dist/node.mjs"
+      },
+      "require": {
+        "types": "./dist/node.d.cts",
+        "default": "./dist/node.cjs"
+      }
+    },
+    "./electron": {
+      "import": {
+        "types": "./dist/electron.d.mts",
+        "default": "./dist/electron.mjs"
+      },
+      "require": {
+        "types": "./dist/electron.d.cts",
+        "default": "./dist/electron.cjs"
+      }
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch --no-clean",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@luwio/country": "workspace:*",
+    "@luwio/national-id": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.2",
+    "@types/react": "catalog:",
+    "happy-dom": "^20.11.2",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  }
+}

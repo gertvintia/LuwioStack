@@ -1,4 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@luwio/locale": ["../locale/src/index.ts"],
+      "@luwio/locale/react": ["../locale/src/react.ts"]
+    }
+  },
   "include": ["src"]
 }

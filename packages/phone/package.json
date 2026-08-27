@@ -1,12 +1,16 @@
 {
   "name": "@luwio/phone",
   "version": "0.0.0",
-  "description": "Parse and format phone numbers.",
+  "description": "Typed phone-number parsing, validation and formatting for React \u2014 powered by google-libphonenumber, with a `<Phone>` provider and `usePhone` hook.",
   "keywords": [
     "phone",
+    "phone-number",
     "e164",
-    "telephone",
-    "format",
+    "libphonenumber",
+    "validation",
+    "i18n",
+    "react",
+    "hooks",
     "luwio"
   ],
   "license": "MIT",
@@ -28,6 +32,16 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
+    },
+    "./react": {
+      "import": {
+        "types": "./dist/react.d.mts",
+        "default": "./dist/react.mjs"
+      },
+      "require": {
+        "types": "./dist/react.d.cts",
+        "default": "./dist/react.cjs"
+      }
     }
   },
   "publishConfig": {
@@ -36,9 +50,24 @@
   },
   "scripts": {
     "build": "tsdown",
-    "dev": "tsdown --watch",
+    "dev": "tsdown --watch --no-clean",
     "test": "vitest run",
     "lint": "biome check .",
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@luwio/country": "workspace:*",
+    "google-libphonenumber": "^3.2.40"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.2",
+    "@types/google-libphonenumber": "^7.4.30",
+    "@types/react": "catalog:",
+    "happy-dom": "^20.11.2",
+    "react": "catalog:",
+    "react-dom": "catalog:"
   }
 }

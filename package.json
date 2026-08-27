@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "pnpm --filter \"./packages/*\" run build",
-    "dev": "pnpm -r --parallel run dev",
+    "dev": "pnpm --filter @luwio/router build && pnpm -r --parallel run dev",
     "test": "pnpm -r run test",
     "lint": "biome check .",
     "format": "biome check --write .",

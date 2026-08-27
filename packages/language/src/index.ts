@@ -1,7 +1,5 @@
-// Domain entities
+// Domain — pure, React-free. React bindings live at `@luwio/language/react`.
 export { Language } from './domain/language'
 export { Languages } from './domain/languages'
-// Types & enums
 export { type ILanguage, type ILanguages, LanguageCodeFormat } from './types'
-// Utilities
 export { toMachineName } from './utils/to-machine-name'

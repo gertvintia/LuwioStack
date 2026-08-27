@@ -1,0 +1,93 @@
+import { type ConfigFetcher, createConfigLoader, sessionStorageCache } from '@luwio/bootstrap'
+import { type ILocale, Locale } from '@luwio/locale'
+
+/** The JSON the config API sends over the wire — locale *codes*. */
+interface LocaleConfigBody {
+  locales: string[]
+  defaultLocale: string
+}
+
+/** What the app consumes — codes hydrated into `ILocale`. */
+export interface LocaleConfig {
+  locales: ILocale[]
+  defaultLocale: ILocale
+}
+
+// ---------------------------------------------------------------------------------------------
+// The runtime config — loaded from an API, cached, revalidated. Powered by @luwio/bootstrap.
+//
+// The locale set + default aren't hard-coded: the backend chooses them (per tenant, market, or
+// feature flag), so the router can only be built once this resolves (see `main.tsx`). The endpoint
+// is treated as backend-cached with an ETag, so a browser refresh is a cheap `304` when nothing
+// changed and picks up a real publish immediately.
+//
+// In production, replace `mockFetch` with the ready-made HTTP transport:
+//
+//   import { httpConfig } from '@luwio/bootstrap'
+//   fetch: httpConfig('/api/config'),   // conditional GET — sends If-None-Match, reads ETag
+//
+// and set `Cache-Control: no-cache` + `ETag` on the response. The mock below keeps the same contract
+// so the caching behaviour is visible in dev without a server.
+// ---------------------------------------------------------------------------------------------
+
+let versionSeq = 1
+
+// What the server currently has published. `__publishConfig()` (below, dev-only) bumps this.
+let published = {
+  version: `cfg_v${versionSeq}`,
+  locales: ['en-US', 'nl-NL'],
+  defaultLocale: 'en-US',
+}
+
+const mockFetch: ConfigFetcher<LocaleConfigBody> = (version) =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      if (version === published.version) {
+        resolve({ status: 'unchanged', version: published.version })
+      } else {
+        resolve({
+          status: 'fresh',
+          version: published.version,
+          data: { locales: published.locales, defaultLocale: published.defaultLocale },
+        })
+      }
+    }, 400)
+  })
+
+// The raw body is JSON-serializable (it's what gets cached); hydration to Locale objects happens on
+// read via the loader's `map`, so non-serializable class instances never hit sessionStorage.
+function hydrate(body: LocaleConfigBody): LocaleConfig {
+  return {
+    locales: body.locales.map((code) => Locale.new({ languageOrLocale: code })),
+    defaultLocale: Locale.new({ languageOrLocale: body.defaultLocale }),
+  }
+}
+
+/**
+ * The runtime locale config. `load()` at boot (see `main.tsx`); the reload nudge watches it via
+ * `useConfigUpdate` (see `ConfigUpdateBanner`).
+ */
+export const localeConfig = createConfigLoader<LocaleConfigBody, LocaleConfig>({
+  fetch: mockFetch,
+  cache: sessionStorageCache('__APP_NAME__:localeConfig'),
+  map: hydrate,
+})
+
+// ---------------------------------------------------------------------------------------------
+// Dev affordance — "publish" a config change from the console to watch the client react:
+//
+//   __publishConfig(['en-US', 'de-DE'], 'de-DE')
+//
+// Then either refresh (boot re-fetches and mounts the new set) or wait for the focus/interval
+// revalidation to surface the reload nudge. Stripped from production builds.
+// ---------------------------------------------------------------------------------------------
+if (import.meta.env.DEV) {
+  const publishLocaleConfig = (locales: string[], defaultLocale?: string) => {
+    versionSeq += 1
+    const resolved = defaultLocale ?? locales[0] ?? published.defaultLocale
+    published = { version: `cfg_v${versionSeq}`, locales, defaultLocale: resolved }
+    console.info(`[config] published ${published.version}:`, locales, `default=${resolved}`)
+  }
+  ;(window as unknown as { __publishConfig: typeof publishLocaleConfig }).__publishConfig =
+    publishLocaleConfig
+}

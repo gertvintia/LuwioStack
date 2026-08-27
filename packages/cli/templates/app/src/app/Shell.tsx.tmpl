@@ -1,0 +1,50 @@
+import { HeadContent, Outlet, useRouter } from '@luwio/router'
+import { ConfigUpdateBanner } from './ConfigUpdateBanner'
+
+export function Shell() {
+  const { router } = useRouter()
+
+  return (
+    <div>
+      {/* Writes each route's head() tags (localized <title>) into the document head. */}
+      <HeadContent />
+      {/* Shows a reload nudge when the backend publishes a new config to an already-open tab. */}
+      <ConfigUpdateBanner />
+      <header
+        style={{
+          display: 'flex',
+          gap: 12,
+          alignItems: 'center',
+          padding: 16,
+          borderBottom: '1px solid #eee',
+        }}
+      >
+        {/* Links carry a real href; a plain click routes in-app via useRouter().navigate. */}
+        <a
+          href={router.href({ id: 'home' })}
+          onClick={(e) => {
+            e.preventDefault()
+            router.navigate({ to: 'home' })
+          }}
+        >
+          __APP_NAME__
+        </a>
+        {/* The locales come from the runtime config (see app/locale-config.ts), via the router. */}
+        <nav style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
+          {router.locales.map((locale) => (
+            <button
+              key={locale.code}
+              type="button"
+              onClick={() => router.navigate({ to: 'home', locale })}
+            >
+              {locale.language_code}
+            </button>
+          ))}
+        </nav>
+      </header>
+      <main style={{ padding: 16 }}>
+        <Outlet />
+      </main>
+    </div>
+  )
+}

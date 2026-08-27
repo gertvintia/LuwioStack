@@ -1,0 +1,32 @@
+{
+  "name": "@luwio/showcase",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Showcase app — the @luwio/* packages working together, scaffolded by @luwio/cli in a vertical-slice layout.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@lingui/core": "^6.6.0",
+    "@lingui/react": "^6.6.0",
+    "@luwio/bootstrap": "workspace:*",
+    "@luwio/config": "workspace:*",
+    "@luwio/country": "workspace:*",
+    "@luwio/language": "workspace:*",
+    "@luwio/locale": "workspace:*",
+    "@luwio/router": "workspace:*",
+    "@luwio/storage": "workspace:*",
+    "@luwio/translations": "workspace:*",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "^6.0.5",
+    "vite": "^8.2.1"
+  }
+}

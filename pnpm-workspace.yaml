@@ -2,6 +2,9 @@ packages:
   - "packages/*"
   - "apps/*"
 
+allowBuilds:
+  '@pokusew/pcsclite': set this to true or false
+
 catalog:
   react: ^19.2.8
   react-dom: ^19.2.8

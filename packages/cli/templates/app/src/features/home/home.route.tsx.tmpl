@@ -1,0 +1,15 @@
+import { Locale } from '@luwio/locale'
+import { createRoute } from '@luwio/router'
+import { translations } from '../../app/translations'
+import { Home } from './Home'
+
+// The locale index — an empty slug means `/{locale}` itself. head() runs after the translations
+// layer activates the locale's catalog, so the <title> is translated for the active language.
+export default createRoute({
+  id: 'home',
+  parent: 'shell',
+  component: Home,
+  head: () => ({ meta: [{ title: translations.t('home.title') }] }),
+})
+  .alias(Locale.new({ languageOrLocale: 'en-US' }), '')
+  .alias(Locale.new({ languageOrLocale: 'nl-NL' }), '')

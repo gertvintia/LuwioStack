@@ -10,10 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@luwio/bootstrap": "workspace:*",
     "@luwio/config": "workspace:*",
     "@luwio/country": "workspace:*",
+    "@luwio/currency": "workspace:*",
+    "@luwio/eid": "workspace:*",
+    "@luwio/iban": "workspace:*",
     "@luwio/language": "workspace:*",
     "@luwio/locale": "workspace:*",
+    "@luwio/national-id": "workspace:*",
+    "@luwio/phone": "workspace:*",
+    "@luwio/timezone": "workspace:*",
     "@luwio/storage": "workspace:*",
     "prism-react-renderer": "^2.4.1",
     "react": "catalog:",

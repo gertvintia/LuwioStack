@@ -21,23 +21,23 @@ domain layer works without React too).
 ## React usage
 
 ```tsx
-import { Locale, useLocale } from '@luwio/locale'
+import { Locale, useLocale } from '@luwio/locale/react'
 
 function App() {
   return (
-    <Locale locale="nl-BE">
+    <Locale locale={Locale.new({ languageOrLocale: 'nl-BE' })}>
       <Info />
     </Locale>
   )
 }
 
 function Info() {
-  const { current } = useLocale()
-  // current.locale is the active Locale — the same object Locale.new() returns.
+  const { locale } = useLocale()
+  // locale is the active Locale — the same object Locale.new() returns.
   return (
     <p>
-      {current.locale.language().name} in {current.locale.country().name} ({current.locale.code})
-      — dial {current.locale.country().dialing_code}
+      {locale.language().name} in {locale.country().name} ({locale.code})
+      — dial {locale.country().dialing_code}
     </p>
   )
 }
@@ -137,7 +137,7 @@ Country, language and continent data live in `@luwio/country` / `@luwio/language
 
 ## API surface
 
-- **React:** `Locale`, `useLocale` (returns `{ current }`; `current.locale` is the active `Locale`, same as `Locale.new()` → `.code`, `.language()`, `.country()`, `.continent()`, `.toIntlLocale()`)
+- **React:** `Locale`, `useLocale` (returns `{ locale }`; `locale` is the active `Locale`, same as `Locale.new()` → `.code`, `.language()`, `.country()`, `.continent()`, `.toIntlLocale()`)
 - **Factory:** `Locale.new`, `Locale.resolve`, `Locale.system`
 - **Re-exported domain:** `Country`, `Countries`, `Continent` (from `@luwio/country`), `Language`, `Languages` (from `@luwio/language`)
 - **Utils:** `normalizeLocale`, `matchLocalePattern`, `toMachineName`

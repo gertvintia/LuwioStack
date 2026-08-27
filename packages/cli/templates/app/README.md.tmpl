@@ -1,0 +1,77 @@
+# __APP_NAME__
+
+A Luwio app — locale-aware routing (`@luwio/router` + `@luwio/locale`) with runtime translations
+(`@luwio/translations`), scaffolded by `@luwio/cli` in a **vertical-slice** layout.
+
+## Develop
+
+```bash
+pnpm install
+pnpm dev
+```
+
+## Structure
+
+Code is grouped by **feature**, not by technical layer:
+
+```
+src/
+├─ main.tsx                     # entry — async bootstrap (fetch config → build router → mount)
+├─ app/                         # cross-cutting wiring
+│  ├─ router.ts                 # createAppRouter(config) — assembled at runtime, not at load
+│  ├─ locale-config.ts          # the runtime config loader (locales + default), via @luwio/bootstrap
+│  ├─ ConfigUpdateBanner.tsx    # "new configuration available — Reload" nudge (useConfigUpdate)
+│  ├─ translations.ts           # createTranslations() + merges every feature's messages.ts
+│  ├─ translations.route.tsx    # loads + activates the catalog (layout)
+│  ├─ shell.route.tsx           # shared chrome (layout)
+│  └─ Shell.tsx
+└─ features/
+   └─ home/                     # one folder per slice — route + component + strings together
+      ├─ home.route.tsx
+      ├─ Home.tsx
+      └─ messages.ts
+```
+
+## Runtime config (locales from an API)
+
+The locale set and default aren't hard-coded — a runtime config loader (`app/locale-config.ts`, built
+on [`@luwio/bootstrap`](https://npmjs.com/package/@luwio/bootstrap)) fetches them from a backend
+endpoint, so the router can only be built **after** that request resolves. `createRouter` is
+synchronous and needs the locales up front, so the app bootstraps in `main.tsx`: render a blank
+splash, `await localeConfig.load()`, then build the router and mount. Fetching outside React (rather
+than in an effect) keeps it a single request and sidesteps StrictMode's double-invoke. Only the locale
+**set** is dynamic — the route *registry* is still populated statically at import time.
+
+### Caching, and what a refresh does
+
+Caching and revalidation come from [`@luwio/bootstrap`](https://npmjs.com/package/@luwio/bootstrap).
+The endpoint is treated as **backend-cached** — effectively static — with an **ETag**: the loader
+keeps the last config it saw (in `sessionStorage`, the analog of the browser's HTTP cache) and sends
+it back via `If-None-Match`, so an unchanged config is a cheap `304` (reuse what you have) and only a
+real publish ships a `200`.
+
+- **A browser refresh** re-runs boot and re-requests the config — so it reliably picks up a newly
+  published config, staying cheap (a `304`) when nothing changed. In production this is just
+  `Cache-Control: no-cache` + `ETag` on the response; the browser does the revalidation for you.
+- **An already-open tab** won't notice a publish on its own, so `useConfigUpdate()` runs a
+  stale-while-revalidate check on focus / an interval and raises the `ConfigUpdateBanner` reload
+  nudge. Config is only re-applied on reload.
+
+Swap the mock `fetch` in `locale-config.ts` for the ready-made HTTP transport — `httpConfig('/api/config')`
+from `@luwio/bootstrap` — and the client half is unchanged. In dev you can "publish" a change from the
+console to watch the client react:
+
+```js
+__publishConfig(['en-US', 'de-DE'], 'de-DE') // dev-only helper, stripped from production builds
+```
+
+## Add a feature
+
+Create `src/features/<name>/` with:
+
+- `<name>.route.tsx` — `createRoute({ id, parent: 'shell', component }).alias(locale, 'slug')`
+- the component,
+- `messages.ts` — `export const messages = { en: {…}, nl: {…} }`.
+
+The Vite plugin (`luwioRouter({ routesDir: 'src' })`) discovers the route, and the translations layer
+picks up `messages.ts` via `import.meta.glob` — no central files to edit.

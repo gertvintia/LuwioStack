@@ -1,0 +1,62 @@
+{
+  "name": "@luwio/translations",
+  "version": "0.0.0",
+  "description": "Lingui-powered translations for React — a language provider, catalog (pre)loading, and a t() helper.",
+  "keywords": [
+    "react",
+    "i18n",
+    "lingui",
+    "translation",
+    "translations",
+    "luwio"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch --no-clean",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@luwio/language": "workspace:*"
+  },
+  "peerDependencies": {
+    "@lingui/core": ">=5",
+    "@lingui/react": ">=5",
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@lingui/core": "^6.6.0",
+    "@lingui/react": "^6.6.0",
+    "@testing-library/react": "^16.3.2",
+    "@types/react": "catalog:",
+    "happy-dom": "^20.11.2",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  }
+}

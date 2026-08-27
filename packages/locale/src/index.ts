@@ -1,5 +1,6 @@
-// Re-exported domain from the packages @luwio/locale composes — so `@luwio/locale` stays a
-// one-stop import, while each is also installable on its own.
+// Domain (React-free) re-exported from the packages @luwio/locale composes, plus the pure `Locale`
+// factory. React bindings (`<Locale>`, `useLocale`, and the composed providers/hooks) live at
+// `@luwio/locale/react`.
 export {
   CONTINENT_MAP,
   Continent,
@@ -18,14 +19,7 @@ export {
   LanguageCodeFormat,
   Languages,
 } from '@luwio/language'
-
-// React bindings. `Locale` also carries the static factories `Locale.new` (construct),
-// `Locale.resolve` (resolve against a supported set) and `Locale.system` (the detected locale).
-export { LocaleContext } from './react/locale-context'
-export { Locale, type LocaleProps } from './react/locale-provider'
-export { type CurrentLocale, type UseLocaleResult, useLocale } from './react/use-locale'
-// Types
+export { Locale } from './locale'
 export type { ILocale, LocaleOverrides } from './types'
-// Utilities
 export { matchLocalePattern } from './utils/match-locale-pattern'
 export { normalizeLocale } from './utils/normalize-locale'

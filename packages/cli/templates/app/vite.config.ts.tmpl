@@ -1,0 +1,8 @@
+import { luwioRouter } from '@luwio/router/vite'
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  // Vertical slice: scan all of src/ so each feature's *.route.tsx lives beside its code.
+  plugins: [react(), luwioRouter({ routesDir: 'src' })],
+})

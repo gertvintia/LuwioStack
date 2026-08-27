@@ -1,0 +1,10 @@
+import { createRoute } from '@luwio/router'
+import { Shell } from './Shell'
+
+// Pathless layout route — shared chrome around every feature, inside the translations layer.
+export default createRoute({
+  id: 'shell',
+  parent: 'translations',
+  layout: true,
+  component: Shell,
+})

@@ -1,0 +1,35 @@
+{
+  "name": "@luwio/cli",
+  "version": "0.0.0",
+  "description": "Scaffold a Luwio app — the `luwio` command.",
+  "keywords": [
+    "cli",
+    "scaffold",
+    "create",
+    "boilerplate",
+    "luwio"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "luwio": "./dist/cli.mjs"
+  },
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch --no-clean",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2"
+  }
+}

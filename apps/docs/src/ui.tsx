@@ -88,6 +88,37 @@ export function CopyButton({ text, label = 'Copy' }: { text: string; label?: str
   )
 }
 
+export function DownloadButton({
+  filename,
+  data,
+  label,
+}: {
+  filename: string
+  /** Serialized to pretty JSON and offered as a file download. */
+  data: unknown
+  label?: string
+}) {
+  return (
+    <button
+      type="button"
+      className="btn btn-ghost"
+      onClick={() => {
+        const blob = new Blob([`${JSON.stringify(data, null, 2)}\n`], { type: 'application/json' })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = filename
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
+        URL.revokeObjectURL(url)
+      }}
+    >
+      {label ?? `Download ${filename}`}
+    </button>
+  )
+}
+
 export function CodeBlock({ code, lang = 'tsx' }: { code: string; lang?: string }) {
   return (
     <div className="code-wrap">

@@ -68,6 +68,17 @@ describe('Countries', () => {
     expect(Countries.benelux().size).toBe(3)
     expect(Countries.benelux().add(Country.new({ code: 'BE' })).size).toBe(3)
   })
+
+  it('enumerates the whole dataset with all()', () => {
+    const all = Countries.all().toArray()
+    expect(all.length).toBeGreaterThan(200)
+    // Each entry is a full Country with a stable machine_name (usable as a translation key).
+    const be = all.find((c) => c.code === 'BE')
+    expect(be?.name).toBe('Belgium')
+    expect(be?.machine_name).toBe('belgium')
+    // machine_name is unique across the dataset → safe as a catalog key.
+    expect(new Set(all.map((c) => c.machine_name)).size).toBe(all.length)
+  })
 })
 
 describe('toMachineName', () => {

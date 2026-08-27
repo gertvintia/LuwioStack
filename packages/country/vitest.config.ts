@@ -5,7 +5,7 @@ import { defineConfig } from 'vitest/config'
 // before it builds). At publish time it's a normal dependency, resolved from dist.
 export default defineConfig({
   test: {
-    environment: 'node',
+    environment: 'happy-dom',
     globals: true,
   },
   resolve: {

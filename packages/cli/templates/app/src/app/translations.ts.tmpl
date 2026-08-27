@@ -1,0 +1,21 @@
+import type { ILanguage } from '@luwio/language'
+import { createTranslations } from '@luwio/translations'
+
+export const translations = createTranslations()
+
+// Vertical slice: each feature owns its strings in a `messages.ts` (keyed by language). Collect them
+// all here so a feature just drops in — no central catalog to edit.
+type FeatureMessages = { messages: Record<string, Record<string, string>> }
+const modules = import.meta.glob<FeatureMessages>('../features/**/messages.ts', { eager: true })
+
+function catalogFor(language: string): Record<string, string> {
+  const catalog: Record<string, string> = {}
+  for (const mod of Object.values(modules)) Object.assign(catalog, mod.messages[language] ?? {})
+  return catalog
+}
+
+/** Load (cached, deduped) then activate a language's merged catalog. */
+export async function activateLanguage(language: ILanguage): Promise<void> {
+  await translations.add(language, () => catalogFor(language.code))
+  translations.activate(language)
+}

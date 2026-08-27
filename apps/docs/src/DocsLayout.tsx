@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react'
-import { PACKAGES, packageBySlug } from './content'
+import { packageBySlug, VISIBLE_PACKAGES } from './content'
 import { ArrowIcon } from './icons'
 
 export interface DocSection {
@@ -17,9 +17,10 @@ export function DocsLayout({
   children: ReactNode
 }) {
   const active = packageBySlug(slug)
-  const index = PACKAGES.findIndex((p) => p.slug === slug)
-  const prev = index > 0 ? PACKAGES[index - 1] : undefined
-  const next = index < PACKAGES.length - 1 ? PACKAGES[index + 1] : undefined
+  const index = VISIBLE_PACKAGES.findIndex((p) => p.slug === slug)
+  const prev = index > 0 ? VISIBLE_PACKAGES[index - 1] : undefined
+  const next =
+    index >= 0 && index < VISIBLE_PACKAGES.length - 1 ? VISIBLE_PACKAGES[index + 1] : undefined
 
   return (
     <div className="wrap">
@@ -27,7 +28,7 @@ export function DocsLayout({
         <aside className="sidebar">
           <p className="group">Packages</p>
           <ul>
-            {PACKAGES.map((p) => (
+            {VISIBLE_PACKAGES.map((p) => (
               <li key={p.slug}>
                 <a
                   href={`#/docs/${p.slug}`}

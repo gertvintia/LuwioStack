@@ -1,0 +1,68 @@
+{
+  "name": "@luwio/currency",
+  "version": "0.0.0",
+  "description": "Typed ISO 4217 currency data for React — code, name, symbol and minor units, with a `<Currency>` provider and `useCurrency` hook.",
+  "keywords": [
+    "currency",
+    "iso-4217",
+    "money",
+    "i18n",
+    "locale",
+    "intl",
+    "react",
+    "hooks",
+    "luwio"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./react": {
+      "import": {
+        "types": "./dist/react.d.mts",
+        "default": "./dist/react.mjs"
+      },
+      "require": {
+        "types": "./dist/react.d.cts",
+        "default": "./dist/react.cjs"
+      }
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch --no-clean",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.2",
+    "@types/react": "catalog:",
+    "happy-dom": "^20.11.2",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  }
+}

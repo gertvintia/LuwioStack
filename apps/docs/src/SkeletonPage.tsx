@@ -16,46 +16,6 @@ interface SkeletonDoc {
 }
 
 const DOCS: Record<string, SkeletonDoc> = {
-  router: {
-    intro:
-      'Typed routing primitives for React. Today it ships a single type-preserving helper; a matcher, a <Router> component and navigation hooks are on the roadmap.',
-    dependency: 'React 18+ is a peer dependency.',
-    lang: 'tsx',
-    code: `import { defineRoutes } from '@luwio/router'
-
-export const routes = defineRoutes([
-  { path: '/', render: () => <Home /> },
-  { path: '/users/:id', render: (params) => <User id={params.id} /> },
-])`,
-    api: [
-      {
-        sig: 'defineRoutes(routes)',
-        desc: 'Identity helper that preserves the literal route types.',
-      },
-      { sig: 'RouteDefinition', desc: 'The shape of a single route: { path, render }.' },
-      { sig: 'version', desc: 'Current package version string.' },
-    ],
-  },
-  ui: {
-    intro:
-      'Headless UI helpers and components for React. It starts with a couple of primitives and will grow into a small, unstyled component set.',
-    dependency: 'React 18+ is a peer dependency.',
-    lang: 'tsx',
-    code: `import { cn, VisuallyHidden } from '@luwio/ui'
-
-function SaveButton({ active }: { active: boolean }) {
-  return (
-    <button className={cn('btn', active && 'btn--active')}>
-      Save
-      <VisuallyHidden> your changes</VisuallyHidden>
-    </button>
-  )
-}`,
-    api: [
-      { sig: 'cn(...classes)', desc: 'Join truthy class names into one string.' },
-      { sig: '<VisuallyHidden>', desc: 'Hide content visually but keep it for screen readers.' },
-    ],
-  },
   datetime: {
     intro:
       'Small, dependency-free date & time helpers built on the platform Intl APIs. Parsing and relative-time formatting are planned.',

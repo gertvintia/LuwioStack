@@ -1,18 +1,23 @@
 {
   "name": "@luwio/router",
   "version": "0.0.0",
-  "description": "Typed routing primitives for React.",
+  "description": "Locale-aware route registry for TanStack Router — one file per route, translated URL segments per locale.",
   "keywords": [
     "react",
     "router",
     "routing",
+    "tanstack",
+    "tanstack-router",
+    "i18n",
+    "locale",
     "luwio"
   ],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "vite-client.d.ts"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -27,6 +32,19 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
+    },
+    "./vite": {
+      "import": {
+        "types": "./dist/vite.d.mts",
+        "default": "./dist/vite.mjs"
+      },
+      "require": {
+        "types": "./dist/vite.d.cts",
+        "default": "./dist/vite.cjs"
+      }
+    },
+    "./vite-client": {
+      "types": "./vite-client.d.ts"
     }
   },
   "publishConfig": {
@@ -35,19 +53,31 @@
   },
   "scripts": {
     "build": "tsdown",
-    "dev": "tsdown --watch",
+    "dev": "tsdown --watch --no-clean",
     "test": "vitest run",
     "lint": "biome check .",
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "@luwio/locale": "workspace:*"
+  },
   "peerDependencies": {
-    "react": ">=18"
+    "react": ">=18",
+    "vite": ">=5"
+  },
+  "peerDependenciesMeta": {
+    "vite": {
+      "optional": true
+    }
   },
   "devDependencies": {
+    "@tanstack/react-router": "^1.170.30",
     "@testing-library/react": "^16.3.2",
+    "@types/node": "^26.2.0",
     "@types/react": "catalog:",
     "happy-dom": "^20.11.2",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "vite": "^8.2.1"
   }
 }

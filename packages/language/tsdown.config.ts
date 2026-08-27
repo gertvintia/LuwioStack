@@ -1,9 +1,11 @@
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({
-  entry: ['src/index.ts'],
+  entry: ['src/index.ts', 'src/react.ts'],
   format: ['esm', 'cjs'],
   dts: true,
   clean: true,
   sourcemap: true,
+  // React is a peer dependency (used by the `<Language>` provider / `useLanguage`) — never bundle it.
+  external: ['react', 'react-dom'],
 })

@@ -69,10 +69,38 @@ export function BoxIcon() {
   )
 }
 
+export function RocketIcon() {
+  return (
+    <svg {...base} aria-hidden="true">
+      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+      <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+      <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
+    </svg>
+  )
+}
+
 export function TypeIcon() {
   return (
     <svg {...base} width={20} height={20} aria-hidden="true">
       <path d="M4 7V5h16v2M9 5v14M9 19h6" />
+    </svg>
+  )
+}
+
+export function TerminalIcon() {
+  return (
+    <svg {...base} aria-hidden="true">
+      <polyline points="4 17 10 11 4 5" />
+      <line x1="12" x2="20" y1="19" y2="19" />
+    </svg>
+  )
+}
+
+export function LanguagesIcon() {
+  return (
+    <svg {...base} aria-hidden="true">
+      <path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6" />
     </svg>
   )
 }
@@ -148,11 +176,38 @@ export function CalendarIcon() {
   )
 }
 
+export function BankIcon() {
+  return (
+    <svg {...base} aria-hidden="true">
+      <path d="M3 10h18M4 10l8-6 8 6M5 10v9M10 10v9M14 10v9M19 10v9M3 21h18" />
+    </svg>
+  )
+}
+
+export function ClockIcon() {
+  return (
+    <svg {...base} aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3.5 2" />
+    </svg>
+  )
+}
+
 export function CoinIcon() {
   return (
     <svg {...base} aria-hidden="true">
       <circle cx="12" cy="12" r="9" />
       <path d="M14.5 9a2.5 2 0 0 0-2.5-1.5c-1.5 0-2.5.8-2.5 2s1 1.8 2.5 2 2.5.6 2.5 2-1 2-2.5 2A2.5 2 0 0 1 9.5 15M12 6v1.5M12 16.5V18" />
+    </svg>
+  )
+}
+
+export function BanknoteIcon() {
+  return (
+    <svg {...base} aria-hidden="true">
+      <rect x="2" y="6" width="20" height="12" rx="2" />
+      <circle cx="12" cy="12" r="2.5" />
+      <path d="M6 12h.01M18 12h.01" />
     </svg>
   )
 }
@@ -237,6 +292,18 @@ export function IdCardIcon() {
         strokeWidth={2}
         strokeLinecap="round"
       />
+    </svg>
+  )
+}
+
+export function CardReaderIcon() {
+  // A card entering a reader slot — an ID card above, the reader body with a slot below.
+  return (
+    <svg width={22} height={22} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x={6} y={2.5} width={12} height={8} rx={1.5} stroke="currentColor" strokeWidth={2} />
+      <path d="M9 6h2" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
+      <rect x={3} y={12.5} width={18} height={9} rx={2} stroke="currentColor" strokeWidth={2} />
+      <path d="M8 16.5h8" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
     </svg>
   )
 }

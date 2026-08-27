@@ -38,6 +38,17 @@ describe('Languages', () => {
     const langs = Languages.empty().add(Language.new({ code: 'nl' }))
     expect(langs.remove(Language.new({ code: 'nl' })).size).toBe(0)
   })
+
+  it('enumerates the whole dataset with all()', () => {
+    const all = Languages.all().toArray()
+    expect(all.length).toBeGreaterThan(100)
+    // Each entry is a full Language with a stable machine_name (usable as a translation key).
+    const nl = all.find((l) => l.code === 'nl')
+    expect(nl?.name).toBe('Dutch')
+    expect(nl?.machine_name).toBe('dutch')
+    // machine_name is unique across the dataset → safe as a catalog key.
+    expect(new Set(all.map((l) => l.machine_name)).size).toBe(all.length)
+  })
 })
 
 describe('toMachineName', () => {

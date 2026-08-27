@@ -1,16 +1,25 @@
+import { BootstrapPage } from './BootstrapPage'
 import { PRODUCT_NAME, REPO_URL, SUITE_NAME } from './brand'
+import { CliPage } from './CliPage'
 import { ConfigPage } from './ConfigPage'
 import { CountryPage } from './CountryPage'
-import { PACKAGES } from './content'
+import { CurrencyPage } from './CurrencyPage'
+import { EidPage } from './EidPage'
 import { GoogleAnalyticsPage } from './GoogleAnalyticsPage'
 import { GoogleMapsPage } from './GoogleMapsPage'
 import { HomePage } from './HomePage'
+import { IbanPage } from './IbanPage'
 import { GitHubIcon, LuwioWordmark } from './icons'
 import { LanguagePage } from './LanguagePage'
 import { LocalePage } from './LocalePage'
+import { NationalIdPage } from './NationalIdPage'
+import { PhonePage } from './PhonePage'
+import { RouterPage } from './RouterPage'
 import { useHashRoute } from './router'
 import { SkeletonPage } from './SkeletonPage'
 import { StoragePage } from './StoragePage'
+import { TimezonePage } from './TimezonePage'
+import { TranslationsPage } from './TranslationsPage'
 
 function Wordmark() {
   return (
@@ -21,26 +30,12 @@ function Wordmark() {
   )
 }
 
-function Nav({ route }: { route: string }) {
+function Nav() {
   return (
     <nav className="nav">
       <div className="wrap">
         <Wordmark />
         <div className="nav-links">
-          {PACKAGES.filter((p) => p.status !== 'skeleton').map((p) => (
-            <a
-              key={p.slug}
-              className={`pkg-link${route === `/docs/${p.slug}` ? ' active' : ''}`}
-              href={`#/docs/${p.slug}`}
-            >
-              {p.slug}
-              {p.status === 'done' && (
-                <span className="nav-done" title="Complete">
-                  ✓
-                </span>
-              )}
-            </a>
-          ))}
           <a className="btn btn-ghost" href={REPO_URL}>
             <GitHubIcon />
             GitHub
@@ -71,12 +66,32 @@ function renderRoute(route: string) {
   if (route.startsWith('/docs/')) {
     const slug = route.slice('/docs/'.length)
     switch (slug) {
+      case 'cli':
+        return <CliPage />
+      case 'bootstrap':
+        return <BootstrapPage />
+      case 'router':
+        return <RouterPage />
       case 'locale':
         return <LocalePage />
       case 'country':
         return <CountryPage />
       case 'language':
         return <LanguagePage />
+      case 'currency':
+        return <CurrencyPage />
+      case 'timezone':
+        return <TimezonePage />
+      case 'phone':
+        return <PhonePage />
+      case 'iban':
+        return <IbanPage />
+      case 'national-id':
+        return <NationalIdPage />
+      case 'eid':
+        return <EidPage />
+      case 'translations':
+        return <TranslationsPage />
       case 'config':
         return <ConfigPage />
       case 'storage':
@@ -97,7 +112,7 @@ export function App() {
   const route = useHashRoute()
   return (
     <div className="page">
-      <Nav route={route} />
+      <Nav />
       {renderRoute(route)}
       <Footer />
     </div>

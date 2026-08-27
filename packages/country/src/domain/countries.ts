@@ -1,3 +1,4 @@
+import { countryRows } from '../data'
 import { CountryCodeFormat, type ICountries, type ICountry } from '../types'
 import { Country } from './country'
 
@@ -26,6 +27,11 @@ export class Countries implements ICountries {
 
   public static empty(): Countries {
     return new Countries([])
+  }
+
+  /** Every country in the bundled ISO 3166 dataset, in source order. */
+  public static all(): Countries {
+    return new Countries(countryRows.map((row) => Country.new({ code: row.iso_3166_1_alpha2 })))
   }
 
   public static fromAlpha2(value: { alpha2: string[] }): Countries {

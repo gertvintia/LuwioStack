@@ -1,4 +1,5 @@
-import { Continent, Locale, useLocale } from '@luwio/locale'
+import { Continent } from '@luwio/locale'
+import { Locale, useLocale } from '@luwio/locale/react'
 import { useState } from 'react'
 import { DocHero, type DocSection, DocsLayout } from './DocsLayout'
 import { LiveExample } from './LiveExample'
@@ -14,23 +15,23 @@ const SECTIONS: DocSection[] = [
   { id: 'api', label: 'API reference' },
 ]
 
-const REACT_CODE = `import { Locale, useLocale } from '@luwio/locale'
+const REACT_CODE = `import { Locale, useLocale } from '@luwio/locale/react'
 
 function App() {
   return (
-    <Locale locale="nl-BE">   {/* the 'language-country' string */}
+    <Locale locale={Locale.new({ languageOrLocale: 'nl-BE' })}>   {/* a resolved Locale */}
       <Info />
     </Locale>
   )
 }
 
 function Info() {
-  const { current } = useLocale()
-  // current.locale is the active Locale — the same object Locale.new() returns.
+  const { locale } = useLocale()
+  // locale is the active Locale — the same object Locale.new() returns.
   return (
     <p>
-      {current.locale.language().name} in {current.locale.country().name} ({current.locale.code})
-      — dial {current.locale.country().dialing_code}
+      {locale.language().name} in {locale.country().name} ({locale.code})
+      — dial {locale.country().dialing_code}
     </p>
   )
 }`
@@ -81,16 +82,16 @@ const EX_SWITCHER = `const SUPPORTED = ['en-US', 'nl-BE', 'fr-FR', 'de-DE', 'ja-
 
 function Info() {
   // useLocale() has no setter — switching is driven by the parent's state.
-  const { current } = useLocale()
+  const { locale } = useLocale()
   return (
-    <p>{current.locale.language().name} · {current.locale.country().name} · dial {current.locale.country().dialing_code}</p>
+    <p>{locale.language().name} · {locale.country().name} · dial {locale.country().dialing_code}</p>
   )
 }
 
 function Switcher() {
   const [locale, setLocale] = useState('nl-BE')
   return (
-    <Locale locale={locale}>
+    <Locale locale={Locale.new({ languageOrLocale: locale })}>
       <select value={locale} onChange={(e) => setLocale(e.target.value)}>
         {SUPPORTED.map((code) => (
           <option key={code} value={code}>{code}</option>
@@ -135,8 +136,8 @@ const EX_COUNTRY = `const flag = (a) =>
   a.replace(/./g, (ch) => String.fromCodePoint(127397 + ch.charCodeAt(0)))
 
 function Badge() {
-  const { current } = useLocale()
-  const country = current.locale.country()
+  const { locale } = useLocale()
+  const country = locale.country()
   const spoken = country.languages().toArray().map((l) => l.name)
   return (
     <div>
@@ -147,29 +148,25 @@ function Badge() {
 }
 
 render(
-  <Locale locale="nl-BE">
+  <Locale locale={Locale.new({ languageOrLocale: 'nl-BE' })}>
     <Badge />
   </Locale>,
 )`
 
-const ROUTER_CODE = `import { Locale } from '@luwio/locale'
-import { useRouteLocale } from '@luwio/router'
+const ROUTER_CODE = `// router.ts — build the router with the locales you support.
+import { createRouter, routeRegistry } from '@luwio/router'
+import { Locale, useLocale } from '@luwio/locale/react'
 
-const SUPPORTED = ['nl-BE', 'fr-FR', 'en-US']
-const OVERRIDES = { 'en-*': 'en-US', '*': 'nl-BE' } // '*' catch-all → default
+export const router = createRouter(routeRegistry, {
+  locales: ['nl-BE', 'fr-BE', 'en-BE'].map((l) => Locale.new({ languageOrLocale: l })),
+  defaultLocale: Locale.new({ languageOrLocale: 'nl-BE' }),
+})
 
-function App() {
-  // The router always returns a locale: the one in the URL, or its own
-  // configured default when the URL has none — so this never sees null.
-  const { locale } = useRouteLocale()
-
-  // Resolve it onto what you support — an unsupported '/pt-PT' falls to '*' → default.
-  const active = Locale.resolve({ detected: locale, supported: SUPPORTED, overrides: OVERRIDES })
-  return (
-    <Locale locale={active.locale}>
-      <Site />
-    </Locale>
-  )
+// The router mounts one subtree per locale and wraps each in <Locale> for you —
+// so you never mount <Locale> by hand. Read the active locale anywhere below:
+function Badge() {
+  const { locale } = useLocale() // the locale from the URL (or the default)
+  return <span>{locale.language().name} · {locale.country().name}</span>
 }`
 
 export function LocalePage() {
@@ -194,20 +191,18 @@ export function LocalePage() {
 
       <h2 id="react-usage">React usage</h2>
       <p>
-        Wrap your tree in <code>Locale</code> with a <code>language-country</code> string, then read
-        the resolved locale anywhere with <code>useLocale</code>.
+        Wrap your tree in <code>Locale</code> with a resolved locale (a <code>Locale.new</code> or{' '}
+        <code>Locale.resolve</code> result), then read it anywhere with <code>useLocale</code>.
       </p>
       <CodeBlock code={REACT_CODE} />
       <p>
-        <code>useLocale</code> returns <code>{'{ current }'}</code>, where{' '}
-        <code>current.locale</code> is the active locale — the same object <code>Locale.new()</code>{' '}
-        returns, so use it the same way: <code>current.locale.code</code>,{' '}
-        <code>current.locale.language()</code>, <code>current.locale.country()</code>,{' '}
-        <code>current.locale.continent()</code> and <code>current.locale.toIntlLocale()</code>. It
-        throws if used outside a provider. Give <code>Locale</code> a locale you control; for
-        untrusted values (the URL, storage, an API) resolve them first with{' '}
-        <code>Locale.resolve</code> (see below) so an unsupported locale falls back instead of
-        throwing.
+        <code>useLocale</code> returns <code>{'{ locale }'}</code>, where <code>locale</code> is the
+        active locale — the same object <code>Locale.new()</code> returns, so use it the same way:{' '}
+        <code>locale.code</code>, <code>locale.language()</code>, <code>locale.country()</code>,{' '}
+        <code>locale.continent()</code> and <code>locale.toIntlLocale()</code>. It throws if used
+        outside a provider. Give <code>Locale</code> a locale you control; for untrusted values (the
+        URL, storage, an API) resolve them first with <code>Locale.resolve</code> (see below) so an
+        unsupported locale falls back instead of throwing.
       </p>
 
       <Callout>
@@ -277,8 +272,8 @@ export function LocalePage() {
       </p>
       <LiveExample code={EX_RESOLVE} scope={{ Locale }} />
       <Callout>
-        <code>Locale.resolve</code> returns a full <code>ILocale</code> — pass its{' '}
-        <code>.locale</code> string to the provider.
+        <code>Locale.resolve</code> returns a full <code>ILocale</code> — pass it straight to the{' '}
+        <code>Locale</code> provider.
       </Callout>
 
       <h3>Country flag &amp; spoken languages</h3>
@@ -289,29 +284,31 @@ export function LocalePage() {
       <LiveExample code={EX_COUNTRY} scope={{ Locale, useLocale }} />
 
       <h2 id="routing">Locale routing with @luwio/router</h2>
-      <Callout>
-        <strong>Planned.</strong> <code>@luwio/router</code> is a skeleton today — this is the
-        intended integration for the most common locale task: taking the locale from the URL.
-      </Callout>
       <p>
-        <code>useRouteLocale()</code> always returns a locale — the one in the URL, or the router's
-        configured default when the URL has none — so you never handle <code>null</code>. Map it
-        onto what you support with <code>Locale.resolve</code>: an unsupported <code>/pt-PT</code>{' '}
-        falls to the <code>*</code> catch-all (your default), everything else through the usual
-        rules (same-language → per-pattern → catch-all). Render the result via <code>Locale</code>.
+        <code>@luwio/router</code> builds on this package: you give <code>createRouter</code> the{' '}
+        <code>locales</code> you support (each a <code>Locale</code>) and a{' '}
+        <code>defaultLocale</code>, and it mounts a real subtree per locale — <code>/nl-BE/…</code>,{' '}
+        <code>/fr-BE/…</code>, with the default optionally unprefixed. Each subtree is wrapped in{' '}
+        <code>&lt;Locale&gt;</code> and the resolved <code>ILocale</code> is put in route context,
+        so <code>useLocale()</code> just works in every component — no manual{' '}
+        <code>&lt;Locale&gt;</code> wiring, no <code>null</code> to handle.
       </p>
       <CodeBlock code={ROUTER_CODE} />
+      <Callout>
+        See the <a href="#/docs/router">@luwio/router</a> docs for defining localized routes (
+        <code>createRoute().alias()</code>), the Vite plugin, and per-locale slugs.
+      </Callout>
 
       <h2 id="api">API reference</h2>
       <ApiTable
         rows={[
           {
             sig: 'Locale',
-            desc: 'Provider taking a language-country string.',
+            desc: 'Provider taking a resolved Locale (from Locale.new / Locale.resolve).',
           },
           {
             sig: 'useLocale()',
-            desc: 'Hook → { current }; current.locale is the active Locale (same as Locale.new()).',
+            desc: 'Hook → { locale }; locale is the active Locale (same as Locale.new()).',
           },
           {
             sig: 'Locale.new()',

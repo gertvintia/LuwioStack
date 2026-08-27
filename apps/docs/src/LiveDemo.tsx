@@ -1,5 +1,5 @@
 import { createConfig } from '@luwio/config'
-import { Locale, useLocale } from '@luwio/locale'
+import { Locale, useLocale } from '@luwio/locale/react'
 import { useLocalStorage } from '@luwio/storage'
 
 // @luwio/config — typed runtime config, defined once.
@@ -22,7 +22,7 @@ function DemoWindow({
   onChange: (locale: string) => void
 }) {
   const appName = useConfigValue('appName') // @luwio/config
-  const { current: active } = useLocale() // @luwio/locale
+  const { locale: active } = useLocale() // @luwio/locale
   const [count, setCount] = useLocalStorage('luwio:demo:count', 0) // @luwio/storage
 
   return (
@@ -47,23 +47,21 @@ function DemoWindow({
         <div className="field">
           <span className="label">Country</span>
           <span className="value">
-            <span className="flag">{flagOf(active.locale.country().code)}</span>{' '}
-            {active.locale.country().name}
+            <span className="flag">{flagOf(active.country().code)}</span> {active.country().name}
           </span>
         </div>
         <div className="field">
           <span className="label">Language</span>
-          <span className="value">{active.locale.language().name}</span>
+          <span className="value">{active.language().name}</span>
         </div>
         <div className="field">
           <span className="label">Dialing code</span>
-          <span className="value">{active.locale.country().dialing_code}</span>
+          <span className="value">{active.country().dialing_code}</span>
         </div>
         <div className="field">
           <span className="label">ISO codes</span>
           <span className="value">
-            {active.locale.code} · {active.locale.country().alpha3} ·{' '}
-            {active.locale.country().numeric}
+            {active.code} · {active.country().alpha3} · {active.country().numeric}
           </span>
         </div>
         <div className="field">
@@ -89,7 +87,7 @@ export function LiveDemo() {
 
   return (
     <ConfigProvider>
-      <Locale locale={locale}>
+      <Locale locale={Locale.new({ languageOrLocale: locale })}>
         <DemoWindow current={locale} onChange={setLocale} />
       </Locale>
     </ConfigProvider>

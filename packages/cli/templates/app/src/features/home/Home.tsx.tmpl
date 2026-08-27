@@ -1,0 +1,11 @@
+import { useTranslations } from '@luwio/translations'
+
+export function Home() {
+  const { translations } = useTranslations()
+  return (
+    <section>
+      <h1>{translations.t('home.title')}</h1>
+      <p>{translations.t('home.intro')}</p>
+    </section>
+  )
+}

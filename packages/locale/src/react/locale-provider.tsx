@@ -1,47 +1,42 @@
+import { Country } from '@luwio/country/react'
+import { Language } from '@luwio/language/react'
 import { type PropsWithChildren, useMemo } from 'react'
-import { Locale as LocaleClass } from '../domain/locale'
 import { SystemLocale } from '../domain/system-locale'
+import type { ILocale } from '../types'
 import { createLocale } from '../utils/create-locale'
 import { resolveLocale } from '../utils/resolve-locale'
 import { LocaleContext } from './locale-context'
 
 export interface LocaleProps extends PropsWithChildren {
-  /** A `language-country` string, e.g. `"en-US"`. */
-  locale: string
+  /** A resolved locale, e.g. `Locale.new({ languageOrLocale: 'nl-BE' })` or `Locale.resolve(...)`. */
+  locale: ILocale
 }
 
 /**
- * Resolves `locale` and provides it to descendants. Read it with {@link useLocale}.
+ * Provides `locale` to descendants. Read it with {@link useLocale}.
  *
- * `<Locale>` expects a locale it can resolve (a known language + known country); to map an
- * untrusted/optional value (e.g. from the router) onto what you support first, run it through
- * `resolveLocale` and pass the result here.
+ * `<Locale>` takes an already-built {@link ILocale}; the same export carries `Locale.new` /
+ * `Locale.resolve` / `Locale.system`, so one import from `@luwio/locale/react` both builds and
+ * provides. (The React-free factory lives at `@luwio/locale`.) It also composes `<Country>` +
+ * `<Language>` under the hood, so `useCountry` / `useLanguage` resolve to this locale.
  */
 export function Locale({ locale, children }: LocaleProps) {
-  const value = useMemo(() => LocaleClass.fromLocale({ locale }), [locale])
-  return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
+  // Key on the locale's code, so a fresh-but-equal ILocale passed each render keeps a stable
+  // identity — safe to use directly in dependency arrays.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally keyed on code, not identity
+  const value = useMemo(() => locale, [locale.code])
+  return (
+    <LocaleContext.Provider value={value}>
+      <Country country={value.country()}>
+        <Language language={value.language()}>{children}</Language>
+      </Country>
+    </LocaleContext.Provider>
+  )
 }
 
-/**
- * Build an {@link ILocale} imperatively (outside React) — the same factory the provider uses under
- * the hood, mirroring `Country.new` / `Language.new`.
- *
- * @example
- * Locale.new({ languageOrLocale: 'nl-BE' })
- * Locale.new({ languageOrLocale: 'en', country: 'BE' })
- */
+/** Build an exact locale — the domain factory, surfaced on the provider. */
 Locale.new = createLocale
-
-/**
- * Resolve a detected locale onto the ones your app supports (exact → override → wildcard →
- * same-language → required `*` catch-all). The companion to {@link Locale.new}: `new` makes an
- * exact locale, `resolve` picks one from app config. A missing/unknown value never throws — it
- * falls through to the catch-all.
- *
- * @example
- * Locale.resolve({ detected: Locale.system, supported: ['nl-BE', 'en-US'], overrides: { '*': 'nl-BE' } })
- */
+/** Resolve a detected locale against a supported set — the domain helper, surfaced on the provider. */
 Locale.resolve = resolveLocale
-
-/** The current runtime's locale, detected from {@link Intl} (region inferred if absent). */
+/** The runtime's detected locale. */
 Locale.system = SystemLocale

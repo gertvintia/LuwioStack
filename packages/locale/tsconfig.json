@@ -3,7 +3,9 @@
   "compilerOptions": {
     "paths": {
       "@luwio/country": ["../country/src/index.ts"],
-      "@luwio/language": ["../language/src/index.ts"]
+      "@luwio/country/react": ["../country/src/react.ts"],
+      "@luwio/language": ["../language/src/index.ts"],
+      "@luwio/language/react": ["../language/src/react.ts"]
     }
   },
   "include": ["src"]

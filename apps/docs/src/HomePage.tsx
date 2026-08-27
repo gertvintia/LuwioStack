@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react'
 import { PRODUCT_NAME, SUITE_NAME } from './brand'
-import { PACKAGES } from './content'
+import { VISIBLE_PACKAGES } from './content'
 import { BoxIcon, FeatherIcon, ServerIcon, TypeIcon } from './icons'
 import { LiveDemo } from './LiveDemo'
 import { CodeBlock, InstallBar } from './ui'
@@ -32,8 +32,8 @@ const DEMO_CODE = `// one app, three packages
 const { ConfigProvider } = createConfig({ appName: 'Luwio Demo' })
 
 <ConfigProvider>
-  <Locale locale="nl-BE">
-    const { current } = useLocale()        // current.locale.country() → Belgium · +32
+  <Locale locale={Locale.new({ languageOrLocale: 'nl-BE' })}>
+    const { locale } = useLocale()         // locale.country() → Belgium · +32
     const [n, setN] = useLocalStorage('count', 0)  // persisted
   </Locale>
 </ConfigProvider>`
@@ -89,7 +89,11 @@ export function HomePage() {
               See it live
             </a>
           </div>
-          <InstallBar command="npm i @luwio/locale @luwio/config @luwio/storage" />
+          <InstallBar command="pnpm dlx @luwio/cli create my-app" />
+          <p className="hero-note">
+            Scaffold a locale-routed app, then pick the <code>@luwio/*</code> modules you want — or
+            add more later with <code>luwio add</code>.
+          </p>
         </div>
       </header>
 
@@ -99,7 +103,7 @@ export function HomePage() {
         lead="Every package is published independently to npm. React packages list it only as a peer dependency; some are still skeletons taking shape."
       >
         <div className="pkg-grid">
-          {PACKAGES.map((p) => (
+          {VISIBLE_PACKAGES.map((p) => (
             <a
               className={`pkg-card${p.status === 'skeleton' ? ' is-skeleton' : ''}`}
               key={p.slug}

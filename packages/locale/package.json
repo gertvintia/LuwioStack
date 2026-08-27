@@ -1,7 +1,7 @@
 {
   "name": "@luwio/locale",
   "version": "0.0.0",
-  "description": "Simple, predictable locale management for React — locale, country & language data with a typed domain model.",
+  "description": "Simple, predictable locale management for React \u2014 locale, country & language data with a typed domain model.",
   "keywords": [
     "react",
     "locale",
@@ -33,6 +33,16 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
+    },
+    "./react": {
+      "import": {
+        "types": "./dist/react.d.mts",
+        "default": "./dist/react.mjs"
+      },
+      "require": {
+        "types": "./dist/react.d.cts",
+        "default": "./dist/react.cjs"
+      }
     }
   },
   "publishConfig": {
@@ -41,7 +51,7 @@
   },
   "scripts": {
     "build": "tsdown",
-    "dev": "tsdown --watch",
+    "dev": "tsdown --watch --no-clean",
     "test": "vitest run",
     "lint": "biome check .",
     "typecheck": "tsc --noEmit"

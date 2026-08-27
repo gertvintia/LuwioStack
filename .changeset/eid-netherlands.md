@@ -1,0 +1,5 @@
+---
+"@luwio/eid": minor
+---
+
+Add the Netherlands as a third card reader, via ICAO Doc 9303 **eMRTD** — a third distinct on-card scheme (after Belgium's binary TLV files and Estonia's ASCII records). The Netherlands has no open-read civic card (identity online is DigiD), but its ID card and passport carry an eMRTD chip, so NL is reclassified from `online-only` to `secure-channel` via the document MRZ. A new shared `emrtd` module reads DG1 and parses the MRZ (TD1 ID cards, TD2, and TD3 passports) into a normalized `IIdentityDocument` — names, document number, nationality (alpha-3 → alpha-2), birth date, sex, expiry, and document type (passport vs ID card from the MRZ code); it's reusable for FR/ES/IT passports later. `NationalId`-style guards apply: reading requires the MRZ/CAN (via `secrets`) and throws `CardAccessError` otherwise. The BAC/PACE secure-messaging handshake derived from the MRZ/CAN is the next step; the MRZ parser runs over an already-secured session. New APDU helper `selectByAid`.

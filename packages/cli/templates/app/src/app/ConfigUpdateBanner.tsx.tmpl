@@ -1,0 +1,32 @@
+import { useConfigUpdate } from '@luwio/bootstrap/react'
+import { localeConfig } from './locale-config'
+
+// A slim "new configuration available" bar. @luwio/bootstrap's useConfigUpdate watches the loader in
+// the background (stale-while-revalidate) and flips `available` when the server publishes a config
+// newer than the one mounted. Reloading re-runs boot, which fetches the new locale set.
+export function ConfigUpdateBanner() {
+  const { available, reload } = useConfigUpdate(localeConfig)
+
+  if (!available) return null
+
+  return (
+    <div
+      role="status"
+      style={{
+        display: 'flex',
+        gap: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '8px 16px',
+        background: '#1f2937',
+        color: '#fff',
+        fontSize: 13,
+      }}
+    >
+      <span>A new configuration is available.</span>
+      <button type="button" onClick={reload}>
+        Reload
+      </button>
+    </div>
+  )
+}

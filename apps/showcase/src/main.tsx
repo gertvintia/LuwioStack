@@ -31,6 +31,8 @@ localeConfig
     )
   })
   .catch((error) => {
-    root.render(<div className="boot">Failed to load configuration. Please retry.</div>)
+    // A rejected config (e.g. validation in locale-config.ts threw) surfaces here — show it.
+    const message = error instanceof Error ? error.message : String(error)
+    root.render(<div className="boot boot-error">Failed to load configuration — {message}</div>)
     console.error(error)
   })

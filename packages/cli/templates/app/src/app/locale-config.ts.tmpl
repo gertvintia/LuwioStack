@@ -70,6 +70,20 @@ function hydrate(body: LocaleConfigBody): LocaleConfig {
 export const localeConfig = createConfigLoader<LocaleConfigBody, LocaleConfig>({
   fetch: mockFetch,
   cache: sessionStorageCache('__APP_NAME__:localeConfig'),
+  // Guard against a bad config from the backend before we build the router from it. Throwing here
+  // rejects the config (it's never cached) and surfaces on screen via main.tsx's catch. Swap this
+  // for a schema check (e.g. `validate: (c) => ConfigSchema.parse(c)`) if you use zod/valibot.
+  validate: (body) => {
+    if (body.locales.length === 0) {
+      throw new Error('config: "locales" must not be empty')
+    }
+    if (!body.locales.includes(body.defaultLocale)) {
+      throw new Error(
+        `config: defaultLocale "${body.defaultLocale}" is not one of [${body.locales.join(', ')}]`,
+      )
+    }
+    return body
+  },
   map: hydrate,
 })
 

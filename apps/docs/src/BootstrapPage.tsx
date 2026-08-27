@@ -8,6 +8,7 @@ const SECTIONS: DocSection[] = [
   { id: 'the-idea', label: 'The idea' },
   { id: 'installation', label: 'Installation' },
   { id: 'loader', label: 'The loader' },
+  { id: 'validation', label: 'Validating config' },
   { id: 'caching', label: 'Caching & refresh' },
   { id: 'react', label: 'React bindings' },
   { id: 'luwio', label: 'In a Luwio app' },
@@ -40,6 +41,35 @@ const MAP_CODE = `createConfigLoader<AppConfigJson, AppConfig>({
   // it into the shape your app consumes — hydrate ids into objects, parse dates, etc.
   map: (json) => ({ ...json, startedAt: new Date(json.startedAt) }),
 })`
+
+const VALIDATE_CODE = `import { z } from 'zod'
+
+const ConfigSchema = z.object({
+  supportEmail: z.string().email(),
+  apiUrl: z.string().url(),
+  locales: z.array(z.string()).min(1),
+})
+
+export const configLoader = createConfigLoader({
+  fetch: httpConfig('/api/config'),
+  cache: sessionStorageCache('my-app:config'),
+  // Runs on a freshly fetched body, before it's cached or mapped. Throw to reject a bad config —
+  // z.parse() throws a ZodError on an invalid email / url / empty locales. Or check by hand:
+  //   validate: (c) => { if (!isEmail(c.supportEmail)) throw new Error('bad supportEmail'); return c },
+  validate: (raw) => ConfigSchema.parse(raw),
+})`
+
+const ERROR_CODE = `// The validation error propagates out of the loader — surface it however you like.
+
+// With the gate: the error render-prop receives it.
+<Bootstrap loader={configLoader} fallback={<Splash />} error={(err) => <ConfigError error={err} />}>
+  {(config) => <App config={config} />}
+</Bootstrap>
+
+// Bootstrapping imperatively: catch it in your entry.
+configLoader.load()
+  .then((config) => mount(config))
+  .catch((err) => showFatal(err.message))`
 
 const CACHE_FLOW = `1st load    →  GET /api/config                    →  200 + ETag: "v1"   (cache "v1")
 refresh     →  GET /api/config  If-None-Match: "v1"  →  304 (no body)      (reuse "v1")   ← cheap
@@ -192,6 +222,27 @@ export function BootstrapPage() {
         or your own <code>{'{ read, write }'}</code>. Omit the cache entirely to always fetch fresh.
       </p>
 
+      <h2 id="validation">Validating the config</h2>
+      <p>
+        The backend can get it wrong — a typo'd support email, a malformed API URL, an empty locale
+        list. <code>validate</code> is your guard: it runs on a freshly fetched body{' '}
+        <strong>before</strong> the config is cached or mapped. Throw to reject it — with your own
+        error, or by handing the body to a schema library whose <code>parse</code> throws on invalid
+        and returns the typed value on success.
+      </p>
+      <CodeBlock code={VALIDATE_CODE} />
+      <Callout>
+        A rejected config <strong>never poisons the cache</strong> — nothing is written, so the next
+        load re-fetches. Validation runs only on freshly fetched configs; a <code>304</code> reuses
+        a cache entry that already passed. And it may be async, if your check needs to be.
+      </Callout>
+      <p>
+        The thrown error propagates straight out of <code>load()</code>, so an implementor can put
+        it on screen — through the <code>{'<Bootstrap>'}</code> gate's <code>error</code> render, or
+        a <code>catch</code> in an imperative bootstrap:
+      </p>
+      <CodeBlock code={ERROR_CODE} />
+
       <h2 id="caching">Caching &amp; what a refresh does</h2>
       <p>
         <code>httpConfig(url)</code> issues a <strong>conditional GET</strong>: it sends the
@@ -279,8 +330,12 @@ export function BootstrapPage() {
       <ApiTable
         rows={[
           {
-            sig: 'createConfigLoader({ fetch, cache?, map?, debug? })',
+            sig: 'createConfigLoader({ fetch, cache?, validate?, map?, debug? })',
             desc: 'Returns a loader: { load, revalidate, watch }. Generic over the raw body and the mapped output.',
+          },
+          {
+            sig: 'validate?: (raw) => raw',
+            desc: 'Runs on a freshly fetched body before cache/map. Throw to reject a bad config (the error propagates out of load()); return it (optionally normalized) to accept. May be async.',
           },
           {
             sig: 'loader.load()',

@@ -16,7 +16,7 @@ import { startWatch } from './watch'
 export function createConfigLoader<Raw, Out = Raw>(
   options: ConfigLoaderOptions<Raw, Out>,
 ): ConfigLoader<Out> {
-  const { fetch, cache, debug } = options
+  const { fetch, cache, validate, debug } = options
   const map = options.map ?? ((raw: Raw) => raw as unknown as Out)
 
   // The version `load()` last applied. A revalidation that returns a different version means a new
@@ -41,7 +41,10 @@ export function createConfigLoader<Raw, Out = Raw>(
       return cached
     }
 
-    const fresh: VersionedConfig<Raw> = { version: result.version, data: result.data }
+    // Validate the backend's body BEFORE trusting it — a bad config must never be cached or
+    // returned. `validate` throws the implementor's own error, which propagates out of load().
+    const data = validate ? await validate(result.data) : result.data
+    const fresh: VersionedConfig<Raw> = { version: result.version, data }
     cache?.write(fresh)
     log(`fetched ${fresh.version}`)
     return fresh

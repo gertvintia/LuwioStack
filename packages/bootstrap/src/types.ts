@@ -39,6 +39,15 @@ export interface ConfigLoaderOptions<Raw, Out> {
   /** Where to remember the last-seen config across reloads. Omit to always fetch. */
   cache?: ConfigCache<Raw>
   /**
+   * Validate (and optionally normalize) the body the backend returned, before it is cached or
+   * mapped. **Throw to reject** a bad config — the error propagates out of `load()` (and into
+   * `<Bootstrap>`'s `error` render / your own `catch`), so an implementor can surface it on screen.
+   * Return the data (optionally cleaned up) to accept it. Runs only on a freshly fetched config; a
+   * `304` reuses an already-validated cache entry. Pairs with schema libraries —
+   * `validate: (c) => ConfigSchema.parse(c)` — and may be async.
+   */
+  validate?: (data: Raw) => Raw | Promise<Raw>
+  /**
    * Map the raw (JSON-serializable) body to the shape the app consumes — e.g. hydrate ids into
    * domain objects. Runs on every `load()`; only the raw body is cached. Defaults to identity.
    */

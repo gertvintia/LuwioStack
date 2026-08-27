@@ -6,8 +6,10 @@ Initial release of `@luwio/bootstrap` — config-based bootstrap for React apps.
 locale-agnostic module for the fetch → cache → revalidate loop an app runs before it can build its
 router / i18n / etc. from backend-owned config.
 
-- `createConfigLoader({ fetch, cache?, map? })` — `load()` (boot), `revalidate()`, and `watch()`
-  (stale-while-revalidate). Generic over the raw body and the mapped shape.
+- `createConfigLoader({ fetch, cache?, validate?, map? })` — `load()` (boot), `revalidate()`, and
+  `watch()` (stale-while-revalidate). Generic over the raw body and the mapped shape. `validate`
+  runs on a freshly fetched body before it's cached/mapped and throws to reject a bad config (an
+  invalid email/url, etc.) so an implementor can surface it — pairs with `schema.parse`.
 - `httpConfig(url)` — a ready-made ETag-aware conditional `GET` (`If-None-Match` → cheap `304`),
   plus `sessionStorageCache` / `localStorageCache` / `memoryCache`.
 - `@luwio/bootstrap/react` — a `<Bootstrap>` gate that fetches before it renders,

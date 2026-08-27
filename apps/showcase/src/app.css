@@ -67,6 +67,11 @@ h1 {
   color: var(--text-faint);
   font-size: 14px;
 }
+.boot-error {
+  color: #b91c1c;
+  padding: 0 24px;
+  text-align: center;
+}
 .glow {
   position: absolute;
   inset: -20% -20% auto -20%;

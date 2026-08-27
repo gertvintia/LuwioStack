@@ -74,6 +74,49 @@ describe('createConfigLoader', () => {
     await expect(loader.load()).rejects.toThrow(/nothing cached/)
   })
 
+  it('rejects an invalid config from validate() and does not cache it', async () => {
+    const server = fakeServer('v1', { value: -1 })
+    const cache = memoryCache<Body>()
+    const loader = createConfigLoader({
+      fetch: server.fetch,
+      cache,
+      validate: (c) => {
+        if (c.value < 0) throw new Error('value must be >= 0')
+        return c
+      },
+    })
+
+    await expect(loader.load()).rejects.toThrow('value must be >= 0')
+    // The bad config never poisons the cache — a later valid publish still loads cleanly.
+    expect(cache.read()).toBeNull()
+
+    server.publish('v2', { value: 5 })
+    expect(await loader.load()).toEqual({ value: 5 })
+  })
+
+  it('validate() can normalize; only the normalized body is cached', async () => {
+    const server = fakeServer('v1', { value: 3 })
+    const cache = memoryCache<Body>()
+    const loader = createConfigLoader({
+      fetch: server.fetch,
+      cache,
+      validate: (c) => ({ value: c.value * 10 }),
+    })
+
+    expect(await loader.load()).toEqual({ value: 30 })
+    expect(cache.read()).toEqual({ version: 'v1', data: { value: 30 } })
+  })
+
+  it('does not re-run validate on a 304 (the cache is already validated)', async () => {
+    const server = fakeServer('v1', { value: 1 })
+    const validate = vi.fn((c: Body) => c)
+    const loader = createConfigLoader({ fetch: server.fetch, cache: memoryCache<Body>(), validate })
+
+    await loader.load() // fresh — validated once
+    await loader.revalidate() // 304 — reuses cache, no re-validation
+    expect(validate).toHaveBeenCalledTimes(1)
+  })
+
   it('works without a cache (always fetches fresh)', async () => {
     const server = fakeServer('v1', { value: 1 })
     const loader = createConfigLoader({ fetch: server.fetch })

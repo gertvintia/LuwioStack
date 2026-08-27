@@ -42,6 +42,25 @@ export const configLoader = createConfigLoader<AppConfig>({
 createConfigLoader<AppConfigJson, AppConfig>({ fetch, cache, map: (json) => hydrate(json) })
 ```
 
+**`validate`** guards against a bad config from the backend (an invalid email, URL, an out-of-range
+value…). It runs on a freshly fetched body **before** it's cached or mapped — throw to reject it, and
+the error propagates out of `load()` (and into `<Bootstrap>`'s `error` render, or your own `catch`),
+so you can show it on screen. A rejected config never poisons the cache.
+
+```ts
+createConfigLoader<AppConfig>({
+  fetch,
+  cache,
+  validate: (c) => {
+    if (!/^\S+@\S+\.\S+$/.test(c.supportEmail)) throw new Error('config: invalid supportEmail')
+    return c
+  },
+})
+
+// Or hand it straight to a schema library — its parse throws on invalid, returns typed on success:
+createConfigLoader({ fetch, cache, validate: (c) => ConfigSchema.parse(c) }) // zod / valibot / …
+```
+
 Swap the pieces freely: `httpConfig(url, { init, fetchImpl })` or your own `fetch` for a mock;
 `sessionStorageCache` / `localStorageCache` / `memoryCache`, or your own `{ read, write }`.
 

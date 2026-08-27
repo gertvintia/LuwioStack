@@ -63,6 +63,20 @@ function hydrate(body: LocaleConfigBody): LocaleConfig {
 export const localeConfig = createConfigLoader<LocaleConfigBody, LocaleConfig>({
   fetch: mockFetch,
   cache: sessionStorageCache('luwio:showcase:localeConfig'),
+  // Guard against a bad config from the backend before we build the router from it. Throwing here
+  // rejects the config (it's never cached) and surfaces on screen via main.tsx's catch. Try it:
+  //   __publishConfig(['en-IE'], 'de-DE')   → defaultLocale isn't in locales → boot shows the error
+  validate: (body) => {
+    if (body.locales.length === 0) {
+      throw new Error('config: "locales" must not be empty')
+    }
+    if (!body.locales.includes(body.defaultLocale)) {
+      throw new Error(
+        `config: defaultLocale "${body.defaultLocale}" is not one of [${body.locales.join(', ')}]`,
+      )
+    }
+    return body
+  },
   map: hydrate,
   debug: true,
 })
